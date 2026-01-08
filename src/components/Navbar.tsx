@@ -10,7 +10,7 @@ const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
              <Link href="/" className="flex items-center gap-2">
                 <span className="text-2xl font-black text-foreground tracking-tighter">
-                  SmartCare
+                  SoterCare
                 </span>
              </Link>
           </div>
