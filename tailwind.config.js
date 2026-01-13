@@ -11,6 +11,15 @@ module.exports = {
         sans: ['URWGeometric'],
         urw: ['URWGeometric'],
       },
+      animation: {
+        'shine': 'shine 4s linear infinite',
+      },
+      keyframes: {
+        shine: {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
+        },
+      },
     },
   },
   plugins: [],

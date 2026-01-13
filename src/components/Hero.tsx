@@ -1,40 +1,63 @@
-import Link from 'next/link';
-import { ArrowRight, Play } from 'lucide-react';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { ArrowDown } from 'lucide-react';
 
 const Hero = () => {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-4xl mx-auto mb-20">
-          <div className="inline-flex items-center justify-center mb-10">
-             <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/6">
-               Health & Safety Monitoring
-             </span>
-          </div>
-          <h1 className="tracking-tight mb-8 leading-[1.1]">
-            Smart Elderly Care <br/>
-            <span className="text-text">Monitoring System</span>
-          </h1>
-          <p className="mb-12 max-w-2xl mx-auto leading-relaxed">
-            Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="w-full sm:w-auto px-10 py-5 bg-text text-bg-body rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-m flex items-center justify-center gap-2 group tracking-wide">
-              Get Started <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="w-full sm:w-auto px-10 py-5 bg-bg-card text-text hover:bg-bg-panel rounded-full font-bold transition-all shadow-m hover:-translate-y-0.5 flex items-center justify-center gap-2">
-              <Play size={18} className="fill-current" /> Watch Demo
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="p-2 md:p-4 h-screen min-h-[600px] w-full">
+      <section className="relative h-full w-full overflow-hidden flex flex-col justify-between pt-24 md:pt-32 pb-6 md:pb-8 px-4 sm:px-6 lg:px-8 rounded-[1.5rem] md:rounded-[1.5rem]">
       
-      {/* Background Decorative Elements - Subtle ripples */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-          <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-white rounded-full blur-3xl opacity-40 mix-blend-overlay"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-white rounded-full blur-3xl opacity-40 mix-blend-overlay"></div>
+      {/* Background Image & Noise */}
+      <div className="absolute inset-0 w-full h-full z-0 font-sans">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+          style={{ backgroundImage: 'url("/img/hero-background-test1.png")' }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
-    </section>
+
+      <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 text-white">
+          <h1 className="mb-4 md:mb-2 leading-[1.1] md:leading-[1]">
+             <span className="block text-4xl sm:text-6xl md:text-[12vh] font-medium opacity-90 text-white leading-none">Smart Elderly Care</span>
+             <span className="block text-2xl sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-2 md:-mt-1">Monitoring System</span>
+          </h1>
+          <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-70 text-white px-2">
+            Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
+          </span>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="w-full flex justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10">
+         <div className="w-20 sm:w-32 hidden sm:block">
+            #SDGP
+         </div>
+         
+         <div className="flex flex-col items-center gap-2 mx-auto sm:mx-0">
+            <span className="bg-[linear-gradient(110deg,#e2e8f0,45%,#ffffff,55%,#e2e8f0)] bg-[length:250%_100%] bg-clip-text text-transparent animate-shine font-bold text-xs sm:text-sm whitespace-nowrap">
+              Scroll to Explore
+            </span>
+            <ArrowDown size={14} className="text-white/50" />
+         </div>
+
+         <div className="w-20 sm:w-32 text-right hidden sm:block">
+            IIT-CS-42
+         </div>
+      </div>
+      </section>
+    </div>
   );
 };
 
