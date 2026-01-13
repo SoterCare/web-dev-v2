@@ -2,7 +2,7 @@
 
 const Newsletter = () => {
   return (
-    <section className="py-32 bg-transparent relative overflow-hidden">
+    <section className="py-32 bg-transparent relative overflow-hidden font-urw">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
           Stay Connected

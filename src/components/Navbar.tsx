@@ -3,7 +3,7 @@ import { Menu } from 'lucide-react';
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-full z-50 top-0 left-0 bg-[#F5F5F7]/80 backdrop-blur-xl border-b border-white/20 transition-all duration-300">
+    <nav className="fixed w-full z-50 top-0 left-0 bg-[#F5F5F7]/80 backdrop-blur-xl border-b border-white/20 transition-all duration-300 font-urw">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-24">
           {/* Logo */}

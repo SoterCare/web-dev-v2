@@ -52,13 +52,13 @@
   --color-text-muted: var(--text-muted);
   
   --shadow-m: var(--shadow-m);
-  --font-sans: "URWGeometric", sans-serif;
-  --font-family-urw: "URWGeometric", sans-serif;
+  --font-sans: "URWGeometric";
+  --font-family-urw: "URWGeometric";
 }
 
 * {
   box-sizing: border-box;
-  font-family: "URWGeometric", sans-serif;
+  font-family: "URWGeometric";
 }
 
 body {
@@ -66,12 +66,12 @@ body {
   padding: 0;
   background: var(--bg-body);
   color: var(--text);
-  font-family: "URWGeometric", sans-serif;
+  font-family: "URWGeometric";
 }
 
-h1 { font: 700 1.5rem/1.2em "URWGeometric", sans-serif; color: var(--text); }
-h2 { font: 700 1.25rem/1.4em "URWGeometric", sans-serif; color: var(--text); }
-p { font: 400 1rem/1.6em "URWGeometric", sans-serif; color: var(--text-muted); }
+h1 { font: 700 1.5rem/1.2em "URWGeometric"; color: var(--text); }
+h2 { font: 700 1.25rem/1.4em "URWGeometric"; color: var(--text); }
+p { font: 400 1rem/1.6em "URWGeometric"; color: var(--text-muted); }
 
 /* Utility Classes */
 .depth-card {
