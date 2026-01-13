@@ -2,13 +2,13 @@
 
 const ContactForm = () => {
   return (
-    <section id="contact" className="py-24 bg-transparent relative z-10 font-urw">
+    <section id="contact" className="py-24 bg-transparent relative z-10">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
+          <h2 className="mb-4 tracking-tight">
             Get in Touch
           </h2>
-          <p className="text-muted font-normal text-lg">
+          <p className="">
             Send us a message and we'll get back to you within 24 hours.
           </p>
         </div>

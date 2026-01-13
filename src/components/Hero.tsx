@@ -3,19 +3,19 @@ import { ArrowRight, Play } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent font-urw">
+    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-20">
           <div className="inline-flex items-center justify-center mb-10">
-             <span className="text-xs font-bold text-text-muted bg-bg-panel px-6 py-2 rounded-full uppercase tracking-widest shadow-[inset_0_2px_4px_#00000010] border-b border-white">
+             <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/6">
                Health & Safety Monitoring
              </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-text tracking-tight mb-8 leading-[1.1]">
+          <h1 className="tracking-tight mb-8 leading-[1.1]">
             Smart Elderly Care <br/>
             <span className="text-text">Monitoring System</span>
           </h1>
-          <p className="text-xl md:text-2xl text-text-muted mb-12 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="mb-12 max-w-2xl mx-auto leading-relaxed">
             Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

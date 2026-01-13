@@ -47,18 +47,18 @@ const features = [
 
 const Features = () => {
   return (
-    <section id="features" className="py-24 bg-transparent relative z-10 font-urw">
+    <section id="features" className="py-24 bg-transparent relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-20">
           <div className="inline-block mb-4">
-            <span className="bg-bg-card px-6 py-2 rounded-[1rem] flex items-center justify-center mb-8 shadow-m border-none text-xs font-bold uppercase tracking-widest text-foreground/60">
+            <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60">
               Benefits
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
+          <h2 className="mb-6 tracking-tight">
             Why Choose Us
           </h2>
-          <p className="text-muted text-4xl font-bold leading-relaxed">
+          <p className="leading-relaxed">
             Comprehensive tools designed to provide safety, health insights, and peace of mind for families.
           </p>
         </div>

@@ -19,7 +19,6 @@ export default function Home() {
       <Testimonials />
       <ContactForm />
       <BlogSection />
-      <Newsletter />
       <FAQ />
       <Footer />
     </main>

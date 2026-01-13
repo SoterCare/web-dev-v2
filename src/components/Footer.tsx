@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'luc
 
 const Footer = () => {
   return (
-    <footer className="bg-transparent pt-20 border-t border-white/50 relative z-10 font-urw">
+    <footer className="bg-transparent pt-20 border-t border-white/50 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand & Info */}
@@ -13,7 +13,7 @@ const Footer = () => {
                 SmartCare
               </span>
             </Link>
-            <p className="text-text-muted leading-relaxed font-light">
+            <p className="leading-relaxed font-light">
               Advanced health monitoring solutions for elderly care, providing peace of mind to families worldwide.
             </p>
             <div className="flex space-x-4">
@@ -27,7 +27,7 @@ const Footer = () => {
 
           {/* Links Column 1 */}
           <div>
-            <h4 className="font-bold text-foreground text-lg mb-6 tracking-tight">Support</h4>
+            <h4 className="font-bold text-lg mb-6 tracking-tight">Support</h4>
             <ul className="space-y-4">
               <li><Link href="#" className="text-muted hover:text-foreground transition-colors font-medium text-sm">Help Center</Link></li>
               <li><Link href="#" className="text-muted hover:text-foreground transition-colors font-medium text-sm">Safety Information</Link></li>
@@ -38,7 +38,7 @@ const Footer = () => {
 
           {/* Links Column 2 */}
           <div>
-            <h4 className="font-bold text-foreground text-lg mb-6 tracking-tight">Company</h4>
+            <h4 className="font-bold text-lg mb-6 tracking-tight">Company</h4>
             <ul className="space-y-4">
               <li><Link href="#" className="text-muted hover:text-foreground transition-colors font-medium text-sm">About us</Link></li>
               <li><Link href="#" className="text-muted hover:text-foreground transition-colors font-medium text-sm">Privacy Policy</Link></li>
@@ -49,7 +49,7 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div>
-            <h4 className="font-bold text-foreground text-lg mb-6 tracking-tight">Contact</h4>
+            <h4 className="font-bold text-lg mb-6 tracking-tight">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Mail size={18} className="text-foreground mr-3 mt-0.5 flex-shrink-0" />

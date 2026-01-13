@@ -30,14 +30,14 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-24 bg-transparent relative z-10 font-urw">
+    <section id="faq" className="py-24 bg-transparent relative z-10">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <span className="bg-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-foreground/60 shadow-clay-inset inline-block mb-4">
+          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
             Support
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground tracking-tight">
-            Frequently Asked Questions
+          <h2 className="tracking-tight">
+            FAQs
           </h2>
         </div>
 
@@ -66,7 +66,7 @@ const FAQ = () => {
                   openIndex === index ? 'max-h-48 opacity-100 pb-8' : 'max-h-0 opacity-0'
                 }`}
               >
-                <p className="text-muted leading-relaxed font-normal text-lg">
+                <p className="leading-relaxed">
                   {faq.answer}
                 </p>
               </div>
