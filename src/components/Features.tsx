@@ -51,14 +51,14 @@ const Features = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-20">
           <div className="inline-block mb-4">
-             <span className="bg-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-foreground/60 shadow-clay-inset">
-               Benefits
-             </span>
+            <span className="bg-bg-card px-6 py-2 rounded-[1rem] flex items-center justify-center mb-8 shadow-m border-none text-xs font-bold uppercase tracking-widest text-foreground/60">
+              Benefits
+            </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
             Why Choose Us
           </h2>
-          <p className="text-muted text-lg font-normal leading-relaxed">
+          <p className="text-muted text-4xl font-bold leading-relaxed">
             Comprehensive tools designed to provide safety, health insights, and peace of mind for families.
           </p>
         </div>
@@ -69,17 +69,17 @@ const Features = () => {
             return (
               <div 
                 key={index} 
-                className={`bg-white rounded-[40px] p-10 shadow-clay hover:shadow-clay-floating transition-all duration-300 border border-white/60 relative overflow-hidden group ${feature.className || ''}`}
+                className={`bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] rounded-[1rem] p-10 shadow-m transition-transform duration-200 hover:-translate-y-[2px] border-none relative overflow-hidden group ${feature.className || ''}`}
               >
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500">
                    <Icon size={120} />
                 </div>
 
-                <div className="w-20 h-20 bg-[#F5F5F7] rounded-[24px] flex items-center justify-center mb-8 shadow-clay-inset border border-white/50">
-                  <Icon size={32} className="text-foreground" />
+                <div className="w-18 h-18 bg-bg-card rounded-[1rem] flex items-center justify-center mb-8 shadow-m border-none relative overflow-hidden group-hover:scale-105 transition-transform duration-200">
+                  <Icon size={32} className="text-text" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">{feature.title}</h3>
-                <p className="text-muted leading-relaxed font-normal">
+                <h3 className="text-2xl font-bold mb-4 tracking-tight text-text">{feature.title}</h3>
+                <p className="text-text-muted leading-relaxed font-normal">
                   {feature.description}
                 </p>
               </div>

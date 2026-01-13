@@ -18,19 +18,17 @@ const plans = [
     buttonVariant: 'outline'
   },
   {
-    name: 'Standard',
-    popular: true,
-    price: 80,
+    name: 'Basic',
+    price: 50,
     period: 'mo',
-    description: 'For comprehensive care and peace of mind',
+    description: 'For basic monitoring needs',
     features: [
-      'All Basic features',
-      '24/7 Emergency support',
-      'Advanced health insights',
-      'Weekly doctor consultation',
-      'Fall detection'
+      'Real-time monitoring',
+      'Daily health reports',
+      'Basic alerts',
+      'Mobile app access',
     ],
-    buttonVariant: 'primary'
+    buttonVariant: 'outline'
   },
   {
     name: 'Premium',
@@ -65,7 +63,7 @@ const Pricing = () => {
                Pricing
              </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-10 tracking-tighter">
+          <h2 className="text-8xl md:text-6xl font-normal text-foreground mb-10 tracking-tighter">
             Simple Pricing, <br/> No Surprises
           </h2>
           
@@ -93,11 +91,6 @@ const Pricing = () => {
              return (
               <div 
                 key={index} 
-                className={`relative rounded-[48px] p-10 bg-white flex flex-col transition-all duration-300 ${
-                  plan.popular 
-                    ? 'border border-foreground/10 shadow-clay-floating z-10' 
-                    : 'border border-white/50 shadow-clay hover:shadow-clay-floating'
-                }`}
               >
                 <div className="mb-10">
                   <h3 className="text-2xl font-bold text-foreground mb-4">{plan.name}</h3>

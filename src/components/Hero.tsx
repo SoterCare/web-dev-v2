@@ -7,22 +7,22 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-20">
           <div className="inline-flex items-center justify-center mb-10">
-             <span className="text-xs font-bold text-foreground/60 bg-white px-6 py-2 rounded-full uppercase tracking-widest shadow-clay-inset">
+             <span className="text-xs font-bold text-text-muted bg-bg-panel px-6 py-2 rounded-full uppercase tracking-widest shadow-[inset_0_2px_4px_#00000010] border-b border-white">
                Health & Safety Monitoring
              </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-foreground tracking-tight mb-8 leading-[1.1]">
+          <h1 className="text-5xl md:text-7xl font-bold text-text tracking-tight mb-8 leading-[1.1]">
             Smart Elderly Care <br/>
-            <span className="text-foreground">Monitoring System</span>
+            <span className="text-text">Monitoring System</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted mb-12 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-xl md:text-2xl text-text-muted mb-12 max-w-2xl mx-auto leading-relaxed font-normal">
             Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="w-full sm:w-auto px-10 py-5 bg-foreground text-white rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-black/20 flex items-center justify-center gap-2 group tracking-wide">
+            <button className="w-full sm:w-auto px-10 py-5 bg-text text-bg-body rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-m flex items-center justify-center gap-2 group tracking-wide">
               Get Started <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="w-full sm:w-auto px-10 py-5 bg-white text-foreground hover:bg-gray-50 rounded-full font-bold transition-all shadow-clay hover:shadow-clay-floating flex items-center justify-center gap-2">
+            <button className="w-full sm:w-auto px-10 py-5 bg-bg-card text-text hover:bg-bg-panel rounded-full font-bold transition-all shadow-m hover:-translate-y-0.5 flex items-center justify-center gap-2">
               <Play size={18} className="fill-current" /> Watch Demo
             </button>
           </div>

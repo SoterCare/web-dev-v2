@@ -11,16 +11,16 @@ const Newsletter = () => {
            Sign up to get the latest updates, care tips, and exclusive offers directly to your inbox.
         </p>
 
-        <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto bg-white p-3 rounded-[32px] shadow-clay border border-white/60">
+        <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto bg-bg-card p-3 rounded-[32px] shadow-m border-none">
           <input 
             type="email" 
             placeholder="Your email address" 
-            className="flex-1 px-8 py-4 rounded-3xl bg-[#F5F5F7] border-none outline-none text-foreground placeholder:text-gray-400 focus:ring-0 shadow-clay-inset"
+            className="flex-1 px-8 py-4 rounded-3xl bg-bg-panel border-none outline-none text-text placeholder:text-text-muted focus:ring-0 shadow-[inset_0_2px_4px_#00000010]"
             required
           />
           <button 
             type="submit" 
-            className="px-10 py-4 bg-foreground hover:scale-105 text-white rounded-full font-bold shadow-lg shadow-black/30 transition-all"
+            className="px-10 py-4 bg-text hover:scale-105 text-bg-body rounded-full font-bold shadow-m transition-all"
           >
             Subscribe
           </button>

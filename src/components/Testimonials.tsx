@@ -27,35 +27,35 @@ const Testimonials = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <div className="inline-block mb-4">
-             <span className="bg-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-foreground/60 shadow-clay-inset">
+             <span className="bg-bg-panel px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-text-muted shadow-[inset_0_2px_4px_#00000010] border-b border-white">
                Feedback
              </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-text tracking-tight">
             Trusted by Families
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-10 rounded-[40px] shadow-clay hover:shadow-clay-floating border border-white/60 transition-all duration-300">
+            <div key={index} className="bg-bg-card p-10 rounded-[1rem] shadow-m hover:-translate-y-[2px] transition-all duration-300 border-none">
               <div className="flex mb-6">
                 {[...Array(5)].map((_, i) => (
                   <Star 
                     key={i} 
                     size={18} 
-                    className={`${i < testimonial.rating ? 'text-foreground fill-foreground' : 'text-gray-200'} mr-1`} 
+                    className={`${i < testimonial.rating ? 'text-text fill-text' : 'text-gray-200'} mr-1`} 
                   />
                 ))}
               </div>
-              <p className="text-muted leading-relaxed mb-8 font-normal text-lg">"{testimonial.text}"</p>
+              <p className="text-text-muted leading-relaxed mb-8 font-normal text-lg">"{testimonial.text}"</p>
               <div className="flex items-center">
-                <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center text-foreground font-bold mr-4 shadow-clay-inset">
+                <div className="w-14 h-14 bg-bg-panel rounded-full flex items-center justify-center text-text font-bold mr-4 shadow-[inset_0_2px_4px_#00000010] border-b border-white">
                   {testimonial.name.charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-foreground tracking-tight">{testimonial.name}</h4>
-                  <p className="text-xs text-muted uppercase tracking-wider font-bold">{testimonial.role}</p>
+                  <h4 className="font-bold text-text tracking-tight">{testimonial.name}</h4>
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-bold">{testimonial.role}</p>
                 </div>
               </div>
             </div>

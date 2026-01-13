@@ -13,41 +13,41 @@ const ContactForm = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-[40px] shadow-clay-floating border border-white/60 p-10 md:p-14">
+        <div className="bg-bg-card rounded-[40px] shadow-m border-none p-10 md:p-14">
           <form className="space-y-8">
             <div>
-              <label htmlFor="name" className="block text-sm font-bold text-foreground mb-3 ml-2 uppercase tracking-wide">Name</label>
+              <label htmlFor="name" className="block text-sm font-bold text-text mb-3 ml-2 uppercase tracking-wide">Name</label>
               <input 
                 type="text" 
                 id="name" 
-                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-[#F5F5F7] text-foreground focus:ring-0 shadow-clay-inset placeholder:text-gray-400"
+                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-bg-panel text-text focus:ring-0 shadow-[inset_0_2px_4px_#00000010] placeholder:text-text-muted"
                 placeholder="John Doe"
               />
             </div>
             
             <div>
-              <label htmlFor="email" className="block text-sm font-bold text-foreground mb-3 ml-2 uppercase tracking-wide">Email</label>
+              <label htmlFor="email" className="block text-sm font-bold text-text mb-3 ml-2 uppercase tracking-wide">Email</label>
               <input 
                 type="email" 
                 id="email" 
-                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-[#F5F5F7] text-foreground focus:ring-0 shadow-clay-inset placeholder:text-gray-400"
+                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-bg-panel text-text focus:ring-0 shadow-[inset_0_2px_4px_#00000010] placeholder:text-text-muted"
                 placeholder="john@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-bold text-foreground mb-3 ml-2 uppercase tracking-wide">Message</label>
+              <label htmlFor="message" className="block text-sm font-bold text-text mb-3 ml-2 uppercase tracking-wide">Message</label>
               <textarea 
                 id="message" 
                 rows={4}
-                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-[#F5F5F7] text-foreground focus:ring-0 shadow-clay-inset resize-none placeholder:text-gray-400"
+                className="w-full px-6 py-4 rounded-3xl border-none outline-none transition-all bg-bg-panel text-text focus:ring-0 shadow-[inset_0_2px_4px_#00000010] resize-none placeholder:text-text-muted"
                 placeholder="How can we help you?"
               ></textarea>
             </div>
 
             <button 
               type="submit" 
-              className="w-full py-5 bg-foreground hover:scale-[1.02] active:scale-[0.98] text-white font-bold rounded-full shadow-lg shadow-black/30 transition-all"
+              className="w-full py-5 bg-text hover:scale-[1.02] active:scale-[0.98] text-bg-body font-bold rounded-full shadow-m transition-all"
             >
               Send Message
             </button>

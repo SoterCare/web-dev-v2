@@ -9,16 +9,16 @@ const Footer = () => {
           {/* Brand & Info */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-foreground tracking-tight">
+              <span className="text-2xl font-bold text-text tracking-tight">
                 SmartCare
               </span>
             </Link>
-            <p className="text-muted leading-relaxed font-light">
+            <p className="text-text-muted leading-relaxed font-light">
               Advanced health monitoring solutions for elderly care, providing peace of mind to families worldwide.
             </p>
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 text-foreground/60 hover:text-white hover:bg-black transition-all shadow-sm">
+                <a key={i} href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-bg-card text-text-muted hover:text-text hover:bg-bg-panel transition-all shadow-m hover:-translate-y-0.5">
                    <Icon size={18} />
                 </a>
               ))}
