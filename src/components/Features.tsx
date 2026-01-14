@@ -1,16 +1,20 @@
 import Image from 'next/image';
 import React from 'react';
+import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing } from 'lucide-react';
 
 const Features = () => {
     return (
-        <section className="py-24 bg-[var(--bg-body)] overflow-hidden relative z-10">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-18 bg-[var(--bg-body)] overflow-hidden relative z-10">
+            {/* Dotted Background */}
+            <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] "></div>
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 {/* --- Section 1: IoT Device --- */}
                 <div className="mb-32">
                     <h2 className="text-4xl md:text-5xl font-bold mb-16 text-text">IoT Device</h2>
 
-                    <div className="flex flex-col gap-24">
+                    <div className="flex flex-col gap-10">
                         {/* Item 1: The Thigh Node */}
                         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
                             <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
@@ -85,85 +89,105 @@ const Features = () => {
                             />
                         </div>
 
-                        {/* Labels - positioned absolutely for desktop, might need adjustment for mobile */}
-                        {/* Note: If the provided mockup image is just the phones, these labels serve as the descriptors shown in the design. 
-                 If the image includes text, these might be redundant, but based on typical asset flows, I'll add them as overlay text 
-                 if the design implies they are separate elements. 
-                 Given the user said "Design exactly as in those images", and I have a pure component task, 
-                 I'll assume the image provided MIGHT just be the phones. 
-                 However, to be safe and avoid clutter if the image HAS text, I will verify visually or just place the image first.
-                 Actually, looking at the layout, it's safer to assume the text is OUTSIDE the image in the design provided. 
-                 I'll add them as responsive elements around the main visual.
-             */}
+                        {/* Floating Labels - Hidden on small mobile, visible on md+ */}
+                        {/* Left Side */}
+                        <div className="absolute top-[20%] left-[5%] md:left-[10%] lg:left-[15%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Real-Time Dashboard</span>
+                            </div>
+                        </div>
+                        <div className="absolute top-[48%] left-[0%] md:left-[5%] lg:left-[10%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Visual Suggestion</span>
+                            </div>
+                        </div>
+                        <div className="absolute bottom-[20%] left-[5%] md:left-[10%] lg:left-[15%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Activity Timeline</span>
+                            </div>
+                        </div>
 
-                        {/* Using a grid overlay approach could work, or just flex wrapping for smaller screens. 
-                 For now, I'll structure it as a central image. The specific labels from the screenshot were:
-                 - Real-Time Dashboard
-                 - Visual Suggestion
-                 - Activity Timeline
-                 - Medical-Grade Data Export
-                 - Modern Design
-                 - Modern and Simple UI
-             */}
+                        {/* Right Side */}
+                        <div className="absolute top-[22%] right-[5%] md:right-[10%] lg:right-[15%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Medical-Grade Data Export</span>
+                            </div>
+                        </div>
+                        <div className="absolute top-[52%] right-[0%] md:right-[5%] lg:right-[10%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Modern Design</span>
+                            </div>
+                        </div>
+                        <div className="absolute bottom-[25%] right-[5%] md:right-[10%] lg:right-[15%] z-20 hidden md:block">
+                            <div className="bg-bg-card shadow-m py-4 px-8 rounded-2xl">
+                                <span className="text-xl font-bold text-text">Modern and Simple UI</span>
+                            </div>
+                        </div>
+
+                        {/* Mobile View: Stacked Labels (Optional, but good for completeness if requested, otherwise just hidden is cleaner for mockup) 
+                            For now, keeping them hidden on mobile to avoid effortless clutter over the image. 
+                        */}
                     </div>
                 </div>
 
                 {/* --- Section 3: Core Features --- */}
+                {/* --- Section 3: Core Features --- */}
                 <div>
                     <h2 className="text-4xl md:text-5xl font-bold mb-16 text-text">Core Features</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
 
                         {/* Feature 1 */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">1. Proactive "Risky Movement" Detection</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        <div className="md:col-span-7 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">1. Proactive "Risky Movement" Detection</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 Unlike standard alarms that ring after a crash, SoterCare uses Machine Learning to identify "pre-fall" behaviors, such as unsteady attempts to stand, sending proactive warnings to caregivers.
                             </p>
+                            <Activity className="absolute -bottom-6 -right-6 text-blue-500 opacity-[0.07] rotate-12" size={140} />
                         </div>
 
-                        {/* Feature 4 (Alignment matching design likely column-first or row-first. Design shows 1, 4 side by side? Or 1..3, 4..6. Let's look at the image. 
-                Image shows: 
-                1. Proactive...       4. AI...
-                2. Instant...         5. Continuous...
-                3. Discrete...        6. Smart...
-            */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">4. AI-Powered Health Summaries</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        {/* Feature 4 */}
+                        <div className="md:col-span-5 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">4. AI-Powered Health Summaries</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 We convert complex data into simple English. Our integrated LLM (Large Language Model) generates daily summaries of health trends, risks, and recommendations.
                             </p>
+                            <BrainCircuit className="absolute -bottom-6 -right-6 text-purple-500 opacity-[0.07] rotate-12" size={140} />
                         </div>
 
                         {/* Feature 2 */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">2. Instant Hard Fall Detection</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        <div className="md:col-span-5 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">2. Instant Hard Fall Detection</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 For immediate safety, we use a high-speed Threshold-Based Algorithm to detect sudden impacts and hard falls instantly.
                             </p>
+                            <Zap className="absolute -bottom-6 -right-6 text-orange-500 opacity-[0.07] rotate-12" size={140} strokeWidth={1} />
                         </div>
 
                         {/* Feature 5 */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">5. Continuous Vitals Monitoring</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        <div className="md:col-span-7 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">5. Continuous Vitals Monitoring</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 A 24/7 health guardian. We monitor Heart Rate and SpO2 in real-time, instantly alerting you to dangerous spikes or drops that periodic checks miss.
                             </p>
+                            <HeartPulse className="absolute -bottom-6 -right-6 text-red-500 opacity-[0.07] rotate-12" size={140} />
                         </div>
 
                         {/* Feature 3 */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">3. Discrete Hygiene Management</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        <div className="md:col-span-6 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">3. Discrete Hygiene Management</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 Real-time urinary incident detection using conductivity sensors. Alerts are sent discreetly to the caregiver’s app to prevent skin infections and maintain the user's dignity.
                             </p>
+                            <Droplets className="absolute -bottom-6 -right-6 text-blue-400 opacity-[0.07] rotate-12" size={140} />
                         </div>
 
                         {/* Feature 6 */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-2xl font-bold">6. Smart Alert Management</h3>
-                            <p className="text-text-muted text-lg leading-relaxed">
+                        <div className="md:col-span-6 bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 flex flex-col gap-4 relative overflow-hidden">
+                            <h3 className="text-2xl font-bold relative z-10">6. Smart Alert Management</h3>
+                            <p className="text-text-muted text-lg leading-relaxed relative z-10">
                                 Reduce false alarms with our "Recycle Bin." Easily flag incorrect alerts to retrain the system, making it smarter and more accurate over time.
                             </p>
+                            <BellRing className="absolute -bottom-6 -right-6 text-yellow-500 opacity-[0.07] rotate-12" size={140} />
                         </div>
 
                     </div>
