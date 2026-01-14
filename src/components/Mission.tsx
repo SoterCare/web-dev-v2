@@ -4,6 +4,9 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const technologies = [
   { name: 'Next.js', src: '/assets/tech-logos/nextjs.png' },
@@ -21,25 +24,64 @@ const Mission = () => {
   const part1Ref = useRef<HTMLDivElement>(null);
   const part2Ref = useRef<HTMLDivElement>(null);
 
+  const textRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const missionText = '"' + "We believe caring for those who raised us should be an act of love, not a source of stress. Our technology acts as a gentle guardian, watching over your parents’ well-being so you can step back from the role of 'caregiver' and simply enjoy being their child again." + '"';
+  const words = missionText.split(" ");
+
   useGSAP(() => {
+    // Marquee Animation
     gsap.to([part1Ref.current, part2Ref.current], {
       xPercent: -100,
       repeat: -1,
       duration: 30,
       ease: "none",
     });
+
+    // Text Reveal Animation
+    if (textRef.current && sectionRef.current) {
+      const textElements = textRef.current.querySelectorAll('.word');
+
+      // Trigger 1: Fade Animation (Starts earlier)
+      gsap.fromTo(textElements,
+        { opacity: 0.1 },
+        {
+          opacity: 1,
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            end: "+=300%",
+            scrub: 1,
+          }
+        }
+      );
+
+      // Trigger 2: Pinning (Starts at top)
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=200%",
+        pin: true,
+      });
+    }
   }, { scope: containerRef });
 
   return (
-    <section className="py-32 bg-bg-body overflow-hidden relative z-10">
-      <div className="container mx-auto px-4 mb-20 text-center max-w-5xl relative z-10">
-        <span className="text-4xl md:text-6xl font-black mb-8 text-text">"We believe caring for those who raised us should be an act of love, not a source of stress. Our technology acts as a gentle guardian, watching over your parents’ well-being so you can step back from the role of 'caregiver' and simply enjoy being their child again."
-        </span>
-
+    <section ref={sectionRef} className="pt-32 pb-8 bg-bg-body overflow-hidden relative z-10">
+      <div className="container mx-auto px-4 mb-20 text-center max-w-5xl relative z-10" ref={textRef}>
+        <div className="text-4xl md:text-6xl font-medium mb-8 text-text opacity-100">
+          {words.map((word, i) => (
+            <span key={i} className="word inline-block mr-[0.25em] opacity-10">
+              {word}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Dotted Background */}
-      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_1.5px,transparent_1px)] [background-size:32px_32px] "></div>
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] "></div>
 
       {/* Tech Stack Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +89,7 @@ const Mission = () => {
           {/* Label */}
           <div className="flex-shrink-0 px-6 sm:px-10 py-8 z-10 bg-bg-transparent relative border-r border-white/5">
             <span className="font-bold md:text-2xl text-text uppercase tracking-widest whitespace-nowrap">
-              Tech <br></br> Stack
+              Tech Stack
             </span>
           </div>
 
@@ -67,6 +109,7 @@ const Mission = () => {
                     src={tech.src}
                     alt={tech.name}
                     fill
+                    sizes="(max-width: 768px) 64px, 80px"
                     className="object-contain"
                   />
                 </div>
@@ -79,6 +122,7 @@ const Mission = () => {
                     src={tech.src}
                     alt={tech.name}
                     fill
+                    sizes="(max-width: 768px) 64px, 80px"
                     className="object-contain"
                   />
                 </div>

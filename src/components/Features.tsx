@@ -47,12 +47,14 @@ const features = [
 
 const Features = () => {
   return (
-    <section id="features" className="py-24 bg-bg-body relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="features" className="-mt-1 pt-8 pb-16 bg-bg-body relative z-10">
+      {/* Dotted Background */}
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_1.5px,transparent_1px)] [background-size:32px_32px] "></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-20">
           <div className="inline-block mb-4">
             <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60">
-              Benefits
+              Features
             </span>
           </div>
           <h2 className="mb-6 tracking-tight">
@@ -67,12 +69,12 @@ const Features = () => {
           {features.map((feature, index) => {
             const Icon = icons[feature.icon as keyof typeof icons];
             return (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] rounded-[1rem] p-10 shadow-m transition-transform duration-200 hover:-translate-y-[2px] border-none relative overflow-hidden group ${feature.className || ''}`}
               >
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500">
-                   <Icon size={120} />
+                  <Icon size={120} />
                 </div>
 
                 <div className="w-18 h-18 bg-bg-card rounded-[1rem] flex items-center justify-center mb-8 shadow-m border-none relative overflow-hidden group-hover:scale-105 transition-transform duration-200">

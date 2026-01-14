@@ -46,9 +46,11 @@ const Navbar = () => {
             <Image
               src="/assets/SoterCare-Primary-logo-white.png"
               alt="SoterCare"
-              width={120}
-              height={32}
+              width={0}
+              height={0}
+              sizes="100vw"
               className="h-8 w-auto object-contain"
+              style={{ width: 'auto', height: '32px' }}
               priority
             />
           </Link>
