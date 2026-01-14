@@ -1,0 +1,94 @@
+'use client';
+
+import { useRef } from 'react';
+import Image from 'next/image';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+const technologies = [
+  { name: 'Next.js', src: '/assets/tech-logos/nextjs.png' },
+  { name: 'React Native', src: '/assets/tech-logos/reactnative.png' },
+  { name: 'NestJS', src: '/assets/tech-logos/nestjs.png' },
+  { name: 'Flask', src: '/assets/tech-logos/flask.png' },
+  { name: 'PostgreSQL', src: '/assets/tech-logos/postgresql.png' },
+  { name: 'TensorFlow', src: '/assets/tech-logos/edgeimpulse.png' },
+  { name: 'Raspberry Pi', src: '/assets/tech-logos/raspberry-pi.png' },
+  { name: 'ESP', src: '/assets/tech-logos/ESP.png' },
+];
+
+const Mission = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const part1Ref = useRef<HTMLDivElement>(null);
+  const part2Ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.to([part1Ref.current, part2Ref.current], {
+      xPercent: -100,
+      repeat: -1,
+      duration: 30,
+      ease: "none",
+    });
+  }, { scope: containerRef });
+
+  return (
+    <section className="py-32 bg-bg-body overflow-hidden relative z-10">
+      <div className="container mx-auto px-4 mb-20 text-center max-w-5xl relative z-10">
+        <span className="text-4xl md:text-6xl font-black mb-8 text-text">"We believe caring for those who raised us should be an act of love, not a source of stress. Our technology acts as a gentle guardian, watching over your parents’ well-being so you can step back from the role of 'caregiver' and simply enjoy being their child again."
+        </span>
+
+      </div>
+
+      {/* Dotted Background */}
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_1.5px,transparent_1px)] [background-size:32px_32px] "></div>
+
+      {/* Tech Stack Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full bg-transparent border border-white/10 flex items-center overflow-hidden rounded-[1.5rem]">
+          {/* Label */}
+          <div className="flex-shrink-0 px-6 sm:px-10 py-8 z-10 bg-bg-transparent relative border-r border-white/5">
+            <span className="font-bold md:text-2xl text-text uppercase tracking-widest whitespace-nowrap">
+              Tech <br></br> Stack
+            </span>
+          </div>
+
+          {/* Slider with Fade Mask */}
+          <div
+            className="flex-1 flex overflow-hidden py-8 max-w-full relative"
+            ref={containerRef}
+            style={{
+              maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)'
+            }}
+          >
+            <div className="flex flex-shrink-0 items-center min-w-full" ref={part1Ref}>
+              {technologies.map((tech, index) => (
+                <div key={index} className="mx-8 md:mx-12 relative h-16 w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300">
+                  <Image
+                    src={tech.src}
+                    alt={tech.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-shrink-0 items-center min-w-full" ref={part2Ref}>
+              {technologies.map((tech, index) => (
+                <div key={`clone-${index}`} className="mx-8 md:mx-12 relative h-16 w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300">
+                  <Image
+                    src={tech.src}
+                    alt={tech.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Mission;
