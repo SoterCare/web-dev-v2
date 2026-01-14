@@ -46,7 +46,7 @@ const Product = () => {
     }, { scope: containerRef });
 
     return (
-        <section id="product" ref={containerRef} className="bg-[var(--bg-body)] relative z-10 w-full overflow-hidden">
+        <section id="product" ref={containerRef} className="bg-[var(--bg-body)] relative z-10 w-full overflow-hidden -mt-1">
             {/* Dotted Background - Parallax Ref */}
             <div ref={bgRef} className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
 
@@ -148,7 +148,7 @@ const Product = () => {
                                 className={`absolute ${item.pos} z-20 hidden md:block`}
                             >
                                 <div className="bg-bg-card/80 backdrop-blur-md shadow-lg border border-white/20 py-3 px-6 rounded-2xl whitespace-nowrap hover:scale-110 transition-transform cursor-default">
-                                    <span className="text-base font-semibold text-text">{item.text}</span>
+                                    <span className="text-xl font-semibold text-text">{item.text}</span>
                                 </div>
                             </div>
                         ))}
@@ -159,7 +159,7 @@ const Product = () => {
                 <div className="w-full flex items-center justify-center p-8 feature-section-reveal">
                     <div className="w-full max-w-7xl mx-auto flex flex-col justify-center h-full">
                         <div className="flex flex-col gap-12">
-                            <h2 className="text-5xl md:text-7xl font-bold text-left">Core Features</h2>
+                            <h2 className="text-5xl md:text-7xl font-bold text-right">Core Features</h2>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {[

@@ -19,7 +19,7 @@ const Footer = () => {
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
                 <a key={i} href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-bg-card text-text-muted hover:text-text hover:bg-bg-panel transition-all shadow-m hover:-translate-y-0.5">
-                   <Icon size={18} />
+                  <Icon size={18} />
                 </a>
               ))}
             </div>
@@ -73,9 +73,9 @@ const Footer = () => {
             © {new Date().getFullYear()} SmartCare Systems. All rights reserved.
           </p>
           <div className="flex justify-center md:justify-end space-x-6 mt-4 md:mt-0">
-             <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Terms of Service</Link>
-             <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Privacy Policy</Link>
-             <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Cookies</Link>
+            <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Terms of Service</Link>
+            <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Privacy Policy</Link>
+            <Link href="#" className="text-muted hover:text-foreground text-sm font-medium">Cookies</Link>
           </div>
         </div>
       </div>

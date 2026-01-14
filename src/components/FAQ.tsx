@@ -30,8 +30,11 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-24 bg-bg-body relative z-10">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="py-24 bg-bg-body relative z-10 overflow-hidden">
+      {/* Dotted Background */}
+      <div className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
             Support
@@ -43,11 +46,10 @@ const FAQ = () => {
 
         <div className="space-y-8">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className={`bg-white rounded-[32px] overflow-hidden transition-all duration-300 border border-white/60 ${
-                openIndex === index ? 'shadow-clay-floating scale-[1.02]' : 'shadow-clay hover:shadow-clay-floating hover:-translate-y-1'
-              }`}
+            <div
+              key={index}
+              className={`bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[32px] overflow-hidden transition-all duration-300 border border-white/60 ${openIndex === index ? 'scale-[1.02]' : 'hover:-translate-y-1'
+                }`}
             >
               <button
                 className="w-full flex items-center justify-between p-8 text-left focus:outline-none"
@@ -60,11 +62,10 @@ const FAQ = () => {
                   <ChevronDown className="text-gray-400 flex-shrink-0 ml-4 bg-gray-100 rounded-full p-1 shadow-sm" size={32} />
                 )}
               </button>
-              
-              <div 
-                className={`px-8 transition-all duration-300 ease-in-out overflow-hidden ${
-                  openIndex === index ? 'max-h-48 opacity-100 pb-8' : 'max-h-0 opacity-0'
-                }`}
+
+              <div
+                className={`px-8 transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-48 opacity-100 pb-8' : 'max-h-0 opacity-0'
+                  }`}
               >
                 <p className="leading-relaxed">
                   {faq.answer}
