@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Features = () => {
+const Product = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const bgRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +46,7 @@ const Features = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="bg-[var(--bg-body)] relative z-10 w-full overflow-hidden">
+        <section id="product" ref={containerRef} className="bg-[var(--bg-body)] relative z-10 w-full overflow-hidden">
             {/* Dotted Background - Parallax Ref */}
             <div ref={bgRef} className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
 
@@ -216,4 +216,4 @@ const Features = () => {
     );
 };
 
-export default Features;
+export default Product;

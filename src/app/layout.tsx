@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "IoT & ML Based Health Monitoring System",
 };
 
+import SmoothScroll from "@/components/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className="antialiased">
+        <SmoothScroll />
         {children}
       </body>
     </html>
