@@ -69,7 +69,7 @@ const Mission = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={sectionRef} className="pt-32 pb-8 bg-bg-body overflow-hidden relative z-10">
+    <section ref={sectionRef} className="pt-32 pb-8 bg-[var(--bg-body)] overflow-hidden relative z-10 min-h-screen flex flex-col justify-center">
       <div className="container mx-auto px-4 mb-20 text-center max-w-5xl relative z-10" ref={textRef}>
         <div className="text-4xl md:text-6xl font-medium mb-8 text-text opacity-100">
           {words.map((word, i) => (
