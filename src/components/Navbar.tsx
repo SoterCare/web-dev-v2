@@ -113,7 +113,7 @@ const Navbar = () => {
           Pricing
         </Link>
         <Link
-          href="#faq"
+          href="#faqs"
           className="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
           scroll={false}

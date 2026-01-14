@@ -14,6 +14,7 @@ import Mission from '@/components/Mission';
 import Product from '@/components/Product';
 import Pricing from '@/components/Pricing';
 import FAQ from '@/components/FAQ';
+import Team from '@/components/Team';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -25,6 +26,7 @@ export default function Home() {
       <Product />
       <Pricing />
       <FAQ />
+      <Team />
       <Footer />
     </main>
   );

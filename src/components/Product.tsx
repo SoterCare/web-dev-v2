@@ -51,68 +51,73 @@ const Product = () => {
             <div ref={bgRef} className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
 
             <div className="flex flex-col w-full relative z-10 text-text max-w-7xl mx-auto px-4 md:px-8 py-20 gap-20 md:gap-32">
+                <div className="flex flex-col gap-2 w-full">
+                <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
+                    Product
+                </span>
 
-                {/* --- Section 1: IoT Devices --- */}
-                <div className="flex flex-col gap-12 feature-section-reveal">
-                    <h2 className="text-5xl md:text-8xl font-bold text-center md:text-left leading-none tracking-tight">
-                        IoT Devices
-                    </h2>
+                    {/* --- Section 1: IoT Devices --- */}
+                    <div className="flex flex-col gap-12 feature-section-reveal">
+                        <h2 className="text-5xl md:text-8xl font-bold text-center md:text-left leading-none tracking-tight">
+                            IoT Devices
+                        </h2>
 
-                    <div className="flex flex-col gap-16 md:gap-6 pl-0 md:pl-10">
-                        {/* Item 1: The Thigh Node */}
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                            <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
-                                <h3 className="text-3xl font-bold mb-4">The Thigh Node</h3>
-                                <p className="text-text-muted text-lg max-w-md">
-                                    A discreet, upper-thigh wearable that monitors body motion and hygiene, acting as the primary guardian for detecting falls and incontinence without requiring camera surveillance.
-                                </p>
+                        <div className="flex flex-col gap-16 md:gap-6 pl-0 md:pl-10">
+                            {/* Item 1: The Thigh Node */}
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
+                                <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
+                                    <h3 className="text-3xl font-bold mb-4">The Thigh Node</h3>
+                                    <p className="text-text-muted text-lg max-w-md">
+                                        A discreet, upper-thigh wearable that monitors body motion and hygiene, acting as the primary guardian for detecting falls and incontinence without requiring camera surveillance.
+                                    </p>
+                                </div>
+                                <div className="md:w-1/2 flex justify-center md:justify-start">
+                                    <Image
+                                        src="/assets/features/the-thigh-node.png"
+                                        alt="The Thigh Node"
+                                        width={300}
+                                        height={220}
+                                        className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
+                                    />
+                                </div>
                             </div>
-                            <div className="md:w-1/2 flex justify-center md:justify-start">
-                                <Image
-                                    src="/assets/features/the-thigh-node.png"
-                                    alt="The Thigh Node"
-                                    width={300}
-                                    height={220}
-                                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
-                                />
-                            </div>
-                        </div>
 
-                        {/* Item 2: The Wrist Node */}
-                        <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16">
-                            <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-                                <h3 className="text-3xl font-bold mb-4">The Wrist Node</h3>
-                                <p className="text-text-muted text-lg max-w-md">
-                                    A lightweight, comfortable wrist wearable designed for 24/7 continuous vital sign tracking, ensuring health monitoring redundancy even if the primary thigh node is inactive.
-                                </p>
+                            {/* Item 2: The Wrist Node */}
+                            <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16">
+                                <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
+                                    <h3 className="text-3xl font-bold mb-4">The Wrist Node</h3>
+                                    <p className="text-text-muted text-lg max-w-md">
+                                        A lightweight, comfortable wrist wearable designed for 24/7 continuous vital sign tracking, ensuring health monitoring redundancy even if the primary thigh node is inactive.
+                                    </p>
+                                </div>
+                                <div className="md:w-1/2 flex justify-center md:justify-end">
+                                    <Image
+                                        src="/assets/features/the-wrist-node.png"
+                                        alt="The Wrist Node"
+                                        width={300}
+                                        height={220}
+                                        className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
+                                    />
+                                </div>
                             </div>
-                            <div className="md:w-1/2 flex justify-center md:justify-end">
-                                <Image
-                                    src="/assets/features/the-wrist-node.png"
-                                    alt="The Wrist Node"
-                                    width={300}
-                                    height={220}
-                                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
-                                />
-                            </div>
-                        </div>
 
-                        {/* Item 3: The Edge Gateway */}
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                            <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
-                                <h3 className="text-3xl font-bold mb-4">The Edge Gateway</h3>
-                                <p className="text-text-muted text-lg max-w-md">
-                                    The intelligent central hub that processes machine learning models locally, ensuring instant alerts and offline safety even when internet connectivity is lost or unstable.
-                                </p>
-                            </div>
-                            <div className="md:w-1/2 flex justify-center md:justify-start">
-                                <Image
-                                    src="/assets/features/the-edge-gateway1.png"
-                                    alt="The Edge Gateway"
-                                    width={300}
-                                    height={220}
-                                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
-                                />
+                            {/* Item 3: The Edge Gateway */}
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
+                                <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
+                                    <h3 className="text-3xl font-bold mb-4">The Edge Gateway</h3>
+                                    <p className="text-text-muted text-lg max-w-md">
+                                        The intelligent central hub that processes machine learning models locally, ensuring instant alerts and offline safety even when internet connectivity is lost or unstable.
+                                    </p>
+                                </div>
+                                <div className="md:w-1/2 flex justify-center md:justify-start">
+                                    <Image
+                                        src="/assets/features/the-edge-gateway1.png"
+                                        alt="The Edge Gateway"
+                                        width={300}
+                                        height={220}
+                                        className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
