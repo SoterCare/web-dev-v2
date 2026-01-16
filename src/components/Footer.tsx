@@ -12,7 +12,7 @@ const Footer = () => {
             That&apos;s our story
           </p>
           <h2 className="text-5xl md:text-8xl font-normal tracking-tight mb-12 font-serif italic text-white/90">
-            Let&apos;s reimagine yours
+            Wellness Simplified.
           </h2>
           <Link
             href="#"
