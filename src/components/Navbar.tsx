@@ -64,11 +64,11 @@ const Navbar = () => {
           <Link href="#product" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
             Product
           </Link>
+          <Link href="#features" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
+            Features
+          </Link>
           <Link href="#pricing" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
             Pricing
-          </Link>
-          <Link href="#faqs" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
-            FAQs
           </Link>
           <Link href="#team" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
             Team
@@ -105,20 +105,20 @@ const Navbar = () => {
           Product
         </Link>
         <Link
+          href="#features"
+          className="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+          scroll={false}
+        >
+          Features
+        </Link>
+        <Link
           href="#pricing"
           className="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
           scroll={false}
         >
           Pricing
-        </Link>
-        <Link
-          href="#faqs"
-          className="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          FAQs
         </Link>
         <Link
           href="#team"

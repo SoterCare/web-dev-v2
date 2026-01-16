@@ -33,7 +33,7 @@ const Hero = () => {
       scrub: true,
       animation: gsap.to(contentRef.current, {
         scale: 0.9,
-        opacity: 0.8,
+        opacity: 0,
         borderRadius: '2.5rem',
         ease: 'none',
       }),

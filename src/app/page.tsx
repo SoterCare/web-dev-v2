@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Mission from '@/components/Mission';
 import Product from '@/components/Product';
+import Features from '@/components/Features';
 import Pricing from '@/components/Pricing';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
@@ -24,6 +25,7 @@ export default function Home() {
       <Hero />
       <Mission />
       <Product />
+      <Features />
       <Pricing />
       <FAQ />
       <Team />

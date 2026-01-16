@@ -54,6 +54,11 @@
   --font-urw: "URWGeometric";
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 8rem;
+}
+
 * {
   box-sizing: border-box;
   font-family: "URWGeometric";
@@ -111,4 +116,8 @@ p {
 
 .animate-jump {
   animation: jump 2s ease-in-out infinite;
+}
+
+.dotted-bg {
+  @apply absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%];
 }

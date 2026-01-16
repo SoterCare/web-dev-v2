@@ -30,13 +30,13 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faqs" className="py-24 bg-bg-body relative z-10 overflow-hidden">
+    <section id="faqs" className="pt-24 md:pt-32 pb-24 bg-bg-body relative z-10 overflow-hidden">
       {/* Dotted Background */}
-      <div className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
+      <div className="dotted-bg"></div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-10">
-          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-sm border-none text-xs font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
+          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
             Support
           </span>
           <h2 className="tracking-tight">

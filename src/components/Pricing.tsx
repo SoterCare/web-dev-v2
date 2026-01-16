@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Check, ArrowRight } from 'lucide-react';
 
 const plans = [
@@ -8,117 +7,137 @@ const plans = [
     name: 'Free',
     price: 0,
     period: 'mo',
-    description: 'For basic monitoring needs',
+    description: 'Essential monitoring for peace of mind.',
     features: [
       'Real-time monitoring',
-      'Daily health reports',
-      'Basic alerts',
       'Mobile app access',
+      'Basic fall alerts',
+      'Standard support'
     ],
     buttonVariant: 'outline'
   },
   {
     name: 'Pro',
-    price: 10,
+    price: 19,
     period: 'mo',
-    description: 'For basic monitoring needs',
+    description: 'Advanced insights for proactive care.',
     features: [
-      'Real-time monitoring',
-      'Daily health reports',
-      'Basic alerts',
-      'Mobile app access',
+      'Everything in Free',
+      'AI Health Summaries',
+      'Risk Prediction Models',
+      '30-Day History',
+      'Priority Alerts'
     ],
-    buttonVariant: 'outline'
+    buttonVariant: 'default'
   },
   {
-    name: 'Enterprice',
-    price: 120,
-    period: 'mo',
-    description: 'Complete care package with dedicated support',
+    name: 'Enterprise',
+    price: 'Custom',
+    period: '',
+    description: 'Under development. Available for commercial level elderly nursing homes.',
     features: [
-      'All Standard features',
-      'Dedicated health assistant',
-      'Unlimited doctor consultations',
-      'Smart home integration',
-      'Priority ambulance dispatch'
+      'Everything in Pro',
+      'Dedicated Support',
+      'Unlimited History',
+      'API Access',
+      'Multi-user Management'
     ],
     buttonVariant: 'outline'
   }
 ];
 
 const Pricing = () => {
-  const [isYearly, setIsYearly] = useState(false);
-
   return (
-    <section id="pricing" className="py-24 bg-bg-body relative z-10">
+    <section id="pricing" className="pt-24 md:pt-32 pb-24 bg-bg-body relative z-10">
       {/* Shorten the background decoration or allow it to blend */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[20%] right-[-5%] w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-40 mix-blend-multiply"></div>
       </div>
       {/* Dotted Background */}
-      <div className="absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%]"></div>
+      <div className="dotted-bg"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <div className="inline-block mb-6">
-            <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-x font-bold uppercase tracking-widest text-foreground/60">
+            <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60">
               Pricing
             </span>
           </div>
-          <h2 className="mb-4 tracking-tighter">
+          <h2 className="mb-4 tracking-tighter text-4xl md:text-5xl font-bold">
             Simple Pricing, No Surprises
           </h2>
+        </div>
 
-          <div className="inline-flex bg-bg-card shadow-m p-2 rounded-full items-center relative">
-            <button
-              onClick={() => setIsYearly(false)}
-              className={`relative z-10 px-8 py-2 rounded-full text-m font-bold transition-all duration-300 ${!isYearly ? 'text-foreground bg-bg-card shadow-m' : 'text-gray-500 hover:text-gray-900'}`}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setIsYearly(true)}
-              className={`relative z-10 px-8 py-2 rounded-full text-m font-bold transition-all duration-300 ${isYearly ? 'text-foreground bg-bg-card shadow-m' : 'text-gray-500 hover:text-gray-900'}`}
-            >
-              Yearly [10% OFF]
-            </button>
+        {/* --- Pre-Order Section --- */}
+        <div className="w-full max-w-4xl mx-auto mb-20">
+          <div className="bg-bg-card rounded-[2.5rem] shadow-xl border border-black/5 overflow-hidden flex flex-col md:flex-row relative">
+            <div className="absolute top-0 right-0 p-4 z-10">
+              <span className="bg-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Early Bird</span>
+            </div>
+
+            <div className="p-10 md:p-12 md:w-2/3 flex flex-col justify-center">
+              <h3 className="text-3xl font-bold mb-4">Get the SoterCare Kit</h3>
+              <p className="text-text-muted text-lg mb-8 leading-relaxed">
+                The essential hardware to keep your loved ones safe. Includes the Thigh Node, Wrist Node, and the Edge Gateway for seamless, offline-ready monitoring.
+              </p>
+              <div className="flex items-center gap-6">
+                <span className="text-4xl font-bold">$299</span>
+                <span className="text-text-muted text-sm uppercase font-semibold tracking-wider">One-time payment</span>
+              </div>
+            </div>
+
+            <div className="bg-black/5 p-10 md:p-12 md:w-1/3 flex flex-col justify-center items-center gap-6 border-l border-white/50">
+              <button className="w-full py-4 bg-bg-card text-foreground rounded-full font-bold hover:scale-105 transition-transform shadow-lg flex items-center justify-center gap-2">
+                Pre-Order Now <ArrowRight size={20} />
+              </button>
+              <p className="text-xs text-center text-text-muted">Limited stock available for initial batch.</p>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+        {/* --- Feature Comparison Plans --- */}
+        <div className="text-center mb-12">
+          <h3 className="text-2xl font-bold mb-10">Choose your software plan</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan, index) => {
-            const price = isYearly ? Math.floor(plan.price * 12 * 0.9) : plan.price; // 10% off roughly
-            const period = isYearly ? '/yr' : '/mo';
+            const isCustom = typeof plan.price === 'string';
+            const priceDisplay = plan.price;
+            const period = isCustom ? '' : '/mo';
 
             return (
               <div
                 key={index}
-                className="bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8"
+                className="bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[2rem] p-8 border border-white/50 relative"
               >
-                <div className="mb-10">
-                  <h3 className="text-2xl font-bold text-foreground mb-4">{plan.name}</h3>
-                  <div className="flex items-baseline">
-                    <span className="text-6xl font-medium text-foreground tracking-tighter">${price}</span>
-                    <span className="text-muted ml-2 font-bold text-lg">{period}</span>
+                <div className="mb-8">
+                  <h3 className="text-xl font-bold text-foreground mb-4">{plan.name}</h3>
+                  <div className="flex items-baseline mb-4">
+                    <span className="text-4xl font-bold text-foreground tracking-tight">{typeof priceDisplay === 'number' ? `$${priceDisplay}` : priceDisplay}</span>
+                    <span className="text-muted ml-1 font-medium text-sm">{period}</span>
                   </div>
-                  <p className="text-muted text-base mt-6 font-normal leading-relaxed">{plan.description}</p>
+                  <p className="text-muted text-sm leading-relaxed min-h-[40px]">{plan.description}</p>
                 </div>
 
-                <button className="w-full py-5 bg-bg-card shadow-m rounded-full font-bold mb-10 transition-all duration-300 flex items-center justify-center group">
-                  Get Started <ArrowRight size={18} className={`ml-2 transition-transform group-hover:translate-x-1`} />
-                </button>
-
-                <div className="border-t border-gray-100 pt-2 flex-1">
-                  <ul className="space-y-5">
+                <div className="border-t border-black/5 pt-8 flex-1">
+                  <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <div className="mt-0.5 mr-4 rounded-full bg-gray-100 flex items-center justify-center">
-                          <Check size={12} className="text-foreground" strokeWidth={4} />
+                        <div className="mt-0.5 mr-3 flex-shrink-0">
+                          <Check size={16} className="text-foreground" strokeWidth={3} />
                         </div>
-                        <span className="text-gray-600 text-lg font-medium">{feature}</span>
+                        <span className="text-gray-600 text-sm font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
+
+                  {index === 2 && (
+                    <button className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-sm bg-bg-card shadow-m text-foreground hover:bg-white">
+                      Contact Sales <ArrowRight size={16} className={`ml-2 transition-transform group-hover:translate-x-1`} />
+                    </button>
+                  )}
                 </div>
               </div>
             );

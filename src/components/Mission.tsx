@@ -69,8 +69,8 @@ const Mission = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={sectionRef} className="pt-32 pb-8 bg-[var(--bg-body)] overflow-hidden relative z-10 min-h-screen flex flex-col justify-center">
-      <div className="container mx-auto px-4 mb-20 text-center max-w-5xl relative z-10" ref={textRef}>
+    <section ref={sectionRef} className="pt-32 pb-0 bg-[var(--bg-body)] overflow-hidden relative z-10 min-h-screen flex flex-col justify-center">
+      <div className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10" ref={textRef}>
         <div className="text-4xl md:text-6xl font-medium mb-8 text-text opacity-100">
           {words.map((word, i) => (
             <span key={i} className="word inline-block mr-[0.25em] opacity-10">
@@ -81,7 +81,7 @@ const Mission = () => {
       </div>
 
       {/* Dotted Background */}
-      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] "></div>
+      <div className="dotted-bg"></div>
 
       {/* Tech Stack Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
