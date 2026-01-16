@@ -23,13 +23,13 @@ const Navbar = () => {
       },
       {
         width: "95%", // Mobile default basically, or constrained desktop
-        maxWidth: "1024px", // Shorter state (current max-w-5xl)
+        maxWidth: "900px", // Shorter state (current max-w-5xl)
         duration: 0.5,
         ease: "power1.inOut",
         scrollTrigger: {
           trigger: document.body,
-          start: "top top",
-          end: "+=150",
+          start: "+=300",
+          end: "+=330",
           scrub: true,
         }
       }
@@ -77,7 +77,7 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
-          <Link href="#contact" className="bg-white text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
+          <Link href="mailto:sotercare@gmail.com" className="bg-white text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
             Get In Touch
           </Link>
         </div>

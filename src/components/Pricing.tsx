@@ -18,7 +18,7 @@ const plans = [
   },
   {
     name: 'Pro',
-    price: 19,
+    price: 3.29,
     period: 'mo',
     description: 'Advanced insights for proactive care.',
     features: [
@@ -81,7 +81,7 @@ const Pricing = () => {
                 The essential hardware to keep your loved ones safe. Includes the Thigh Node, Wrist Node, and the Edge Gateway for seamless, offline-ready monitoring.
               </p>
               <div className="flex items-center gap-6">
-                <span className="text-4xl font-bold">$299</span>
+                <span className="text-4xl font-bold">$329</span>
                 <span className="text-text-muted text-sm uppercase font-semibold tracking-wider">One-time payment</span>
               </div>
             </div>

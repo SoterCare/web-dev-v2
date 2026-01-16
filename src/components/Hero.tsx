@@ -27,16 +27,23 @@ const Hero = () => {
     if (!containerRef.current || !contentRef.current) return;
 
     ScrollTrigger.create({
-      trigger: containerRef.current,
+      trigger: document.body,
       start: 'top top',
-      end: 'bottom top',
+      end: '+=1000',
       scrub: true,
-      animation: gsap.to(contentRef.current, {
-        scale: 0.9,
-        opacity: 0,
-        borderRadius: '2.5rem',
-        ease: 'none',
-      }),
+      animation: gsap.timeline()
+        .to(contentRef.current, {
+          scale: 0.8,
+          opacity: 0.8,
+          borderRadius: '2.5rem',
+          ease: 'none',
+        })
+        .to(contentRef.current, {
+          start: '+=1200',
+          end: '+=1250',
+          opacity: 0,
+          ease: 'none',
+        }),
     });
   }, { scope: containerRef });
 
