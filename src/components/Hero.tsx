@@ -58,16 +58,16 @@ const Hero = () => {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: 'url("/assets/hero-background-test1.png")' }}
             />
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-[#a0cbdb]/80" />
           </div>
 
           <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 text-white">
             <h1 className="mb-4 md:mb-2 leading-[1.1] md:leading-[1]">
               <span className="block text-4xl sm:text-6xl md:text-[12vh] font-medium opacity-90 text-white leading-none">Smart Elderly Care</span>
               <span className="block text-2xl sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-2 md:-mt-1">Monitoring System</span>
-              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-60 text-white leading-none mt-6 md:mt-8">Wellness simplified.</span>
+              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-60 text-[#2f2f2f] leading-none mt-6 md:mt-8">Wellness simplified.</span>
             </h1>
-            <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-70 text-white px-2">
+            <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-70 text-[#2f2f2f] px-2">
               Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
             </span>
           </div>

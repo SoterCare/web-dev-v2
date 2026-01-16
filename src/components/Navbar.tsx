@@ -40,19 +40,19 @@ const Navbar = () => {
 
   return (
     <nav ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
-      <div className="bg-black/40 backdrop-blur-md border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
+      <div className="bg-bg-card shadow-m border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
 
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
           <Link href="#" className="flex items-center gap-2" scroll={false}>
             <Image
-              src="/assets/SoterCare-Primary-logo-white.png"
+              src="/assets/SoterCare-Primary-logo-brandblue.png"
               alt="SoterCare"
               width={0}
               height={0}
               sizes="100vw"
-              className="h-8 w-auto object-contain"
-              style={{ width: 'auto', height: '32px' }}
+              className="h-10 w-auto object-contain"
+              style={{ width: 'auto', height: '40px' }}
               priority
             />
           </Link>
@@ -61,23 +61,23 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
 
-          <Link href="#product" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
+          <Link href="#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Product
           </Link>
-          <Link href="#features" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
+          <Link href="#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Features
           </Link>
-          <Link href="#pricing" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
+          <Link href="#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Pricing
           </Link>
-          <Link href="#team" className="text-white/80 hover:text-white transition-colors text-base font-medium" scroll={false}>
+          <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Team
           </Link>
         </div>
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
-          <Link href="mailto:sotercare@gmail.com" className="bg-white text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
+          <Link href="mailto:sotercare@gmail.com" className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
             Get In Touch
           </Link>
         </div>
