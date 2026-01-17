@@ -61,31 +61,30 @@ const Hero = () => {
             <div className="absolute inset-0 bg-[#a0cbdb]/80" />
           </div>
 
-          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 text-white">
-            <h1 className="mb-4 md:mb-2 leading-[1.1] md:leading-[1]">
-              <span className="block text-4xl sm:text-6xl md:text-[12vh] font-medium opacity-90 text-white leading-none">Smart Elderly Care</span>
-              <span className="block text-2xl sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-2 md:-mt-1">Monitoring System</span>
-              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-60 text-[#2f2f2f] leading-none mt-6 md:mt-8">Wellness simplified.</span>
+          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 text-white pt-12 md:pt-0">
+            <h1 className="mb-6 md:mb-2 leading-[1.1] md:leading-[1]">
+              <span className="block text-[10vw] sm:text-6xl md:text-[12vh] font-medium opacity-90 text-white leading-none tracking-tight">Smart Elderly Care</span>
+              <span className="block text-[8vw] sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-2 md:-mt-1 tracking-tight">Monitoring System</span>
+              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-80 text-[#2f2f2f] leading-none mt-6 md:mt-8">Wellness simplified.</span>
             </h1>
-            <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-70 text-[#2f2f2f] px-2">
+            <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-80 text-[#2f2f2f] px-2">
               Advanced real-time health monitoring ensuring safety and peace of mind for your loved ones.
             </span>
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full flex justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10">
-            <div className="w-20 sm:w-32 hidden sm:block">
+          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10 pb-4 md:pb-0">
+            <div className="w-20 sm:w-32 hidden md:block">
               #SDGP
             </div>
 
-            <div className="flex flex-col items-center gap-2 mx-auto sm:mx-0">
+            <div className="flex flex-col items-center gap-2">
               <span className="bg-white bg-clip-text text-transparent animate-jump font-bold text-xs sm:text-sm whitespace-nowrap">
                 Scroll to Explore
               </span>
-
             </div>
 
-            <div className="w-20 sm:w-32 text-right hidden sm:block">
+            <div className="w-20 sm:w-32 text-right hidden md:block">
               IIT-CS-42
             </div>
           </div>

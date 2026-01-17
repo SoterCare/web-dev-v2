@@ -73,15 +73,15 @@ body {
 }
 
 h1 {
-  font: 700 6rem/1.2em "URWGeometric";
+  font: 700 clamp(3rem, 5vw + 1rem, 6rem) / 1.2em "URWGeometric";
   color: var(--text);
 }
 h2 {
-  font: 500 5rem/1.4em "URWGeometric";
+  font: 500 clamp(2.5rem, 4vw + 1rem, 5rem) / 1.4em "URWGeometric";
   color: var(--text);
 }
 p {
-  font: 400 1.2rem/1.6em "URWGeometric";
+  font: 400 clamp(1rem, 2vw, 1.2rem) / 1.6em "URWGeometric";
   color: var(--text-muted);
 }
 

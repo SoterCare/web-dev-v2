@@ -101,7 +101,7 @@ const Pricing = () => {
               <span className="bg-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Early Bird</span>
             </div>
 
-            <div className="p-10 md:p-12 md:w-2/3 flex flex-col justify-center">
+            <div className="p-6 md:p-12 md:w-2/3 flex flex-col justify-center">
               <h3 className="text-3xl font-bold mb-4">Get the SoterCare Kit</h3>
               <p className="text-text-muted text-lg mb-8 leading-relaxed">
                 The essential hardware to keep your loved ones safe. Includes the Thigh Node, Wrist Node, and the Edge Gateway for seamless, offline-ready monitoring.
@@ -116,7 +116,7 @@ const Pricing = () => {
               <button className="w-full py-4 bg-bg-card text-foreground rounded-full font-bold hover:scale-105 transition-transform shadow-lg flex items-center justify-center gap-2">
                 Pre-Order Now <ArrowRight size={20} />
               </button>
-              <p className="text-xs text-center text-text-muted">Limited stock available for initial batch.</p>
+              <p className="text-xs text-center text-text-muted">We are still under development, so the pre-order is not available yet.</p>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ const Pricing = () => {
 
         {/* --- Feature Comparison Plans --- */}
         <div className="text-center mb-12">
-          <h3 className="text-2xl font-bold mb-10">Choose your software plan</h3>
+          <h3 className="text-2xl font-bold mb-10">Choose your subscription plan</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

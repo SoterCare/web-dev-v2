@@ -76,7 +76,7 @@ const FAQ = () => {
                 }`}
             >
               <button
-                className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                className="w-full flex items-center justify-between p-4 md:p-6 text-left focus:outline-none"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
               >
                 <span className="font-bold text-foreground text-xl tracking-tight">{faq.question}</span>

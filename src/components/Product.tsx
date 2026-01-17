@@ -27,6 +27,7 @@ const Product = () => {
                 }
             }
         );
+
     }, { scope: sectionRef });
 
     return (
@@ -113,11 +114,11 @@ const Product = () => {
                 {/* --- Section 2: Mobile App --- */}
                 <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-8 pt-20">
                     <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center">
-                        <h2 className="text-4xl md:text-6xl font-bold mb-16 text-center">Mobile App</h2>
+                        <h2 className="text-4xl md:text-6xl font-bold mb-10 md:mb-16 text-center">Mobile App</h2>
 
-                        <div className="relative w-full max-w-7xl mx-auto min-h-[700px] flex items-center justify-center">
+                        <div className="relative w-full max-w-7xl mx-auto min-h-auto md:min-h-[700px] flex flex-col md:block items-center justify-center">
                             {/* Central Image */}
-                            <div className="relative z-10 max-w-lg md:max-w-3xl w-full">
+                            <div className="relative z-10 max-w-lg md:max-w-3xl w-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
                                 <Image
                                     src="/assets/features/UI-Mockup.png"
                                     alt="Mobile App UI Mockup"
@@ -127,7 +128,42 @@ const Product = () => {
                                 />
                             </div>
 
-                            {/* Floating Labels */}
+                            {/* Mobile List View */}
+                            <div className="flex md:hidden flex-col gap-4 w-full mt-8 z-20">
+                                {[
+                                    {
+                                        text: "Recycle Bin",
+                                        description: "A unique \"Human-in-the-Loop\" feature that allows caregivers to flag false alarms—such as a heavy sit-down mistaken for a fall—moving them to a recycle bin to retrain the AI model."
+                                    },
+                                    {
+                                        text: "AI-Powered Summaries",
+                                        description: "Integrates a Large Language Model (LLM) to instantly convert complex sensor data into clear, natural language reports."
+                                    },
+                                    {
+                                        text: "Real-Time Vitals",
+                                        description: "Provides an immediate, high-visibility snapshot of the user's current status by displaying live Heart Rate, Blood Oxygen (SpO2), and Body Temperature."
+                                    },
+                                    {
+                                        text: "Password-less Auth",
+                                        description: "Lowers the technical barrier for elderly or non-tech-savvy caregivers by replacing complex passwords with simple One-Time Passwords (OTP) and Google Sign-In."
+                                    },
+                                    {
+                                        text: "Data Export",
+                                        description: "Empowers caregivers to share accurate, data-driven insights with healthcare professionals by generating downloadable PDF or CSV reports."
+                                    },
+                                    {
+                                        text: "System Timeline",
+                                        description: "Offers complete transparency by logging not just health incidents but also system reliability events like \"Gateway Disconnected\"."
+                                    },
+                                ].map((item, i) => (
+                                    <div key={i} className="bg-bg-card p-6 rounded-2xl shadow-sm border border-black/5">
+                                        <h3 className="text-xl font-bold mb-2">{item.text}</h3>
+                                        <p className="text-text-muted text-sm leading-relaxed">{item.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Desktop Floating Labels */}
                             {[
                                 {
                                     text: "Recycle Bin",

@@ -72,7 +72,7 @@ const Mission = () => {
   return (
     <section ref={sectionRef} className="pt-32 pb-0 bg-bg-body overflow-hidden relative z-10 min-h-screen flex flex-col justify-center">
       <div className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10" ref={textRef}>
-        <div className="text-4xl md:text-6xl font-medium mb-8 text-text opacity-100">
+        <div className="text-2xl sm:text-4xl md:text-6xl font-medium mb-8 text-text opacity-100 leading-tight">
           {words.map((word, i) => (
             <span key={i} className="word inline-block mr-[0.25em] opacity-10">
               {word}

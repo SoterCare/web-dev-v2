@@ -63,7 +63,7 @@ const Footer = () => {
             </h2>
             <Link
               href="#"
-              className="bg-white shadow-m text-black px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3"
+              className="bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3"
             >
               <Play size={20} fill="currentColor" />
               Watch a Demo
@@ -72,7 +72,7 @@ const Footer = () => {
 
           {/* Bottom Bar */}
           <div ref={bottomBarRef} className="w-full px-8 pb-8 pt-20">
-            <div className="border-t border-white pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative">
+            <div className="border-t border-white pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-[#fafafa]">
               {/* Copyright */}
               <div className="order-3 xl:order-1 text-center xl:text-left w-full xl:w-auto">
                 &copy; {new Date().getFullYear()} SoterCare. | All Rights Reserved.
