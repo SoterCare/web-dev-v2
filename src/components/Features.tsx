@@ -24,7 +24,7 @@ const Features = () => {
                         <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
                             Features
                         </span>
-                        <h2 className="text-5xl md:text-7xl font-bold text-right">Core Features</h2>
+                        <h2 className="text-5xl md:text-7xl font-bold text-left">Core Features</h2>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
