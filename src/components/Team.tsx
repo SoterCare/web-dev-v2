@@ -32,8 +32,8 @@ const TEAM_MEMBERS = [
     },
     {
         name: 'Kanchana Wickramarathna',
-        role: 'ML and ALGO Dev Sub Lead',
-        skills: ['Java', 'Python', 'Langchain', 'LangGraph'],
+        role: 'ML/ALGO Sub Lead',
+        skills: ['Python', 'Java', 'React', 'Nextjs', 'OpenAI', 'LangGraph', 'LlamaIndex', 'Helicone'],
         image: '/assets/team/Kanchana.png',
         socials: {
             github: 'https://github.com/kaweeshakanchana',

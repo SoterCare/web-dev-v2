@@ -63,7 +63,7 @@ const Footer = () => {
             </h2>
             <Link
               href="#"
-              className="bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3"
+              className="mt-10 md:mt-8 bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3"
             >
               <Play size={20} fill="currentColor" />
               Watch a Demo
