@@ -85,7 +85,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button
-            className="text-white p-2 transition-transform active:scale-95"
+            className="text-[#797979] hover:text-[black] p-2 transition-transform active:scale-95"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}

@@ -1,6 +1,12 @@
 'use client';
 
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check, ArrowRight } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const plans = [
   {
@@ -47,16 +53,36 @@ const plans = [
 ];
 
 const Pricing = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(contentRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => localStorage.setItem('pricing-animated', 'true')
+        }
+      }
+    );
+  }, { scope: sectionRef });
+
   return (
-    <section id="pricing" className="pt-24 md:pt-32 pb-24 bg-bg-body relative z-10">
+    <section id="pricing" ref={sectionRef} className="pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
       {/* Shorten the background decoration or allow it to blend */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[20%] right-[-5%] w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-40 mix-blend-multiply"></div>
       </div>
-      {/* Dotted Background */}
-      <div className="dotted-bg"></div>
+      {/* Dotted Background removed (global) */}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
             <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60">

@@ -7,17 +7,33 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const Product = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-    // No horizontal scroll logic needed.
-    // We kept the import just in case, but no active GSAP hooks for layout.
+    // GSAP Animation
+    useGSAP(() => {
+        // Main content animation
+        gsap.fromTo(contentRef.current,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse',
+                }
+            }
+        );
+    }, { scope: sectionRef });
 
     return (
-        <section id="product" ref={containerRef} className="bg-[var(--bg-body)] relative z-20 -mt-1 w-full overflow-hidden">
-            {/* Dotted Background */}
-            <div className="dotted-bg absolute inset-0 z-0 h-full w-full"></div>
+        <section id="product" ref={sectionRef} className="bg-transparent relative z-20 -mt-1 w-full overflow-hidden">
+            {/* Dotted Background removed (global) */}
 
-            <div className="relative z-10 flex flex-col w-full">
+            <div ref={contentRef} className="relative z-10 flex flex-col w-full">
 
                 {/* --- Section 1: IoT Devices --- */}
                 <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-8 pt-24 md:pt-32">
@@ -113,19 +129,50 @@ const Product = () => {
 
                             {/* Floating Labels */}
                             {[
-                                { text: "Real-Time Dashboard", pos: "top-10 left-[5%] md:left-[15%]" },
-                                { text: "Visual Suggestion", pos: "top-[40%] left-[0%] md:left-[5%]" },
-                                { text: "Activity Timeline", pos: "bottom-20 left-[5%] md:left-[15%]" },
-                                { text: "Medical-Grade Data Export", pos: "top-20 right-[5%] md:right-[15%]" },
-                                { text: "Modern Design", pos: "top-[45%] right-[0%] md:right-[5%]" },
-                                { text: "Simple UI", pos: "bottom-32 right-[5%] md:right-[15%]" },
+                                {
+                                    text: "Recycle Bin",
+                                    description: "A unique \"Human-in-the-Loop\" feature that allows caregivers to flag false alarms—such as a heavy sit-down mistaken for a fall—moving them to a recycle bin to retrain the AI model, thereby constantly improving system accuracy and reducing alert fatigue.",
+                                    pos: "top-10 left-[5%] md:left-[15%]"
+                                },
+                                {
+                                    text: "AI-Powered Health Summaries",
+                                    description: "Integrates a Large Language Model (LLM) to instantly convert complex sensor data into clear, natural language reports, acting as a personal \"medical interpreter\" that summarizes daily health trends, risks, and events in plain English for non-technical users.",
+                                    pos: "top-[40%] left-[0%] md:left-[5%]"
+                                },
+                                {
+                                    text: "Real-Time Vitals Dashboard",
+                                    description: "Provides an immediate, high-visibility snapshot of the user's current status by displaying live Heart Rate, Blood Oxygen (SpO2), and Body Temperature, ensuring caregivers can verify critical health metrics at a single glance.",
+                                    pos: "bottom-20 left-[5%] md:left-[15%]"
+                                },
+                                {
+                                    text: "Password-less Authentication",
+                                    description: "Lowers the technical barrier for elderly or non-tech-savvy caregivers by replacing complex passwords with simple One-Time Passwords (OTP) and Google Sign-In, ensuring secure and frustration-free access to the system.",
+                                    pos: "top-10 right-[5%] md:right-[15%]"
+                                },
+                                {
+                                    text: "Medical-Grade Data Export",
+                                    description: "Empowers caregivers to share accurate, data-driven insights with healthcare professionals by generating downloadable PDF or CSV reports of falls, vitals, and activity history with a single tap, facilitating better medical consultations.",
+                                    pos: "top-[40%] right-[0%] md:right-[5%]"
+                                },
+                                {
+                                    text: "Comprehensive System Timeline",
+                                    description: "Offers complete transparency by logging not just health incidents (like falls or hygiene alerts) but also system reliability events (like \"Gateway Disconnected\"), giving a holistic, chronological view of both patient safety and device performance.",
+                                    pos: "bottom-20 right-[5%] md:right-[15%]"
+                                },
                             ].map((item, i) => (
                                 <div
                                     key={i}
-                                    className={`absolute ${item.pos} z-20 hidden md:block`}
+                                    className={`absolute ${item.pos} z-20 hidden md:block group hover:z-50`}
                                 >
-                                    <div className="bg-bg-card/80 backdrop-blur-md shadow-lg border border-white/20 py-3 px-6 rounded-2xl whitespace-nowrap hover:scale-110 transition-transform cursor-default">
-                                        <span className="text-xl font-semibold text-text">{item.text}</span>
+                                    <div className="bg-bg-card/90 backdrop-blur-md shadow-m border border-white/20 py-3 px-6 rounded-2xl cursor-default transition-all duration-300 ease-out w-fit">
+                                        <div className="flex flex-col items-start">
+                                            <span className="text-xl font-semibold text-text whitespace-nowrap group-hover:mb-2 transition-all block">
+                                                {item.text}
+                                            </span>
+                                            <p className="text-sm text-text-muted leading-relaxed max-h-0 opacity-0 w-0 group-hover:max-h-80 group-hover:opacity-100 group-hover:w-72 transition-all duration-300 ease-in-out overflow-hidden whitespace-normal">
+                                                {item.description}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

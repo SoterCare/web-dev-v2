@@ -119,5 +119,5 @@ p {
 }
 
 .dotted-bg {
-  @apply absolute inset-0 z-0 h-[120%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] -top-[10%];
+  @apply absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] bg-fixed;
 }

@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { Github, Linkedin, Instagram } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const TEAM_MEMBERS = [
     {
@@ -72,12 +77,32 @@ const TEAM_MEMBERS = [
 ];
 
 const Team = () => {
-    return (
-        <section id="team" className="pt-24 md:pt-32 pb-24 bg-bg-body relative z-10 overflow-hidden">
-            {/* Dotted Background similar to other sections */}
-            <div className="dotted-bg"></div>
+    const sectionRef = useRef<HTMLElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    useGSAP(() => {
+        gsap.fromTo(contentRef.current,
+            { opacity: 0, y: 50 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse',
+                    onEnter: () => localStorage.setItem('team-animated', 'true')
+                }
+            }
+        );
+    }, { scope: sectionRef });
+
+    return (
+        <section id="team" ref={sectionRef} className="pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
+            {/* Dotted Background removed (global) */}
+
+            <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header */}
                 <div className="text-center mb-6">
                     <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
