@@ -61,17 +61,20 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
 
-          <Link href="#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Product
           </Link>
-          <Link href="#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Features
           </Link>
-          <Link href="#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Pricing
           </Link>
-          <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Team
+          </Link>
+          <Link href="/blog" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={true}>
+            Blog
           </Link>
         </div>
 
@@ -120,12 +123,20 @@ const Navbar = () => {
           Pricing
         </Link>
         <Link
-          href="#team"
+          href="/#team"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
           scroll={false}
         >
           Team
+        </Link>
+        <Link
+          href="/blog"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+          scroll={true}
+        >
+          Blog
         </Link>
         <Link
           href="mailto:sotercare@gmail.com"
@@ -136,7 +147,7 @@ const Navbar = () => {
           Get In Touch
         </Link>
       </div>
-    </nav>
+    </nav >
   );
 };
 

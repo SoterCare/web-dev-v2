@@ -8,19 +8,19 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['URWGeometric'],
-        urw: ['URWGeometric'],
+        sans: ["URWGeometric"],
+        urw: ["URWGeometric"],
       },
       animation: {
-        'shine': 'shine 4s linear infinite',
+        shine: "shine 4s linear infinite",
       },
       keyframes: {
         shine: {
-          '0%': { backgroundPosition: '200% center' },
-          '100%': { backgroundPosition: '-200% center' },
+          "0%": { backgroundPosition: "200% center" },
+          "100%": { backgroundPosition: "-200% center" },
         },
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
