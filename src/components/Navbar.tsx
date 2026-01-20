@@ -77,7 +77,7 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
-          <Link href="mailto:sotercare@gmail.com" className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
+          <Link href="mailto:support@sotercare.com" className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
             Get In Touch
           </Link>
         </div>
@@ -128,7 +128,7 @@ const Navbar = () => {
           Team
         </Link>
         <Link
-          href="mailto:sotercare@gmail.com"
+          href="mailto:support@sotercare.com"
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
           onClick={() => setIsOpen(false)}
           scroll={false}

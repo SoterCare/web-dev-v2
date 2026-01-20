@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
-import { Github, Linkedin, Instagram } from 'lucide-react';
+import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +13,7 @@ const TEAM_MEMBERS = [
         role: 'Team Lead / IoT Sub Lead',
         skills: ['JavaScript', 'React', 'Python', 'C++', 'Figma', 'MySQL', 'Git', 'Adobe Creative Cloud'],
         image: '/assets/team/Daham.png',
+        email: 'daham@sotercare.com',
         socials: {
             github: 'https://github.com/DahamDissanayake/',
             linkedin: 'https://www.linkedin.com/in/daham-dissanayake/',
@@ -24,6 +25,7 @@ const TEAM_MEMBERS = [
         role: 'SysInt & Testing Sub Lead',
         skills: ['Rust', 'Python', 'Go', 'gRPC', 'Javascript', 'Java'],
         image: '/assets/team/Sanjula.png',
+        email: 'sanjula@sotercare.com',
         socials: {
             github: 'https://github.com/sanjulaonline',
             linkedin: 'https://www.linkedin.com/in/sanjulaherath/',
@@ -35,6 +37,7 @@ const TEAM_MEMBERS = [
         role: 'ML/ALGO Sub Lead',
         skills: ['Python', 'Java', 'React', 'Nextjs', 'OpenAI', 'LangGraph', 'LlamaIndex', 'Helicone'],
         image: '/assets/team/Kanchana.png',
+        email: 'kanchana@sotercare.com',
         socials: {
             github: 'https://github.com/kaweeshakanchana',
             linkedin: 'https://www.linkedin.com/in/kaweesha-kanchana-228729398/',
@@ -46,6 +49,7 @@ const TEAM_MEMBERS = [
         role: 'UI/UX Sub Lead',
         skills: ['Figma', 'Java', 'JavaScript', 'Python', 'C#', 'Nextjs', 'React'],
         image: '/assets/team/Komudi.png',
+        email: 'komudi@sotercare.com',
         socials: {
             github: 'https://github.com/KomuDhara',
             linkedin: 'https://www.linkedin.com/in/komudi-senarachchi-3bba102ba/',
@@ -57,6 +61,7 @@ const TEAM_MEMBERS = [
         role: 'Documentation Sub Lead',
         skills: ['Java', 'Python', 'React', 'Nextjs'],
         image: '/assets/team/Nimna.png',
+        email: 'nimna@sotercare.com',
         socials: {
             github: 'https://github.com/nimnaahh',
             linkedin: 'https://www.linkedin.com/in/nimna-minsadi-212454296/',
@@ -68,6 +73,7 @@ const TEAM_MEMBERS = [
         role: 'Mobile Dev Sub Lead',
         skills: ['Java', 'Python', 'React', 'Nextjs'],
         image: '/assets/team/Hirusha.png',
+        email: 'hirusha@sotercare.com',
         socials: {
             github: 'https://github.com/hirushaMaduranga',
             linkedin: 'https://www.linkedin.com/in/hirusha-pathum-maduranga-889845375/',
@@ -147,8 +153,13 @@ const Team = () => {
                                             {member.skills.join(', ')}
                                         </p>
 
+                                        <a href={`mailto:${member.email}`} className="text-s text-text-muted hover:text-foreground transition-colors flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/50 border border-black/5">
+                                            <Mail size={12} />
+                                            {member.email}
+                                        </a>
+
                                         {/* Socials */}
-                                        <div className="flex items-center gap-4 pt-2">
+                                        <div className="flex items-center gap-4 pt-1">
                                             <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm">
                                                 <Github size={18} />
                                             </a>
