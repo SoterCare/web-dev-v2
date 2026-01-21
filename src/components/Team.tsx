@@ -66,7 +66,7 @@ const TEAM_MEMBERS = [
     {
         name: 'Hirusha Maduranga',
         role: 'Mobile Dev Sub Lead',
-        skills: ['Java', 'Python', 'React', 'Nextjs'],
+        skills: ['Java', 'Python', 'React', 'Nextjs' , 'Javascript'],
         image: '/assets/team/Hirusha.png',
         socials: {
             github: 'https://github.com/hirushaMaduranga',
@@ -99,49 +99,49 @@ const Team = () => {
     }, { scope: sectionRef });
 
     return (
-        <section id="team" ref={sectionRef} className="pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
+        <section id="team" ref={sectionRef} className="relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
             {/* Dotted Background removed (global) */}
 
-            <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div ref={contentRef} className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-6">
+                <div className="mb-6 text-center">
                     <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
                         Our Team
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                    <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
                         Meet the Minds Behind SoterCare
                     </h2>
-                    <p className="text-lg text-text-muted max-w-2xl mx-auto">
+                    <p className="max-w-2xl mx-auto text-lg text-text-muted">
                         We are a passionate group of developers, designers, and engineers dedicated to transforming elderly care through innovative technology.
                     </p>
                 </div>
 
                 {/* Team Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 pt-12">
+                <div className="grid grid-cols-1 pt-12 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                     {TEAM_MEMBERS.map((member, index) => (
-                        <div key={index} className="group relative flex flex-col items-center">
+                        <div key={index} className="relative flex flex-col items-center group">
                             {/* Image Container - Floating above */}
-                            <div className="relative z-20 -mb-6 w-64 h-80 transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-2">
+                            <div className="relative z-20 w-64 -mb-6 transition-transform duration-300 h-80 group-hover:scale-105 group-hover:-translate-y-2">
                                 <Image
                                     src={member.image}
                                     alt={member.name}
                                     width={300}
                                     height={400}
-                                    className="object-cover object-top w-full h-full opacity-90 group-hover:opacity-100 transition-opacity"
+                                    className="object-cover object-top w-full h-full transition-opacity opacity-90 group-hover:opacity-100"
                                 />
                             </div>
 
                             {/* Info Card - The "Bar" */}
-                            <div className="relative z-10 w-full bg-bg-card rounded-2xl shadow-md border border-black/5 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:ring-1 group-hover:ring-black/5">
+                            <div className="relative z-10 w-full overflow-hidden transition-all duration-300 border shadow-md bg-bg-card rounded-2xl border-black/5 group-hover:shadow-xl group-hover:ring-1 group-hover:ring-black/5">
                                 {/* Name Bar (Always visible) */}
-                                <div className="p-6 text-center pt-10">
+                                <div className="p-6 pt-10 text-center">
                                     <h3 className="text-xl font-bold text-foreground">{member.name}</h3>
-                                    <p className="text-sm text-text-muted font-medium uppercase tracking-wider mt-1">{member.role}</p>
+                                    <p className="mt-1 text-sm font-medium tracking-wider uppercase text-text-muted">{member.role}</p>
                                 </div>
 
                                 {/* Expanded Details (Revealed on Hover) */}
-                                <div className="max-h-0 opacity-0 group-hover:max-h-60 group-hover:opacity-100 transition-all duration-500 ease-in-out bg-bg-panel/50">
-                                    <div className="p-6 pt-2 border-t border-black/5 flex flex-col items-center gap-4">
+                                <div className="transition-all duration-500 ease-in-out opacity-0 max-h-0 group-hover:max-h-60 group-hover:opacity-100 bg-bg-panel/50">
+                                    <div className="flex flex-col items-center gap-4 p-6 pt-2 border-t border-black/5">
                                         {/* Skills */}
                                         <p className="text-[10px] font-medium text-foreground/50 tracking-widest text-center">
                                             {member.skills.join(', ')}
@@ -149,13 +149,13 @@ const Team = () => {
 
                                         {/* Socials */}
                                         <div className="flex items-center gap-4 pt-2">
-                                            <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm">
+                                            <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-black hover:scale-110">
                                                 <Github size={18} />
                                             </a>
-                                            <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-foreground/70 hover:text-blue-600 hover:scale-110 transition-all shadow-sm">
+                                            <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-600 hover:scale-110">
                                                 <Linkedin size={18} />
                                             </a>
-                                            <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-foreground/70 hover:text-pink-600 hover:scale-110 transition-all shadow-sm">
+                                            <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110">
                                                 <Instagram size={18} />
                                             </a>
                                         </div>
