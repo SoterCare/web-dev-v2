@@ -18,15 +18,6 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "Bingbot",
         allow: "/",
       },
-      // Block AI crawlers if desired (optional)
-      {
-        userAgent: "GPTBot",
-        disallow: ["/"],
-      },
-      {
-        userAgent: "ChatGPT-User",
-        disallow: ["/"],
-      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
     host: baseUrl,
