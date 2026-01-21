@@ -18,7 +18,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "Bingbot",
         allow: "/",
       },
-      // Block AI crawlers if desired (optional)
+      // Block AI crawlers if desired
       {
         userAgent: "GPTBot",
         disallow: ["/"],

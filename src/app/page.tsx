@@ -26,7 +26,7 @@ export default function Home() {
     if (!bgRef.current) return;
 
     gsap.to(bgRef.current, {
-      y: -300, // Move up slowly (parallax effect)
+      y: -300, // Move up slowly 
       ease: 'none',
       scrollTrigger: {
         trigger: document.body,

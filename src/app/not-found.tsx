@@ -12,16 +12,20 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-[#fafafa] flex items-center justify-center px-4">
-      <div className="text-center max-w-md">
-        <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-        <h2 className="text-2xl font-medium text-gray-700 mb-4">Page Not Found</h2>
-        <p className="text-gray-500 mb-8">
+    <main className="min-h-screen bg-bg-body flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Search Background Pattern */}
+      <div className="dotted-bg" />
+
+      {/* Content Container */}
+      <div className="relative z-10 text-center max-w-md bg-bg-card/50 backdrop-blur-sm p-8 rounded-[2rem] border border-white/20 shadow-m">
+        <h1 className="text-8xl font-bold text-text mb-2">404</h1>
+        <span className="text-2xl font-medium text-text-muted mb-6">Page Not Found</span>
+        <p className="text-text-muted mb-8 leading-relaxed">
           The page you are looking for doesn&apos;t exist or has been moved.
         </p>
         <Link
           href="/"
-          className="inline-block bg-[#a0cbdb] text-white px-8 py-3 rounded-full font-medium hover:bg-[#8bb9ca] transition-colors"
+          className="inline-block bg-bg-panel text-text px-8 py-3 rounded-xl font-medium hover:scale-105 active:scale-95 transition-all shadow-m border border-white/10"
         >
           Return to Homepage
         </Link>
