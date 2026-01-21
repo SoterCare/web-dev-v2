@@ -80,8 +80,8 @@ const Footer = () => {
 
               {/* Contact Info */}
               <div className="order-1 xl:order-2 flex flex-col md:flex-row gap-4 md:gap-8 items-center xl:absolute xl:left-1/2 xl:-translate-x-1/2">
-                <a href="mailto:sotercare@gmail.com" className="hover:text-white transition-colors">
-                  sotercare@gmail.com
+                <a href="mailto:support@sotercare.com" className="hover:text-white transition-colors">
+                  support@sotercare.com
                 </a>
               </div>
 

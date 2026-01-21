@@ -161,7 +161,7 @@ const Pricing = () => {
 
                   {index === 2 && (
                     <a
-                      href="mailto:sotercare@gmail.com"
+                      href="mailto:support@sotercare.com"
                       className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-sm bg-bg-card shadow-m text-foreground hover:bg-white"
                     >
                       Contact Sales <ArrowRight size={16} className="ml-2 transition-transform group-hover:translate-x-1" />
