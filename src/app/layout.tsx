@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
-// JSON-LD Structured Data (no UI impact)
+
 // Safe, minimal, truthful schema - compliant with Google guidelines
 const jsonLd = {
   "@context": "https://schema.org",
