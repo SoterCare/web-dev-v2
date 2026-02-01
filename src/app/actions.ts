@@ -19,6 +19,9 @@ export async function subscribeAction(formData: FormData) {
   }
 
   const resend = new Resend(apiKey);
+  console.log(
+    `subscribeAction: Using API Key starting with: ${apiKey.substring(0, 8)}...`,
+  );
 
   try {
     // Hardcoded Audience ID for Newsletter
