@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { subscribeAction } from "@/app/actions"
-import { X, Mail, CheckCircle, ArrowRight } from "lucide-react"
+import { X, Mail, CheckCircle, ArrowRight, Loader2 } from "lucide-react"
 
 export default function NewsletterPopup() {
     const [isOpen, setIsOpen] = useState(false)
@@ -79,8 +79,7 @@ export default function NewsletterPopup() {
                 </button>
 
                 {status === "success" ? (
-                    <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2">
-                        <h2 className="text-xl font-bold text-[var(--text)]">You're on <br />the list!</h2>
+                    <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2"                        <h2 className="text-xl font-bold text-[var(--text)]">You're on <br />the list!</h2>
                         <p className="text-[var(--text-muted)] max-w-[200px]">
                             Thanks for joining.
                         </p>
@@ -103,8 +102,10 @@ export default function NewsletterPopup() {
                             </p>
                         </div>
 
-                        <form action={async (formData) => {
+                        <form onSubmit={async (e) => {
+                            e.preventDefault()
                             setStatus("loading")
+                            const formData = new FormData(e.currentTarget)
                             await subscribeAction(formData)
                             setStatus("success")
                             localStorage.setItem("subscribed", "true")
@@ -123,7 +124,10 @@ export default function NewsletterPopup() {
                                 className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
                             >
                                 {status === "loading" ? (
-                                    <span className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Subscribing...
+                                    </>
                                 ) : (
                                     <>
                                         Subscribe Free

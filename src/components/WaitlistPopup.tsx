@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { joinWaitlistAction } from "@/app/actions"
-import { X, UserPlus, CheckCircle, ArrowRight } from "lucide-react"
+import { X, UserPlus, CheckCircle, ArrowRight, Loader2 } from "lucide-react"
 
 interface WaitlistPopupProps {
     isOpen: boolean
@@ -64,8 +64,10 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                             </p>
                         </div>
 
-                        <form action={async (formData) => {
+                        <form onSubmit={async (e) => {
+                            e.preventDefault()
                             setStatus("loading")
+                            const formData = new FormData(e.currentTarget)
                             await joinWaitlistAction(formData)
                             setStatus("success")
                         }} className="space-y-3">
@@ -83,7 +85,10 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                                 className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
                             >
                                 {status === "loading" ? (
-                                    <span className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Joining...
+                                    </>
                                 ) : (
                                     <>
                                         Join Waitlist
