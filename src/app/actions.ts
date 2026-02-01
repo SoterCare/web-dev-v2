@@ -1,6 +1,8 @@
 "use server";
 
 import { Resend } from "resend";
+import WelcomeNewsletter from "@/emails/WelcomeNewsletter";
+import WelcomeWaitlist from "@/emails/WelcomeWaitlist";
 
 export async function subscribeAction(formData: FormData) {
   const email = formData.get("email") as string;
@@ -37,6 +39,18 @@ export async function subscribeAction(formData: FormData) {
       unsubscribed: false,
       audienceId: audienceId,
     });
+
+    try {
+      await resend.emails.send({
+        from: "updates@sotercare.com",
+        to: email,
+        subject: "Welcome to Weekly Wellness",
+        react: WelcomeNewsletter(),
+      });
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Don't fail the whole action if email fails, as contact was created
+    }
 
     return { success: true };
   } catch (error) {
@@ -79,6 +93,17 @@ export async function joinWaitlistAction(formData: FormData) {
       unsubscribed: false,
       audienceId: audienceId,
     });
+
+    try {
+      await resend.emails.send({
+        from: "updates@sotercare.com",
+        to: email,
+        subject: "You are on the list",
+        react: WelcomeWaitlist(),
+      });
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+    }
 
     return { success: true };
   } catch (error) {
