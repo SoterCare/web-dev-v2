@@ -5,13 +5,13 @@ import WelcomeNewsletter from "@/emails/WelcomeNewsletter";
 import WelcomeWaitlist from "@/emails/WelcomeWaitlist";
 
 export async function subscribeAction(formData: FormData) {
+  console.log("Starting subscribeAction...");
   const email = formData.get("email") as string;
 
   if (!email) {
     throw new Error("Email is required");
   }
 
-  // Initialize Resend inside the action to ensure env vars are loaded and catch errors
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("Missing RESEND_API_KEY");
@@ -21,35 +21,34 @@ export async function subscribeAction(formData: FormData) {
   const resend = new Resend(apiKey);
 
   try {
-    const audienceId = process.env.RESEND_AUDIENCE_NEWS_ID;
+    // Hardcoded Audience ID for Newsletter
+    const audienceId = "d08e1b15-ea9f-4589-88f7-fe3cbd9fdda1";
+    console.log(`subscribeAction: Using Hardcoded Audience ID: ${audienceId}`);
 
-    if (!audienceId || audienceId === "your_audience_id_here") {
-      console.warn(
-        "RESEND_AUDIENCE_NEWS_ID is not set or is a placeholder. Skipping contact creation.",
-      );
-      // Simulate network delay even if skipping, to keep UI consistent
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return { success: true, warning: "Audience ID not configured" };
-    }
-
-    await resend.contacts.create({
+    console.log("subscribeAction: Creating contact...");
+    const contactResult = await resend.contacts.create({
       email: email,
-      firstName: "", // We only collect email for now
+      firstName: "",
       lastName: "",
       unsubscribed: false,
       audienceId: audienceId,
     });
+    console.log(
+      "subscribeAction: Contact created successfully. Result:",
+      JSON.stringify(contactResult),
+    );
 
     try {
+      console.log("subscribeAction: Sending email...");
       await resend.emails.send({
         from: "updates@sotercare.com",
         to: email,
         subject: "Welcome to Weekly Wellness",
         react: WelcomeNewsletter(),
       });
+      console.log("subscribeAction: Email sent successfully.");
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
-      // Don't fail the whole action if email fails, as contact was created
     }
 
     return { success: true };
@@ -60,13 +59,13 @@ export async function subscribeAction(formData: FormData) {
 }
 
 export async function joinWaitlistAction(formData: FormData) {
+  console.log("Starting joinWaitlistAction...");
   const email = formData.get("email") as string;
 
   if (!email) {
     throw new Error("Email is required");
   }
 
-  // Initialize Resend inside the action
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("Missing RESEND_API_KEY");
@@ -76,31 +75,34 @@ export async function joinWaitlistAction(formData: FormData) {
   const resend = new Resend(apiKey);
 
   try {
-    const audienceId = process.env.RESEND_AUDIENCE_WAIT_ID;
+    // Hardcoded Audience ID for Waitlist
+    const audienceId = "d1ea57f6-82b0-4ce4-9f86-5d54a8ab8d38";
+    console.log(
+      `joinWaitlistAction: Using Hardcoded Audience ID: ${audienceId}`,
+    );
 
-    if (!audienceId || audienceId === "your_waitlist_id_here") {
-      console.warn(
-        "RESEND_AUDIENCE_WAIT_ID is not set or is a placeholder. Skipping contact creation.",
-      );
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return { success: true, warning: "Waitlist Audience ID not configured" };
-    }
-
-    await resend.contacts.create({
+    console.log("joinWaitlistAction: Creating contact...");
+    const contactResult = await resend.contacts.create({
       email: email,
       firstName: "",
       lastName: "",
       unsubscribed: false,
       audienceId: audienceId,
     });
+    console.log(
+      "joinWaitlistAction: Contact created successfully. Result:",
+      JSON.stringify(contactResult),
+    );
 
     try {
+      console.log("joinWaitlistAction: Sending email...");
       await resend.emails.send({
         from: "updates@sotercare.com",
         to: email,
         subject: "You are on the list",
         react: WelcomeWaitlist(),
       });
+      console.log("joinWaitlistAction: Email sent successfully.");
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
     }
