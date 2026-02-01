@@ -18,15 +18,24 @@ export async function subscribeAction(formData: FormData) {
     return { success: false, error: "Configuration Error: Missing API Key" };
   }
 
+  const audienceId = process.env.RESEND_AUDIENCE_NEWS_ID;
+  if (!audienceId) {
+    console.error("Missing RESEND_AUDIENCE_NEWS_ID");
+    return {
+      success: false,
+      error: "Configuration Error: Missing Audience ID",
+    };
+  }
+
   const resend = new Resend(apiKey);
   console.log(
     `subscribeAction: Using API Key starting with: ${apiKey.substring(0, 8)}...`,
   );
 
   try {
-    // Hardcoded Audience ID for Newsletter
-    const audienceId = "d08e1b15-ea9f-4589-88f7-fe3cbd9fdda1";
-    console.log(`subscribeAction: Using Hardcoded Audience ID: ${audienceId}`);
+    console.log(
+      `subscribeAction: Using Audience ID starting with: ${audienceId.substring(0, 4)}...`,
+    );
 
     console.log("subscribeAction: Creating contact...");
     const contactResult = await resend.contacts.create({
@@ -36,9 +45,21 @@ export async function subscribeAction(formData: FormData) {
       unsubscribed: false,
       audienceId: audienceId,
     });
+
+    // Check for errors in the contact creation response
+    if (contactResult.error) {
+      console.error(
+        "subscribeAction: Failed to create contact:",
+        contactResult.error,
+      );
+      throw new Error(
+        `Failed to create contact: ${contactResult.error.message}`,
+      );
+    }
+
     console.log(
-      "subscribeAction: Contact created successfully. Result:",
-      JSON.stringify(contactResult),
+      "subscribeAction: Contact created successfully. FULL RESULT:",
+      JSON.stringify(contactResult, null, 2),
     );
 
     try {
@@ -52,6 +73,7 @@ export async function subscribeAction(formData: FormData) {
       console.log("subscribeAction: Email sent successfully.");
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
+      // We don't throw here strictly, as the subscription was successful
     }
 
     return { success: true };
@@ -75,13 +97,20 @@ export async function joinWaitlistAction(formData: FormData) {
     return { success: false, error: "Configuration Error: Missing API Key" };
   }
 
+  const audienceId = process.env.RESEND_AUDIENCE_WAIT_ID;
+  if (!audienceId) {
+    console.error("Missing RESEND_AUDIENCE_WAIT_ID");
+    return {
+      success: false,
+      error: "Configuration Error: Missing Audience ID",
+    };
+  }
+
   const resend = new Resend(apiKey);
 
   try {
-    // Hardcoded Audience ID for Waitlist
-    const audienceId = "d1ea57f6-82b0-4ce4-9f86-5d54a8ab8d38";
     console.log(
-      `joinWaitlistAction: Using Hardcoded Audience ID: ${audienceId}`,
+      `joinWaitlistAction: Using Audience ID starting with: ${audienceId.substring(0, 4)}...`,
     );
 
     console.log("joinWaitlistAction: Creating contact...");
@@ -92,9 +121,21 @@ export async function joinWaitlistAction(formData: FormData) {
       unsubscribed: false,
       audienceId: audienceId,
     });
+
+    // Check for errors in the contact creation response
+    if (contactResult.error) {
+      console.error(
+        "joinWaitlistAction: Failed to create contact:",
+        contactResult.error,
+      );
+      throw new Error(
+        `Failed to create contact: ${contactResult.error.message}`,
+      );
+    }
+
     console.log(
-      "joinWaitlistAction: Contact created successfully. Result:",
-      JSON.stringify(contactResult),
+      "joinWaitlistAction: Contact created successfully. FULL RESULT:",
+      JSON.stringify(contactResult, null, 2),
     );
 
     try {
