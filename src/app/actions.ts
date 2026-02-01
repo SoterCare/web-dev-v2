@@ -50,7 +50,10 @@ export async function subscribeAction(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("subscribeAction Error:", error);
-    return { success: false, error: "Failed to subscribe" };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to subscribe",
+    };
   }
 }
 
@@ -90,6 +93,9 @@ export async function joinWaitlistAction(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("joinWaitlistAction Error:", error);
-    return { success: false, error: "Failed to join waitlist" };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to join waitlist",
+    };
   }
 }

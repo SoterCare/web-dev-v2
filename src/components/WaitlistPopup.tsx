@@ -68,8 +68,13 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                             e.preventDefault()
                             setStatus("loading")
                             const formData = new FormData(e.currentTarget)
-                            await joinWaitlistAction(formData)
-                            setStatus("success")
+                            const result = await joinWaitlistAction(formData)
+                            if (result.success) {
+                                setStatus("success")
+                            } else {
+                                alert(result.error)
+                                setStatus("idle")
+                            }
                         }} className="space-y-3">
                             <div className="space-y-3">
                                 <input

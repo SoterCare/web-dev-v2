@@ -107,9 +107,14 @@ export default function NewsletterPopup() {
                             e.preventDefault()
                             setStatus("loading")
                             const formData = new FormData(e.currentTarget)
-                            await subscribeAction(formData)
-                            setStatus("success")
-                            localStorage.setItem("subscribed", "true")
+                            const result = await subscribeAction(formData)
+                            if (result.success) {
+                                setStatus("success")
+                                localStorage.setItem("subscribed", "true")
+                            } else {
+                                alert(result.error) // Simple alert for now, or use a state to show error below input
+                                setStatus("idle")
+                            }
                         }} className="space-y-3">
                             <div className="relative">
                                 <input
