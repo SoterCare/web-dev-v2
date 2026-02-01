@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Linkedin, Play } from 'lucide-react';
+import { Instagram, Linkedin, Play, Mail } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,13 +61,24 @@ const Footer = () => {
                 Wellness Simplified.
               </span>
             </h2>
-            <Link
-              href="#"
-              className="mt-10 md:mt-8 bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3"
-            >
-              <Play size={20} fill="currentColor" />
-              Watch a Demo
-            </Link>
+
+            <div className="flex flex-col md:flex-row gap-4 mt-10 md:mt-8">
+              <Link
+                href="#"
+                className="bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+              >
+                <Play size={20} fill="currentColor" />
+                Watch a Demo
+              </Link>
+
+              <button
+                onClick={() => window.dispatchEvent(new Event('open-newsletter-popup'))}
+                className="bg-[#2f2f2f] text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-black transition-colors duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+              >
+                <Mail size={20} />
+                Subscribe
+              </button>
+            </div>
           </div>
 
           {/* Bottom Bar */}

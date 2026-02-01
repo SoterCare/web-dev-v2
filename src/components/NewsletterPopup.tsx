@@ -51,12 +51,13 @@ export default function NewsletterPopup() {
         sessionStorage.setItem("newsletter_dismissed", "true")
     }
 
-    // Check session storage too to avoid spamming on reload
+    // Event listener for manual trigger (Footer button)
     useEffect(() => {
-        if (sessionStorage.getItem("newsletter_dismissed")) {
-            setIsOpen(false);
-        }
-    }, [isOpen]);
+        const handleOpenEvent = () => setIsOpen(true);
+        window.addEventListener('open-newsletter-popup', handleOpenEvent);
+
+        return () => window.removeEventListener('open-newsletter-popup', handleOpenEvent);
+    }, []);
 
 
     if (!mounted || !isOpen) return null
