@@ -1,18 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import WaitlistPopup from './WaitlistPopup';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
@@ -77,9 +78,12 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
-          <Link href="mailto:support@sotercare.com" className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95" scroll={false}>
-            Get In Touch
-          </Link>
+          <button
+            onClick={() => setIsWaitlistOpen(true)}
+            className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95"
+          >
+            Join Waitlist
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -127,15 +131,18 @@ const Navbar = () => {
         >
           Team
         </Link>
-        <Link
-          href="mailto:support@sotercare.com"
+        <button
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
+          onClick={() => {
+            setIsOpen(false);
+            setIsWaitlistOpen(true);
+          }}
         >
-          Get In Touch
-        </Link>
+          Join Waitlist
+        </button>
       </div>
+
+      <WaitlistPopup isOpen={isWaitlistOpen} onClose={() => setIsWaitlistOpen(false)} />
     </nav>
   );
 };

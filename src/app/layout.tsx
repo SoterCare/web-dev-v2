@@ -195,6 +195,7 @@ export const metadata: Metadata = {
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 export default function RootLayout({
   children,
@@ -231,6 +232,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="antialiased">
         <SmoothScroll />
+        <NewsletterPopup />
         {children}
         <Analytics />
       </body>
