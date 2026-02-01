@@ -63,7 +63,7 @@ export default function NewsletterPopup() {
     if (!mounted || !isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
             {/* Backdrop with blur */}
             <div
                 className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { joinWaitlistAction } from "@/app/actions"
+import { joinWaitlistAction, subscribeAction } from "@/app/actions"
 import { X, UserPlus, CheckCircle, ArrowRight, Loader2 } from "lucide-react"
 
 interface WaitlistPopupProps {
@@ -66,13 +66,29 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
 
                         <form onSubmit={async (e) => {
                             e.preventDefault()
-                            setStatus("loading")
+
                             const formData = new FormData(e.currentTarget)
-                            const result = await joinWaitlistAction(formData)
-                            if (result.success) {
+                            const consent = formData.get("newsletter_consent") === "on"
+
+                            if (!consent) {
+                                alert("Please subscribe to the newsletter to join the waitlist.")
+                                return
+                            }
+
+                            setStatus("loading")
+
+                            // Join Waitlist
+                            const waitlistResult = await joinWaitlistAction(formData)
+
+                            if (waitlistResult.success) {
+                                // If waitlist join successful, also subscribe to newsletter (fire and forget or parallel, but we want to ensure it happens)
+                                // We use the same formData since both need 'email'
+                                await subscribeAction(formData)
+
                                 setStatus("success")
+                                localStorage.setItem("subscribed", "true") // Mark as subscribed since they consented
                             } else {
-                                alert(result.error)
+                                alert(waitlistResult.error)
                                 setStatus("idle")
                             }
                         }} className="space-y-3">
@@ -84,6 +100,22 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                                     required
                                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-gray-400 text-gray-800"
                                 />
+
+                                <div className="flex items-start gap-3 px-1">
+                                    <div className="relative flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            name="newsletter_consent"
+                                            id="newsletter_consent"
+                                            required
+                                            className="peer h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white checked:bg-[#a0cbdb] checked:border-[#a0cbdb] focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/20"
+                                        />
+                                        <CheckCircle className="pointer-events-none absolute h-3 w-3 left-0.5 top-0.5 text-white opacity-0 peer-checked:opacity-100" />
+                                    </div>
+                                    <label htmlFor="newsletter_consent" className="text-xs text-gray-500 cursor-pointer select-none leading-tight">
+                                        I agree to subscribe to the SoterCare newsletter to receive updates and news.
+                                    </label>
+                                </div>
                             </div>
                             <button
                                 disabled={status === "loading"}
