@@ -97,7 +97,7 @@ export default function NewsletterPopup() {
                             <div className="w-12 h-12 text-[#a0cbdb] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
                                 <Mail size={24} />
                             </div>
-                            <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Weekly Wellness</h2>
+                            <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Updates Newsletter</h2>
                             <p className="text-[var(--text-muted)] leading-relaxed">
                                 Join us to stay updated on our progress and be part of our journey with SoterCare.
                             </p>
