@@ -39,8 +39,6 @@ const Hero = () => {
           ease: 'none',
         })
         .to(contentRef.current, {
-          start: '+=1200',
-          end: '+=1250',
           opacity: 0,
           ease: 'none',
         }),

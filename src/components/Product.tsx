@@ -65,6 +65,7 @@ const Product = () => {
                                         alt="The Thigh Node"
                                         width={300}
                                         height={220}
+                                        style={{ width: 'auto', height: 'auto' }}
                                         className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                                     />
                                 </div>
@@ -84,6 +85,7 @@ const Product = () => {
                                         alt="The Wrist Node"
                                         width={300}
                                         height={220}
+                                        style={{ width: 'auto', height: 'auto' }}
                                         className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                                     />
                                 </div>
@@ -103,6 +105,7 @@ const Product = () => {
                                         alt="The Edge Gateway"
                                         width={300}
                                         height={220}
+                                        style={{ width: 'auto', height: 'auto' }}
                                         className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                                     />
                                 </div>
