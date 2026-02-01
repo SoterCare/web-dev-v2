@@ -79,7 +79,8 @@ export default function NewsletterPopup() {
                 </button>
 
                 {status === "success" ? (
-                    <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2"                        <h2 className="text-xl font-bold text-[var(--text)]">You're on <br />the list!</h2>
+                    <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2">
+                        <h2 className="text-xl font-bold text-[var(--text)]">You're on <br />the list!</h2>
                         <p className="text-[var(--text-muted)] max-w-[200px]">
                             Thanks for joining.
                         </p>
