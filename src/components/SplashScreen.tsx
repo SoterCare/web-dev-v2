@@ -63,7 +63,7 @@ const SplashScreen = () => {
             ref={containerRef}
             className="fixed inset-0 z-[100] bg-white flex items-center justify-center h-screen w-screen overflow-hidden"
         >
-            <div className="relative w-64 h-64 md:w-40 md:h-40">
+            <div className="relative w-28 h-28 md:w-40 md:h-40">
                 <Image
                     ref={logoRef}
                     src="/assets/SoterCare-centered-logo.png"

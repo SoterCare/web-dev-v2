@@ -36,9 +36,9 @@ export async function subscribeAction(formData: FormData) {
 
     // 2. Send Welcome Email
     const { error: emailError } = await resend.emails.send({
-      from: "updates@sotercare.com",
+      from: "SoterCare <updates@sotercare.com>",
       to: email,
-      subject: "Welcome to Weekly Wellness",
+      subject: "Welcome to SoterCare Newsletter",
       react: WelcomeNewsletter(),
     });
 
@@ -80,9 +80,9 @@ export async function joinWaitlistAction(formData: FormData) {
 
     // 2. Send Confirmation Email
     const { error: emailError } = await resend.emails.send({
-      from: "updates@sotercare.com",
+      from: "SoterCare <updates@sotercare.com>",
       to: email,
-      subject: "You are on the list",
+      subject: "You are on the SoterCare Waitlist",
       react: WelcomeWaitlist(),
     });
 
