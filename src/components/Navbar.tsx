@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { useRef } from 'react';
+import { useState, useRef } from 'react'; // Consolidated import
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation'; // Added import
 import { Menu, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -11,9 +11,24 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const NAV_LINKS = [
+  { name: 'Product', href: '#product' },
+  { name: 'Features', href: '#features' },
+  { name: 'Pricing', href: '#pricing' },
+  { name: 'Blog', href: '#blog' },
+  { name: 'Team', href: '#team' },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  const getLinkHref = (href: string) => {
+    if (isHome) return href;
+    return `/${href}`;
+  };
 
   useGSAP(() => {
     gsap.fromTo(navRef.current,
@@ -44,7 +59,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
-          <Link href="#" className="flex items-center gap-2" scroll={false}>
+          <Link href="/" className="flex items-center gap-2" scroll={isHome ? true : false}>
             <Image
               src="/assets/SoterCare-Primary-logo-brandblue.png"
               alt="SoterCare"
@@ -60,19 +75,16 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-
-          <Link href="#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
-            Product
-          </Link>
-          <Link href="#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
-            Features
-          </Link>
-          <Link href="#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
-            Pricing
-          </Link>
-          <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
-            Team
-          </Link>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.name}
+              href={getLinkHref(link.href)}
+              className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+              scroll={false}
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
 
         {/* CTA Button */}
@@ -94,39 +106,17 @@ const Navbar = () => {
       </div>
 
       <div className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'}`}>
-
-        <Link
-          href="#product"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Product
-        </Link>
-        <Link
-          href="#features"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Features
-        </Link>
-        <Link
-          href="#pricing"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Pricing
-        </Link>
-        <Link
-          href="#team"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Team
-        </Link>
+        {NAV_LINKS.map((link) => (
+          <Link
+            key={link.name}
+            href={getLinkHref(link.href)}
+            className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+            onClick={() => setIsOpen(false)}
+            scroll={false}
+          >
+            {link.name}
+          </Link>
+        ))}
         <Link
           href="mailto:support@sotercare.com"
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
@@ -139,5 +129,6 @@ const Navbar = () => {
     </nav>
   );
 };
+
 
 export default Navbar;

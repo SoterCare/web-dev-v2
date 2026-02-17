@@ -3,29 +3,47 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable React strict mode for better development warnings
   reactStrictMode: true,
-  
+
   // Trailing slash consistency (prevents duplicate content)
   trailingSlash: false,
-  
+
   // Optimize images
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year cache
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.graphassets.com', // Common Hygraph asset domain
+      },
+      {
+        protocol: 'https',
+        hostname: 'eu-central-1-shared-euc1-02.graphassets.com', // Potential specific hygraph region, adding generally
+      }
+    ],
   },
-  
+
   // Enable compression
   compress: true,
-  
+
   // PoweredBy header removal for security
   poweredByHeader: false,
-  
+
   // Optimize production builds
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  
+
   // HTTP security headers
   async headers() {
     return [
@@ -74,7 +92,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+
   // Redirects for SEO
   async redirects() {
     return [
