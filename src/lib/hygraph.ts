@@ -57,7 +57,7 @@ const MOCK_POSTS: BlogPost[] = [
     publishedAt: new Date().toISOString(),
     excerpt: 'How artificial intelligence and internet of things are revolutionizing how we care for our seniors.',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      url: '/assets/blog/blog1.png',
     },
     content: {
       html: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
@@ -77,7 +77,7 @@ const MOCK_POSTS: BlogPost[] = [
     publishedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
     excerpt: 'A deep dive into the algorithms and sensors that make modern fall detection possible and reliable.',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1584515933487-9d9fc93860bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      url: '/assets/blog/blog2.png',
     },
     content: {
       html: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
@@ -94,7 +94,7 @@ const MOCK_POSTS: BlogPost[] = [
     publishedAt: new Date(Date.now() - 86400000 * 5).toISOString(),
     excerpt: 'Simple but effective changes you can make to your living environment to significantly reduce the risk of falls.',
     coverImage: {
-      url: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      url: '/assets/blog/blog3.png',
     },
     content: {
       html: '<p>Detailed content about preventing falls...</p>',

@@ -1,37 +1,34 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAllPosts } from '@/lib/hygraph';
-import Navbar from '@/components/Navbar';
-import BlogFooter from '@/components/BlogFooter';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-export const revalidate = 60; // Revalidate every 60 seconds
-
-export default async function BlogPage() {
+export default async function BlogFull() {
     const posts = await getAllPosts();
 
-    return (
-        <main className="min-h-screen text-text relative selection:bg-blue-100 selection:text-blue-900">
-            <div className="fixed top-0 left-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
-            <Navbar />
+    if (!posts || posts.length === 0) {
+        return null; // Don't render section if no posts
+    }
 
-            <div className="pt-32 pb-24 px-8 w-full max-w-7xl mx-auto min-h-screen relative z-10">
+    return (
+        <section id="blog" className="w-full py-24 md:py-32 bg-white relative z-10">
+            <div className="w-full max-w-7xl mx-auto px-8">
                 <div className="flex flex-col gap-12">
                     {/* Header */}
                     <div className="flex flex-col gap-4 items-center text-center">
-                        <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-text/60 w-fit">
-                            Our Blog
+                        <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 w-fit">
+                            From Our Blog
                         </span>
-                        <h1 className="text-4xl md:text-6xl font-bold">Latest Updates</h1>
+                        <h2 className="text-4xl md:text-6xl font-bold">Latest Updates</h2>
                         <p className="text-xl text-text-muted max-w-2xl">
-                            Insights, updates, and stories from the SoterCare team.
+                            Stay updated with the latest news, health tips, and SoterCare announcements.
                         </p>
                     </div>
 
                     {/* Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {posts.map((post) => (
-                            <Link href={`/blog/${post.slug}`} key={post.id} className="group flex flex-col gap-4 bg-bg-card p-6 rounded-3xl shadow-m border border-black/5 hover:-translate-y-1 transition-all">
+                            <Link href={`/blog/${post.slug}`} key={post.id} className="group flex flex-col gap-4 bg-white p-6 rounded-3xl shadow-sm border border-black/5 hover:shadow-md transition-all">
                                 <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-gray-100">
                                     {post.coverImage && (
                                         <Image
@@ -69,22 +66,8 @@ export default async function BlogPage() {
                             </Link>
                         ))}
                     </div>
-
-                    {posts.length === 0 && (
-                        <div className="text-center text-text-muted py-20">
-                            <p>No posts found. Check back soon!</p>
-                        </div>
-                    )}
-
-                    <div className="flex justify-center mt-12">
-                        <Link href="/" className="flex items-center gap-2 text-text-muted hover:text-text transition-colors">
-                            <ArrowLeft size={16} /> Back to Home
-                        </Link>
-                    </div>
                 </div>
             </div>
-
-            <BlogFooter />
-        </main>
+        </section>
     );
 }

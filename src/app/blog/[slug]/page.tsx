@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getPostBySlug } from '@/lib/hygraph';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import BlogFooter from '@/components/BlogFooter';
 import { ArrowLeft } from 'lucide-react';
 
 interface Props {
@@ -21,13 +21,14 @@ export default async function BlogPostPage({ params }: Props) {
     }
 
     return (
-        <main className="min-h-screen bg-[#fafafa] text-foreground">
+        <main className="min-h-screen text-text relative selection:bg-blue-100 selection:text-blue-900">
+            <div className="fixed top-0 left-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
             <Navbar />
 
-            <article className="pt-32 pb-24 w-full">
+            <article className="pt-32 pb-24 w-full relative z-10">
                 {/* Header Section */}
                 <div className="w-full max-w-4xl mx-auto px-8 flex flex-col gap-6 mb-12">
-                    <Link href="/blog" className="flex items-center gap-2 text-text-muted hover:text-foreground transition-colors w-fit mb-4">
+                    <Link href="/blog" className="flex items-center gap-2 text-text-muted hover:text-text transition-colors w-fit mb-4">
                         <ArrowLeft size={16} /> Back to Blog
                     </Link>
 
@@ -47,7 +48,7 @@ export default async function BlogPostPage({ params }: Props) {
                                     />
                                 </div>
                             )}
-                            <span className="font-medium text-foreground">{post.author?.name || 'SoterCare Team'}</span>
+                            <span className="font-medium text-text">{post.author?.name || 'SoterCare Team'}</span>
                         </div>
                         <span>•</span>
                         <span>{new Date(post.publishedAt).toLocaleDateString(undefined, {
@@ -74,7 +75,7 @@ export default async function BlogPostPage({ params }: Props) {
                 )}
 
                 {/* Content */}
-                <div className="w-full max-w-3xl mx-auto px-8 prose prose-lg prose-blue prose-headings:font-bold prose-headings:text-foreground prose-p:text-text-muted prose-a:text-blue-600">
+                <div className="w-full max-w-3xl mx-auto px-8 prose prose-lg prose-blue prose-headings:font-bold prose-headings:text-text prose-p:text-text-muted prose-a:text-blue-600">
                     {post.content.html ? (
                         <div dangerouslySetInnerHTML={{ __html: post.content.html }} />
                     ) : (
@@ -83,7 +84,7 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
             </article>
 
-            <Footer />
+            <BlogFooter />
         </main>
     );
 }

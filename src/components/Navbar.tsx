@@ -15,8 +15,8 @@ const NAV_LINKS = [
   { name: 'Product', href: '#product' },
   { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '#pricing' },
-  { name: 'Blog', href: '#blog' },
   { name: 'Team', href: '#team' },
+  { name: 'Blog', href: '/blog' },
 ];
 
 const Navbar = () => {
@@ -76,14 +76,24 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
           {NAV_LINKS.map((link) => (
-            <Link
-              key={link.name}
-              href={getLinkHref(link.href)}
-              className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
-              scroll={false}
-            >
-              {link.name}
-            </Link>
+            !isHome && link.href.startsWith('#') ? (
+              <a
+                key={link.name}
+                href={getLinkHref(link.href)}
+                className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                href={getLinkHref(link.href)}
+                className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+                scroll={false}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </div>
 
@@ -107,15 +117,26 @@ const Navbar = () => {
 
       <div className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'}`}>
         {NAV_LINKS.map((link) => (
-          <Link
-            key={link.name}
-            href={getLinkHref(link.href)}
-            className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-            onClick={() => setIsOpen(false)}
-            scroll={false}
-          >
-            {link.name}
-          </Link>
+          !isHome && link.href.startsWith('#') ? (
+            <a
+              key={link.name}
+              href={getLinkHref(link.href)}
+              className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.name}
+            </a>
+          ) : (
+            <Link
+              key={link.name}
+              href={getLinkHref(link.href)}
+              className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+              onClick={() => setIsOpen(false)}
+              scroll={false}
+            >
+              {link.name}
+            </Link>
+          )
         ))}
         <Link
           href="mailto:support@sotercare.com"

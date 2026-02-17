@@ -71,7 +71,7 @@ const TEAM_MEMBERS = [
     {
         name: 'Hirusha Maduranga',
         role: 'Mobile Dev Sub Lead',
-        skills: ['Java', 'Python', 'React', 'Nextjs' , 'Javascript'],
+        skills: ['Java', 'Python', 'React', 'Nextjs', 'Javascript'],
         image: '/assets/team/Hirusha.png',
         email: 'hirusha@sotercare.com',
         socials: {
@@ -105,12 +105,10 @@ const Team = () => {
     }, { scope: sectionRef });
 
     return (
-        <section id="team" ref={sectionRef} className="relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
-            {/* Dotted Background removed (global) */}
-
-            <div ref={contentRef} className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="mb-6 text-center">
+        <section id="team" ref={sectionRef} className="bg-transparent min-h-screen relative z-10 w-full overflow-hidden">
+            {/* --- Team --- */}
+            <div ref={contentRef} className="w-full relative z-10 flex flex-col items-center justify-center px-8 pt-24 md:pt-32 pb-8">
+                <div className="w-full max-w-7xl mx-auto flex flex-col justify-center h-full">
                     <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
                         Our Team
                     </span>
