@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { getAllPosts } from '@/lib/hygraph';
 import Navbar from '@/components/Navbar';
 import BlogFooter from '@/components/BlogFooter';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
@@ -76,7 +76,11 @@ export default async function BlogPage() {
                         </div>
                     )}
 
-
+                    <div className="flex justify-center mt-12">
+                        <Link href="/" className="flex items-center gap-2 text-text-muted hover:text-text transition-colors">
+                            <ArrowLeft size={16} /> Back to Home
+                        </Link>
+                    </div>
                 </div>
             </div>
 
