@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
-import { Github, Linkedin, Instagram, Mail } from 'lucide-react';
+import { Github, Linkedin, Instagram, Mail, Globe } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +17,8 @@ const TEAM_MEMBERS = [
         socials: {
             github: 'https://github.com/DahamDissanayake/',
             linkedin: 'https://www.linkedin.com/in/daham-dissanayake/',
-            instagram: 'https://www.instagram.com/dhmdissanayake/'
+            instagram: 'https://www.instagram.com/dhmdissanayake/',
+            website: 'https://daham.serenedge.com/'
         }
     },
     {
@@ -29,7 +30,8 @@ const TEAM_MEMBERS = [
         socials: {
             github: 'https://github.com/sanjulaonline',
             linkedin: 'https://www.linkedin.com/in/sanjulaherath/',
-            instagram: 'https://www.instagram.com/s_njula._.xz./'
+            instagram: 'https://www.instagram.com/s_njula._.xz./',
+            website: ''
         }
     },
     {
@@ -41,7 +43,8 @@ const TEAM_MEMBERS = [
         socials: {
             github: 'https://github.com/kaweeshakanchana',
             linkedin: 'https://www.linkedin.com/in/kaweesha-kanchana-228729398/',
-            instagram: 'https://www.instagram.com/kaweesha_kanchana/'
+            instagram: 'https://www.instagram.com/kaweesha_kanchana/',
+            website: ''
         }
     },
     {
@@ -53,7 +56,8 @@ const TEAM_MEMBERS = [
         socials: {
             github: 'https://github.com/KomuDhara',
             linkedin: 'https://www.linkedin.com/in/komudi-senarachchi-3bba102ba/',
-            instagram: 'https://www.instagram.com/komu_dhara'
+            instagram: 'https://www.instagram.com/komu_dhara',
+            website: ''
         }
     },
     {
@@ -65,19 +69,21 @@ const TEAM_MEMBERS = [
         socials: {
             github: 'https://github.com/nimnaahh',
             linkedin: 'https://www.linkedin.com/in/nimna-minsadi-212454296/',
-            instagram: 'https://www.instagram.com/tbh_idk_006/'
+            instagram: 'https://www.instagram.com/tbh_idk_006/',
+            website: ''
         }
     },
     {
         name: 'Hirusha Maduranga',
         role: 'Mobile Dev Sub Lead',
-        skills: ['Java', 'Python', 'React', 'Nextjs' , 'Javascript'],
+        skills: ['Java', 'Python', 'React', 'Nextjs', 'Javascript'],
         image: '/assets/team/Hirusha.png',
         email: 'hirusha@sotercare.com',
         socials: {
             github: 'https://github.com/hirushaMaduranga',
             linkedin: 'https://www.linkedin.com/in/hirusha-pathum-maduranga-889845375/',
-            instagram: 'https://www.instagram.com/__h_i_r_u__official'
+            instagram: 'https://www.instagram.com/__h_i_r_u__official',
+            website: ''
         }
     }
 ];
@@ -169,6 +175,11 @@ const Team = () => {
                                             <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110">
                                                 <Instagram size={18} />
                                             </a>
+                                            {member.socials.website && (
+                                                <a href={member.socials.website} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-500 hover:scale-110">
+                                                    <Globe size={18} />
+                                                </a>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
