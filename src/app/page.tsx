@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -22,6 +22,18 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   const bgRef = useRef<HTMLDivElement>(null);
+
+  // Handle hash scroll on page load (for navigation from other routes)
+  useEffect(() => {
+    if (window.location.hash === '#blog-section') {
+      const el = document.getElementById('blog-section');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   useGSAP(() => {
     if (!bgRef.current) return;
