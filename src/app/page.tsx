@@ -17,6 +17,7 @@ import Features from '@/components/Features';
 import Pricing from '@/components/Pricing';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
+import LatestBlogsSection from '@/components/home/LatestBlogsSection';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -49,6 +50,7 @@ export default function Home() {
       <Pricing />
       <FAQ />
       <Team />
+      <LatestBlogsSection />
       <Footer />
     </main>
   );
