@@ -74,6 +74,9 @@ const Navbar = () => {
           <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Team
           </Link>
+          <Link href="/blog" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium">
+            Blog
+          </Link>
         </div>
 
         {/* CTA Button */}
@@ -130,6 +133,13 @@ const Navbar = () => {
           scroll={false}
         >
           Team
+        </Link>
+        <Link
+          href="/blog"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+        >
+          Blog
         </Link>
         <button
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
