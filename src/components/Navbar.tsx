@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRouter, usePathname } from 'next/navigation';
 import WaitlistPopup from './WaitlistPopup';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,21 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleBlogClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false);
+    
+    if (pathname === '/') {
+      // Already on home, just scroll
+      document.getElementById('blog-section')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Navigate to home with hash
+      router.push('/#blog-section');
+    }
+  };
 
   useGSAP(() => {
     gsap.fromTo(navRef.current,
@@ -74,9 +90,12 @@ const Navbar = () => {
           <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
             Team
           </Link>
-          <Link href="/blog" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium">
+          <button
+            onClick={handleBlogClick}
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+          >
             Blog
-          </Link>
+          </button>
         </div>
 
         {/* CTA Button */}
@@ -134,13 +153,12 @@ const Navbar = () => {
         >
           Team
         </Link>
-        <Link
-          href="/blog"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
+        <button
+          onClick={handleBlogClick}
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center w-full"
         >
           Blog
-        </Link>
+        </button>
         <button
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
           onClick={() => {
