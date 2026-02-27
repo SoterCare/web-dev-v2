@@ -62,7 +62,7 @@ const Navbar = () => {
       <div className="bg-bg-card shadow-m border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
 
         {/* Logo */}
-        <div className="flex-shrink-0 flex items-center">
+        <div className="flex items-center flex-shrink-0">
           <Link href="#" className="flex items-center gap-2" scroll={false}>
             <Image
               src="/assets/SoterCare-Primary-logo-brandblue.png"
@@ -70,7 +70,7 @@ const Navbar = () => {
               width={0}
               height={0}
               sizes="100vw"
-              className="h-10 w-auto object-contain"
+              className="object-contain w-auto h-10"
               style={{ width: 'auto', height: '40px' }}
               priority
             />
@@ -78,7 +78,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="items-center hidden space-x-8 md:flex">
 
           <Link href="/#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#product')}>
             Product
@@ -98,7 +98,7 @@ const Navbar = () => {
         </div>
 
         {/* CTA Button */}
-        <div className="hidden md:flex items-center">
+        <div className="items-center hidden md:flex">
           <button
             onClick={() => setIsWaitlistOpen(true)}
             className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95"
@@ -108,7 +108,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
+        <div className="flex items-center md:hidden">
           <button
             className="text-[#797979] hover:text-[black] p-2 transition-transform active:scale-95"
             onClick={() => setIsOpen(!isOpen)}
@@ -122,7 +122,7 @@ const Navbar = () => {
 
         <Link
           href="/#product"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
           onClick={(e) => handleNavClick(e, '#product')}
           scroll={false}
         >
@@ -130,7 +130,7 @@ const Navbar = () => {
         </Link>
         <Link
           href="/#features"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
           onClick={(e) => handleNavClick(e, '#features')}
           scroll={false}
         >
@@ -138,7 +138,7 @@ const Navbar = () => {
         </Link>
         <Link
           href="/#pricing"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
           onClick={(e) => handleNavClick(e, '#pricing')}
           scroll={false}
         >
@@ -146,7 +146,7 @@ const Navbar = () => {
         </Link>
         <Link
           href="/#team"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
           onClick={(e) => handleNavClick(e, '#team')}
           scroll={false}
         >
@@ -154,14 +154,14 @@ const Navbar = () => {
         </Link>
         <Link
           href="/#blog"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
           onClick={(e) => handleNavClick(e, '#blog')}
           scroll={false}
         >
           Blog
         </Link>
         <button
-          className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
+          className="px-6 py-3 mt-2 text-lg font-bold text-center transition-all bg-bg-panel shadow-m text-foreground rounded-xl active:scale-95"
           onClick={() => {
             setIsOpen(false);
             setIsWaitlistOpen(true);
