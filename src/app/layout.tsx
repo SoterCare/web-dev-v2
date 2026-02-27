@@ -197,6 +197,7 @@ export const metadata: Metadata = {
 import SmoothScroll from "@/components/SmoothScroll";
 import NewsletterPopup from "@/components/NewsletterPopup";
 import JsonLd from "@/components/JsonLd";
+import HashScroll from "@/components/HashScroll";
 
 export default function RootLayout({
   children,
@@ -230,6 +231,7 @@ export default function RootLayout({
         {/* JSON-LD Structured Data - injected client-side to avoid hydration mismatch */}
         <JsonLd data={jsonLd} id="site-jsonld" />
         <SmoothScroll />
+        <HashScroll />
         <NewsletterPopup />
         {children}
         <Analytics />

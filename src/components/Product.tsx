@@ -33,7 +33,7 @@ const Product = () => {
     }, { scope: sectionRef });
 
     return (
-        <section id="product" ref={sectionRef} className="bg-transparent relative z-20 -mt-1 w-full overflow-hidden">
+        <section id="product" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-20 -mt-1 w-full overflow-hidden">
             {/* Dotted Background removed (global) */}
 
             <div ref={contentRef} className="relative z-10 flex flex-col w-full">

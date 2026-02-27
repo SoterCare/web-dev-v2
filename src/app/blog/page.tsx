@@ -69,7 +69,7 @@ export default async function BlogPage() {
       <div className="relative z-10 px-4 py-24 mx-auto max-w-7xl sm:px-6 lg:px-8 md:py-32">
         {/* Back Link */}
         <Link
-          href="/"
+          href="/#blog"
           className="inline-flex items-center gap-2 mb-8 text-sm font-medium transition-colors text-text-muted hover:text-foreground"
         >
           <ArrowLeft size={16} />

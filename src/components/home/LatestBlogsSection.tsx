@@ -135,7 +135,7 @@ const LatestBlogsSection = () => {
   );
 
   return (
-    <section id="blog-section" ref={sectionRef} className="relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
+    <section id="blog" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
       <div ref={contentRef} className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16 text-center">

@@ -75,7 +75,7 @@ const Pricing = () => {
   }, { scope: sectionRef });
 
   return (
-    <section id="pricing" ref={sectionRef} className="pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
+    <section id="pricing" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
       {/* Shorten the background decoration or allow it to blend */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[20%] right-[-5%] w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-40 mix-blend-multiply"></div>

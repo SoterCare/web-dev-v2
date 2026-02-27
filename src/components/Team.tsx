@@ -113,7 +113,7 @@ const Team = () => {
     }, { scope: sectionRef });
 
     return (
-        <section id="team" ref={sectionRef} className="relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
+        <section id="team" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32">
             {/* Dotted Background removed (global) */}
 
             <div ref={contentRef} className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

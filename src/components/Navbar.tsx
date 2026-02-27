@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useRouter, usePathname } from 'next/navigation';
 import WaitlistPopup from './WaitlistPopup';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,19 +16,21 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-  const router = useRouter();
   const pathname = usePathname();
 
-  const handleBlogClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleNavClick = (e: React.MouseEvent, hash: string) => {
     setIsOpen(false);
-    
     if (pathname === '/') {
-      // Already on home, just scroll
-      document.getElementById('blog-section')?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // Navigate to home with hash
-      router.push('/#blog-section');
+      e.preventDefault();
+      const id = hash.replace('#', '');
+      window.history.pushState(null, '', `/${hash}`);
+      const el = document.getElementById(id);
+      if (el) {
+        const nav = document.querySelector('[data-site-navbar]') as HTMLElement | null;
+        const offset = nav ? nav.getBoundingClientRect().bottom + 16 : 0;
+        const y = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
   };
 
@@ -56,7 +58,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav ref={navRef} className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
+    <nav ref={navRef} data-site-navbar className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
       <div className="bg-bg-card shadow-m border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
 
         {/* Logo */}
@@ -78,24 +80,21 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
 
-          <Link href="#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#product')}>
             Product
           </Link>
-          <Link href="#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#features')}>
             Features
           </Link>
-          <Link href="#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#pricing')}>
             Pricing
           </Link>
-          <Link href="#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false}>
+          <Link href="/#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#team')}>
             Team
           </Link>
-          <button
-            onClick={handleBlogClick}
-            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
-          >
+          <Link href="/#blog" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#blog')}>
             Blog
-          </button>
+          </Link>
         </div>
 
         {/* CTA Button */}
@@ -122,43 +121,45 @@ const Navbar = () => {
       <div className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'}`}>
 
         <Link
-          href="#product"
+          href="/#product"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
+          onClick={(e) => handleNavClick(e, '#product')}
           scroll={false}
         >
           Product
         </Link>
         <Link
-          href="#features"
+          href="/#features"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
+          onClick={(e) => handleNavClick(e, '#features')}
           scroll={false}
         >
           Features
         </Link>
         <Link
-          href="#pricing"
+          href="/#pricing"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
+          onClick={(e) => handleNavClick(e, '#pricing')}
           scroll={false}
         >
           Pricing
         </Link>
         <Link
-          href="#team"
+          href="/#team"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
+          onClick={(e) => handleNavClick(e, '#team')}
           scroll={false}
         >
           Team
         </Link>
-        <button
-          onClick={handleBlogClick}
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center w-full"
+        <Link
+          href="/#blog"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={(e) => handleNavClick(e, '#blog')}
+          scroll={false}
         >
           Blog
-        </button>
+        </Link>
         <button
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
           onClick={() => {
