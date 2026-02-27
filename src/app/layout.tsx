@@ -196,6 +196,7 @@ export const metadata: Metadata = {
 
 import SmoothScroll from "@/components/SmoothScroll";
 import NewsletterPopup from "@/components/NewsletterPopup";
+import JsonLd from "@/components/JsonLd";
 
 export default function RootLayout({
   children,
@@ -224,13 +225,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://va.vercel-scripts.com" />
         {/* DNS prefetch for faster resolution */}
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
-        {/* JSON-LD Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
       </head>
       <body suppressHydrationWarning className="antialiased">
+        {/* JSON-LD Structured Data - injected client-side to avoid hydration mismatch */}
+        <JsonLd data={jsonLd} id="site-jsonld" />
         <SmoothScroll />
         <NewsletterPopup />
         {children}
