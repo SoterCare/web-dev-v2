@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -166,17 +168,17 @@ const Team = () => {
 
                                         {/* Socials */}
                                         <div className="flex items-center gap-4 pt-1">
-                                            <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm">
+                                            <a href={member.socials.github} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s GitHub profile`} className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm">
                                                 <Github size={18} />
                                             </a>
-                                            <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-600 hover:scale-110">
+                                            <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s LinkedIn profile`} className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-600 hover:scale-110">
                                                 <Linkedin size={18} />
                                             </a>
-                                            <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110">
+                                            <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s Instagram profile`} className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110">
                                                 <Instagram size={18} />
                                             </a>
                                             {member.socials.website && (
-                                                <a href={member.socials.website} target="_blank" rel="noopener noreferrer" className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-500 hover:scale-110">
+                                                <a href={member.socials.website} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s personal website`} className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-500 hover:scale-110">
                                                     <Globe size={18} />
                                                 </a>
                                             )}
