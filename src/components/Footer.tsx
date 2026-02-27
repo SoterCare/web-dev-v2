@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -102,10 +104,10 @@ const Footer = () => {
                   <a href="tel:+94704888440" className="hover:text-white transition-colors">
                     +94 70 4888 440
                   </a>
-                  <a href="https://www.instagram.com/sotercare_" target="_blank" className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full">
+                  <a href="https://www.instagram.com/sotercare_" target="_blank" rel="noopener noreferrer" aria-label="Follow SoterCare on Instagram" className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full">
                     <Instagram size={20} />
                   </a>
-                  <a href="https://www.linkedin.com/company/sotercare/" target="_blank" className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full">
+                  <a href="https://www.linkedin.com/company/sotercare/" target="_blank" rel="noopener noreferrer" aria-label="Connect with SoterCare on LinkedIn" className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full">
                     <Linkedin size={20} />
                   </a>
                 </div>
