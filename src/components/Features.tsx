@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing } from 'lucide-react';
