@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import WaitlistPopup from './WaitlistPopup';
+import { useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import WaitlistPopup from "./WaitlistPopup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,29 +20,39 @@ const Navbar = () => {
 
   const handleNavClick = (e: React.MouseEvent, hash: string) => {
     setIsOpen(false);
-    if (pathname === '/') {
+
+    // If already on landing page, prevent default navigation and do smooth offset scroll
+    if (pathname === "/") {
       e.preventDefault();
-      const id = hash.replace('#', '');
-      window.history.pushState(null, '', `/${hash}`);
+
+      const id = hash.replace("#", "");
+      window.history.pushState(null, "", `/${hash}`);
+
       const el = document.getElementById(id);
       if (el) {
-        const nav = document.querySelector('[data-site-navbar]') as HTMLElement | null;
-        const offset = nav ? nav.getBoundingClientRect().bottom + 16 : 0;
-        const y = el.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        const nav = document.querySelector(
+          "[data-site-navbar]"
+        ) as HTMLElement | null;
+        const offset = nav?.getBoundingClientRect().height ?? 0;
+
+        const y = el.getBoundingClientRect().top + window.scrollY - offset - 8;
+        window.scrollTo({ top: y, behavior: "smooth" });
       }
     }
+    // If not on "/", allow Link href="/#..." navigation.
+    // HashScroll.tsx will handle the smooth scroll after route change.
   };
 
   useGSAP(() => {
-    gsap.fromTo(navRef.current,
+    gsap.fromTo(
+      navRef.current,
       {
-        width: "85%", // Initial "Longer" state
-        maxWidth: "1280px"
+        width: "85%",
+        maxWidth: "1280px",
       },
       {
-        width: "95%", // Mobile default basically, or constrained desktop
-        maxWidth: "900px", // Shorter state (current max-w-5xl)
+        width: "95%",
+        maxWidth: "900px",
         duration: 0.5,
         ease: "power1.inOut",
         scrollTrigger: {
@@ -50,20 +60,21 @@ const Navbar = () => {
           start: "+=300",
           end: "+=330",
           scrub: true,
-        }
+        },
       }
     );
-
-
   }, []);
 
   return (
-    <nav ref={navRef} data-site-navbar className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
+    <nav
+      ref={navRef}
+      data-site-navbar
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl"
+    >
       <div className="bg-bg-card shadow-m border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
-
         {/* Logo */}
         <div className="flex items-center flex-shrink-0">
-          <Link href="#" className="flex items-center gap-2" scroll={false}>
+          <Link href="/" className="flex items-center gap-2" scroll={false}>
             <Image
               src="/assets/SoterCare-Primary-logo-brandblue.png"
               alt="SoterCare"
@@ -71,7 +82,7 @@ const Navbar = () => {
               height={0}
               sizes="100vw"
               className="object-contain w-auto h-10"
-              style={{ width: 'auto', height: '40px' }}
+              style={{ width: "auto", height: "40px" }}
               priority
             />
           </Link>
@@ -79,20 +90,48 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="items-center hidden space-x-8 md:flex">
-
-          <Link href="/#product" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#product')}>
+          <Link
+            href="/#product"
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            scroll={false}
+            onClick={(e) => handleNavClick(e, "#product")}
+          >
             Product
           </Link>
-          <Link href="/#features" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#features')}>
+
+          <Link
+            href="/#features"
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            scroll={false}
+            onClick={(e) => handleNavClick(e, "#features")}
+          >
             Features
           </Link>
-          <Link href="/#pricing" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#pricing')}>
+
+          <Link
+            href="/#pricing"
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            scroll={false}
+            onClick={(e) => handleNavClick(e, "#pricing")}
+          >
             Pricing
           </Link>
-          <Link href="/#team" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#team')}>
+
+          <Link
+            href="/#team"
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            scroll={false}
+            onClick={(e) => handleNavClick(e, "#team")}
+          >
             Team
           </Link>
-          <Link href="/#blog" className="text-[#797979] hover:text-[black] transition-colors text-base font-medium" scroll={false} onClick={(e) => handleNavClick(e, '#blog')}>
+
+          <Link
+            href="/#blog"
+            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            scroll={false}
+            onClick={(e) => handleNavClick(e, "#blog")}
+          >
             Blog
           </Link>
         </div>
@@ -118,48 +157,59 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'}`}>
-
+      {/* Mobile Dropdown */}
+      <div
+        className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${
+          isOpen
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
+        }`}
+      >
         <Link
           href="/#product"
           className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
-          onClick={(e) => handleNavClick(e, '#product')}
+          onClick={(e) => handleNavClick(e, "#product")}
           scroll={false}
         >
           Product
         </Link>
+
         <Link
           href="/#features"
           className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
-          onClick={(e) => handleNavClick(e, '#features')}
+          onClick={(e) => handleNavClick(e, "#features")}
           scroll={false}
         >
           Features
         </Link>
+
         <Link
           href="/#pricing"
           className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
-          onClick={(e) => handleNavClick(e, '#pricing')}
+          onClick={(e) => handleNavClick(e, "#pricing")}
           scroll={false}
         >
           Pricing
         </Link>
+
         <Link
           href="/#team"
           className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
-          onClick={(e) => handleNavClick(e, '#team')}
+          onClick={(e) => handleNavClick(e, "#team")}
           scroll={false}
         >
           Team
         </Link>
+
         <Link
           href="/#blog"
           className="px-4 py-3 text-lg font-medium text-center transition-all text-text-muted hover:text-text hover:bg-black/5 rounded-xl"
-          onClick={(e) => handleNavClick(e, '#blog')}
+          onClick={(e) => handleNavClick(e, "#blog")}
           scroll={false}
         >
           Blog
         </Link>
+
         <button
           className="px-6 py-3 mt-2 text-lg font-bold text-center transition-all bg-bg-panel shadow-m text-foreground rounded-xl active:scale-95"
           onClick={() => {
@@ -171,7 +221,10 @@ const Navbar = () => {
         </button>
       </div>
 
-      <WaitlistPopup isOpen={isWaitlistOpen} onClose={() => setIsWaitlistOpen(false)} />
+      <WaitlistPopup
+        isOpen={isWaitlistOpen}
+        onClose={() => setIsWaitlistOpen(false)}
+      />
     </nav>
   );
 };
