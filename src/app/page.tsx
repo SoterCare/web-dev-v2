@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -21,6 +21,8 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   const bgRef = useRef<HTMLDivElement>(null);
+
+
 
   useGSAP(() => {
     if (!bgRef.current) return;
