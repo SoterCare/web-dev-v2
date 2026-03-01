@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing } from 'lucide-react';
@@ -29,7 +31,7 @@ const Features = () => {
     }, { scope: sectionRef });
 
     return (
-        <section id="features" ref={sectionRef} className="bg-transparent relative z-10 w-full overflow-hidden">
+        <section id="features" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden">
             {/* Dotted Background removed (global) */}
             {/* --- Section 3: Core Features --- */}
             <div ref={contentRef} className="w-full relative z-10 flex items-center justify-center px-8 pt-24 md:pt-32 pb-8 feature-section-reveal">
