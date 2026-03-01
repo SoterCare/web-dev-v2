@@ -43,11 +43,11 @@
     "typescript": "^5"
   },
   "overrides": {
-    "next-sanity": {
-      "@sanity/client": "$@sanity/client"
-    },
-    "@sanity/visual-editing": {
-      "@sanity/client": "$@sanity/client"
-    }
+    "react": "$react",
+    "react-dom": "$react-dom",
+    "next": "$next",
+    "styled-components": "$styled-components",
+    "@sanity/client": "7.16.0",
+    "@sanity/types": "5.12.0"
   }
 }
