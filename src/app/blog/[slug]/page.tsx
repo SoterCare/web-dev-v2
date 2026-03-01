@@ -69,10 +69,15 @@ function formatDate(dateString: string): string {
 
 // Generate static params for all posts
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
-  return slugs.map((item) => ({
-    slug: item.slug,
-  }));
+  try {
+    const slugs = await getAllSlugs();
+    return slugs.map((item) => ({
+      slug: item.slug,
+    }));
+  } catch (error) {
+    console.warn('Failed to fetch slugs for static generation. Continuing without statically pre-rendered blog posts.', error);
+    return [];
+  }
 }
 
 // Generate metadata for SEO
@@ -83,7 +88,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  
+
   if (!post) {
     return {
       title: 'Post Not Found | SoterCare',
