@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { setAuthTokens } from "@/lib/auth";
 import { authService } from "@/lib/api";
@@ -19,6 +19,40 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [cooldown, setCooldown] = useState(0);
+
+  // Initialize and manage the cooldown timer
+  useEffect(() => {
+    const end = localStorage.getItem("sotercare_otp_cooldown_end");
+    if (end) {
+      const remaining = Math.ceil((parseInt(end, 10) - Date.now()) / 1000);
+      if (remaining > 0) {
+        setCooldown(remaining);
+      } else {
+        localStorage.removeItem("sotercare_otp_cooldown_end");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          localStorage.removeItem("sotercare_otp_cooldown_end");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  const startCooldown = () => {
+    const endsAt = Date.now() + 60000; // 1 minute
+    localStorage.setItem("sotercare_otp_cooldown_end", endsAt.toString());
+    setCooldown(60);
+  };
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,9 +72,18 @@ export default function LoginPage() {
         const text = await res.text().catch(() => "");
         throw new Error(`Server returned ${res.status}: ${text || "Unknown error"}`);
       }
+      
+      let data: any = {};
+      try { data = await res.json(); console.log("[AUTH] Init Data:", data); } catch (_) {}
+      
+      if (data.success === false) {
+        throw new Error(data.message || "Operation failed");
+      }
+      
       setStep("otp");
+      startCooldown();
     } catch (err: any) {
-      console.error(`[AUTH] Error:`, err);
+      // We don't console.error expected validation errors to avoid Next.js dev overlay popups
       setError(err.message || "Network error. Please try again.");
     } finally {
       setLoading(false);
@@ -65,8 +108,14 @@ export default function LoginPage() {
         const text = await res.text().catch(() => "");
         throw new Error(`Server returned ${res.status}: ${text || "Invalid code"}`);
       }
+      
       let data: any = {};
       try { data = await res.json(); console.log("[AUTH] Data:", data); } catch (_) {}
+      
+      // The backend returns { success: false, message: ... } on invalid OTP
+      if (data.success === false) {
+        throw new Error(data.message || "Invalid OTP");
+      }
       if (mode === "login" || data.accessToken) {
         await setAuthTokens(data.accessToken || "mock-token", data.refreshToken || "mock-refresh");
         router.push("/dashboard");
@@ -75,7 +124,7 @@ export default function LoginPage() {
         setMode("login"); setStep("form"); setOtp("");
       }
     } catch (err: any) {
-      console.error(`[AUTH] Verify Error:`, err);
+      // We don't console.error expected validation errors (like wrong OTP) to avoid Next.js dev overlay popups
       setError(err.message || "Failed to verify. Check console.");
     } finally {
       setLoading(false);
@@ -213,7 +262,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (step === "form" && cooldown > 0)}
             className="w-full py-4 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-base bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70 mt-4 active:scale-95"
           >
             {loading ? (
@@ -221,7 +270,7 @@ export default function LoginPage() {
             ) : (
               <>
                 {step === "form" 
-                  ? (mode === "login" ? "Receive Sign-in Code" : "Create Account") 
+                  ? (cooldown > 0 ? `Wait ${cooldown}s to Resend` : (mode === "login" ? "Receive Sign-in Code" : "Create Account")) 
                   : "Verify & Continue"}
                 <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </>
