@@ -63,7 +63,7 @@ export default function Header() {
         {/* Center — page title */}
         <div className="absolute left-1/2 -translate-x-1/2 hidden md:block pointer-events-none">
           <span className="text-sm font-bold text-[var(--text-muted)] tracking-widest uppercase">
-            Personal Dashboard
+            SoterCare Dashboard
           </span>
         </div>
 

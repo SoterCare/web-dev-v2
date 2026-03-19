@@ -72,13 +72,13 @@ export default function TemperatureStatistics() {
             <div className="flex justify-between px-1 mt-2 text-[11px] font-bold text-[var(--text-muted)] select-none">
               {["00:00","06:00","12:00","18:00","24:00"].map(t => <span key={t}>{t}</span>)}
             </div>
+
+            {/* Y label - Centered to chart */}
+            <div className="text-[11px] font-bold text-[var(--text-muted)] mt-4 text-center tracking-widest uppercase">
+              Heart Rate (bpm)
+            </div>
           </div>
         </div>
-
-        {/* Y label */}
-        <p className="text-[11px] font-bold text-[var(--text-muted)] mt-2 text-center tracking-widest uppercase">
-          Heart Rate (bpm)
-        </p>
       </div>
     </section>
   );

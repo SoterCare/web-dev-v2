@@ -12,7 +12,7 @@ const vitals = [
 export default function VitalsDisplay() {
   return (
     <section>
-      <h2 className="text-2xl font-bold text-[var(--text)] mb-5">Patient Overview</h2>
+      <h2 className="text-2xl font-bold text-[var(--text)] mb-5">Live Statistics</h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {vitals.map((v) => (
           <div key={v.title} className="depth-card p-6 flex flex-col gap-4">

@@ -88,133 +88,142 @@ export default function LoginPage() {
       {/* Subtle glow matching SoterCare brand */}
       <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-sky-100 to-blue-100 blur-[160px] opacity-50 pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-slate-100 to-indigo-100 blur-[160px] opacity-50 pointer-events-none" />
-
-      <div className="depth-card w-full max-w-md p-10 relative z-10">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-10">
-          <Image
-            src="/assets/SoterCare-Primary-logo-brandblue.webp"
-            alt="SoterCare"
-            width={160}
-            height={50}
-            className="h-12 w-auto object-contain mb-6"
-            style={{ width: "auto" }}
-          />
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--text)] mb-1">
-            {step === "form"
-              ? mode === "login" ? "Welcome back" : "Create account"
-              : "Check your email"}
+      {/* Auth Card */}
+      <div className="relative w-full max-w-md bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[1.8rem] p-8 md:p-10 border border-white/50 overflow-hidden animate-in zoom-in-95 duration-500 slide-in-from-bottom-4 z-10">
+        {/* Logo Section */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center mb-6">
+            <Image
+              src="/assets/SoterCare-Primary-logo-brandblue.webp"
+              alt="SoterCare"
+              width={160}
+              height={44}
+              className="h-10 w-auto object-contain"
+              priority
+            />
+          </div>
+          <h1 className="text-2xl font-bold text-[var(--text)] tracking-tight">
+            {step === "form" 
+              ? (mode === "login" ? "Welcome Back" : "Create Account")
+              : "Verify Email"}
           </h1>
-          <p className="text-sm text-[var(--text-muted)] font-medium text-center">
+          <p className="text-[var(--text-muted)] mt-2 font-medium">
             {step === "form"
-              ? mode === "login"
-                ? "Enter your email to receive a sign-in code"
-                : "Enter your details to get started"
-              : `We sent a 6-digit code to ${email}`}
+              ? (mode === "login" ? "Sign in to access your dashboard" : "Join us to start monitoring health")
+              : `We've sent a code to ${email}`}
           </p>
         </div>
 
-        <form onSubmit={step === "form" ? handleAuthSubmit : handleVerifySubmit} className="space-y-5">
-          {/* Error banner */}
-          {error && (
-            <div className="depth-panel px-4 py-3 text-red-600 text-sm font-medium flex items-center gap-3">
-              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              {error}
-            </div>
-          )}
-          {successMsg && (
-            <div className="depth-panel px-4 py-3 text-green-700 text-sm font-medium">
-              {successMsg}
-            </div>
-          )}
+        {/* Messaging */}
+        {(error || successMsg) && (
+          <div className="mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+            {error && (
+              <div className="p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-sm font-bold flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                {error}
+              </div>
+            )}
+            {successMsg && (
+              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-bold flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                {successMsg}
+              </div>
+            )}
+          </div>
+        )}
 
-          <div className="relative overflow-hidden">
-            {/* Form step */}
-            <div className={`space-y-4 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${step === "otp" ? "-translate-x-full absolute w-full invisible" : "translate-x-0"}`}>
+        <form onSubmit={step === "form" ? handleAuthSubmit : handleVerifySubmit} className="space-y-5">
+          {step === "form" ? (
+            <>
               {mode === "register" && (
-                <div>
-                  <label className="block text-sm font-bold text-[var(--text)] mb-2 tracking-wide">Full Name</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[var(--text-muted)] ml-1 uppercase tracking-wider">Full Name</label>
                   <div className="relative">
-                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="text"
-                      required={mode === "register" && step === "form"}
-                      value={name}
-                      onChange={e => setName(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-black/[0.06] bg-[var(--bg-panel)] text-[var(--text)] font-medium focus:outline-none focus:ring-2 focus:ring-[var(--text)]/20 focus:border-[var(--text)]/30 transition-all placeholder:text-[var(--text-muted)]"
                       placeholder="John Doe"
+                      required={mode === "register"}
+                      className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 transition-all placeholder:text-gray-400 text-gray-800 font-medium"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                 </div>
               )}
 
-              <div>
-                <label className="block text-sm font-bold text-[var(--text)] mb-2 tracking-wide">Email Address</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[var(--text-muted)] ml-1 uppercase tracking-wider">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="email"
-                    required={step === "form"}
+                    placeholder="name@company.com"
+                    required
+                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 transition-all placeholder:text-gray-400 text-gray-800 font-medium"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-black/[0.06] bg-[var(--bg-panel)] text-[var(--text)] font-medium focus:outline-none focus:ring-2 focus:ring-[var(--text)]/20 focus:border-[var(--text)]/30 transition-all placeholder:text-[var(--text-muted)]"
-                    placeholder="you@sotercare.com"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="text-center text-sm text-[var(--text-muted)] font-medium pt-1">
-                {mode === "login" ? "No account?" : "Already registered?"}{" "}
+              <div className="text-center pt-2">
                 <button
                   type="button"
-                  onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}
-                  className="text-[var(--text)] font-bold hover:underline"
+                  onClick={() => {
+                    setMode(mode === "login" ? "register" : "login");
+                    setError("");
+                    setSuccessMsg("");
+                  }}
+                  className="text-sm font-bold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
-                  {mode === "login" ? "Register" : "Sign in"}
+                  {mode === "login" ? "Need an account? Create one" : "Already have an account? Sign in"}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="space-y-6">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[var(--text-muted)] ml-1 uppercase tracking-wider text-center block">Verification Code</label>
+                <div className="relative">
+                  <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="000000"
+                    maxLength={6}
+                    required
+                    className="w-full pl-11 pr-4 py-4 bg-white border border-gray-200 rounded-2xl text-center text-2xl font-bold tracking-[0.5em] focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 transition-all placeholder:text-gray-300 text-gray-800 placeholder:tracking-normal placeholder:text-base mr-[-0.5em]"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setStep("form")}
+                  className="text-sm font-bold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                >
+                  ← Use a different email
                 </button>
               </div>
             </div>
-
-            {/* OTP step */}
-            <div className={`transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${step === "form" ? "translate-x-full absolute w-full invisible" : "translate-x-0"}`}>
-              <label className="block text-sm font-bold text-[var(--text)] mb-2 tracking-wide">Verification Code</label>
-              <div className="relative">
-                <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <input
-                  type="text"
-                  required={step === "otp"}
-                  value={otp}
-                  onChange={e => setOtp(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-black/[0.06] bg-[var(--bg-panel)] text-[var(--text)] font-bold text-center tracking-[0.5em] text-xl focus:outline-none focus:ring-2 focus:ring-[var(--text)]/20 focus:border-[var(--text)]/30 transition-all placeholder:text-[var(--text-muted)] placeholder:tracking-normal placeholder:text-base"
-                  placeholder="000000"
-                  maxLength={6}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => { setStep("form"); setError(""); }}
-                className="mt-3 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors font-medium"
-              >
-                ← Change email
-              </button>
-            </div>
-          </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 px-6 bg-[var(--text)] text-[var(--bg-body)] font-bold text-base rounded-xl flex items-center justify-center gap-2 group shadow-m hover:-translate-y-0.5 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+            className="w-full py-4 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-base bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70 mt-4 active:scale-95"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
               <>
-                {step === "form"
-                  ? mode === "login" ? "Send Sign-in Code" : "Create Account"
+                {step === "form" 
+                  ? (mode === "login" ? "Receive Sign-in Code" : "Create Account") 
                   : "Verify & Continue"}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </>
             )}
           </button>
