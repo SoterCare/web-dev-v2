@@ -26,12 +26,15 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   
-  // Proxy API requests to bypass CORS
+  // Proxy API requests to bypass CORS (Vercel edge/Server proxy)
   async rewrites() {
+    // Read from environment variables, fallback to the Koyeb production URL
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://unlikely-caryn-sotercare-873e6112.koyeb.app';
+    
     return [
       {
         source: '/api/:path*',
-        destination: 'https://unlikely-caryn-sotercare-873e6112.koyeb.app/:path*',
+        destination: `${API_URL}/:path*`,
       },
     ];
   },
