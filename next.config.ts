@@ -26,6 +26,16 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   
+  // Proxy API requests to bypass CORS
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://unlikely-caryn-sotercare-873e6112.koyeb.app/:path*',
+      },
+    ];
+  },
+  
   // HTTP security headers
   async headers() {
     return [

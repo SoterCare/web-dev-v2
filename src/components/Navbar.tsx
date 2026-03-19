@@ -7,13 +7,11 @@ import { Menu, X } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import WaitlistPopup from "./WaitlistPopup";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
@@ -94,12 +92,12 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
-          <button
-            onClick={() => setIsWaitlistOpen(true)}
+          <Link
+            href="/dashboard"
             className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95"
           >
-            Join Waitlist
-          </button>
+            Dashboard
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -148,21 +146,15 @@ const Navbar = () => {
         >
           Team
         </Link>
-        <button
+        <Link
+          href="/dashboard"
           className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
-          onClick={() => {
-            setIsOpen(false);
-            setIsWaitlistOpen(true);
-          }}
+          onClick={() => setIsOpen(false)}
         >
-          Join Waitlist
-        </button>
+          Dashboard
+        </Link>
       </div>
 
-      <WaitlistPopup
-        isOpen={isWaitlistOpen}
-        onClose={() => setIsWaitlistOpen(false)}
-      />
     </nav>
   );
 };
