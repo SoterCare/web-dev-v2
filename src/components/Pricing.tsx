@@ -104,7 +104,7 @@ const Pricing = () => {
             <div className="p-6 md:p-12 md:w-2/3 flex flex-col justify-center">
               <h3 className="text-3xl font-bold mb-4">Get the SoterCare Kit</h3>
               <p className="text-text-muted text-lg mb-8 leading-relaxed">
-                The essential hardware to keep your loved ones safe. Includes the Thigh Node, Wrist Node, and the Edge Gateway for seamless, offline-ready monitoring.
+                The essential hardware to keep your loved ones safe. Includes the Thigh Node and the Edge Gateway for seamless, offline-ready monitoring.
               </p>
               <div className="flex items-center gap-6">
                 <span className="text-4xl font-bold">$329</span>
