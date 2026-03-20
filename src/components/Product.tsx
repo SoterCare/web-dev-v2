@@ -79,26 +79,6 @@ const Product = () => {
                 </div>
               </div>
 
-              {/* Item 2 */}
-              <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16">
-                <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-                  <h3 className="text-3xl font-bold mb-4">The Wrist Node</h3>
-                  <p className="text-text-muted text-lg max-w-md">
-                    A lightweight, comfortable wrist wearable designed for 24/7
-                    continuous vital sign tracking, ensuring redundancy.
-                  </p>
-                </div>
-                <div className="md:w-1/2 flex justify-center md:justify-end">
-                  <Image
-                    src="/assets/features/the-wrist-node.webp"
-                    alt="The Wrist Node"
-                    width={300}
-                    height={220}
-                    style={{ width: "auto", height: "auto" }}
-                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
-                  />
-                </div>
-              </div>
 
               {/* Item 3 */}
               <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
