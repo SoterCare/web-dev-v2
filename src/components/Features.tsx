@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing } from 'lucide-react';
+import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing, LayoutDashboard } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -66,10 +66,10 @@ const Features = () => {
                                     span: 'md:col-span-1'
                                 },
                                 {
-                                    title: 'Continuous Vitals Monitoring',
-                                    desc: 'A 24/7 health guardian. We monitor Heart Rate and SpO2 in real-time, instantly alerting you to dangerous spikes or drops.',
-                                    Icon: HeartPulse,
-                                    color: 'text-red-500',
+                                    title: 'Quick Web Dashboard Access',
+                                    desc: 'Access your health data instantly from any device. Log in to our secure web dashboard for detailed analytics, historical data, and real-time vitals monitoring.',
+                                    Icon: LayoutDashboard,
+                                    color: 'text-indigo-500',
                                     span: 'md:col-span-2'
                                 },
                                 {

@@ -69,7 +69,7 @@ const Product = () => {
                 </div>
                 <div className="md:w-1/2 flex justify-center md:justify-start">
                   <Image
-                    src="/assets/features/the-thigh-node.webp"
+                    src="/assets/features/thigh-node.webp"
                     alt="The Thigh Node"
                     width={300}
                     height={220}
@@ -82,37 +82,16 @@ const Product = () => {
               {/* Item 2 */}
               <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16">
                 <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-                  <h3 className="text-3xl font-bold mb-4">The Wrist Node</h3>
+                  <h3 className="text-3xl font-bold mb-4">The Edge Gateway</h3>
                   <p className="text-text-muted text-lg max-w-md">
-                    A lightweight, comfortable wrist wearable designed for 24/7
-                    continuous vital sign tracking, ensuring redundancy.
+                    The intelligent central hub with a dashboard that processes machine learning
+                    models locally, ensuring instant alerts and offline safety.
                   </p>
                 </div>
                 <div className="md:w-1/2 flex justify-center md:justify-end">
                   <Image
-                    src="/assets/features/the-wrist-node.webp"
+                    src="/assets/features/edge-gatewaynew.webp"
                     alt="The Wrist Node"
-                    width={300}
-                    height={220}
-                    style={{ width: "auto", height: "auto" }}
-                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
-                  />
-                </div>
-              </div>
-
-              {/* Item 3 */}
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
-                  <h3 className="text-3xl font-bold mb-4">The Edge Gateway</h3>
-                  <p className="text-text-muted text-lg max-w-md">
-                    The intelligent central hub that processes machine learning
-                    models locally, ensuring instant alerts and offline safety.
-                  </p>
-                </div>
-                <div className="md:w-1/2 flex justify-center md:justify-start">
-                  <Image
-                    src="/assets/features/the-edge-gateway1.webp"
-                    alt="The Edge Gateway"
                     width={300}
                     height={220}
                     style={{ width: "auto", height: "auto" }}
