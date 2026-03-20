@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Header from "./Header";
+import DashboardFooter from "./DashboardFooter";
 
 export default function DashboardLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,13 +14,14 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-[var(--bg-body)] font-sans relative">
       <div className="dotted-bg" />
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
-        <main className="p-5 md:p-8 pb-20">
+        <main className="flex-1 p-5 md:p-8">
           <div className="max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-3 duration-500 ease-out">
             {children}
           </div>
         </main>
+        <DashboardFooter />
       </div>
     </div>
   );
