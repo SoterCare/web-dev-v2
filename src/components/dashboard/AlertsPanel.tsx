@@ -19,7 +19,7 @@ export default function AlertsPanel() {
         {alerts.map(a => (
           <div
             key={a.id}
-            className="w-full py-3 px-5 rounded-2xl font-bold transition-all duration-300 flex items-center justify-between group text-base bg-bg-card shadow-m text-foreground hover:bg-white"
+            className="w-full py-3 px-5 rounded-2xl font-bold flex items-center justify-between group text-base bg-bg-card shadow-m text-foreground"
           >
             <div className="flex items-center gap-4">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center ${a.iconBg} ${a.iconColor} shrink-0`}>

@@ -70,7 +70,7 @@ export default function Header() {
         {/* Right — bell + account */}
         <div className="flex items-center gap-3 ml-auto">
           {/* Bell */}
-          <div className="relative depth-panel p-2.5 rounded-xl cursor-pointer hover:shadow-m transition-all">
+          <div className="relative depth-panel p-2.5 rounded-xl cursor-pointer">
             <Bell className="w-5 h-5 text-[var(--text-muted)]" />
             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-[var(--bg-card)]" />
           </div>

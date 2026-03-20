@@ -71,8 +71,8 @@ const Product = () => {
                   <Image
                     src="/assets/features/thigh-node.webp"
                     alt="The Thigh Node"
-                    width={300}
-                    height={220}
+                    width={270}
+                    height={180}
                     style={{ width: "auto", height: "auto" }}
                     className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                   />

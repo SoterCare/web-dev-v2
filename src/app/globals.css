@@ -90,11 +90,6 @@ p {
   background: var(--bg-card);
   box-shadow: var(--shadow-m);
   border-radius: 1rem;
-  transition: transform 0.2s ease;
-}
-
-.depth-card:hover {
-  transform: translateY(-2px);
 }
 
 .depth-panel {
