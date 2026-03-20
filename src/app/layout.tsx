@@ -121,7 +121,7 @@ const jsonLd = {
         },
         {
           "@type": "Question",
-          name: "What happens if one of the wearable bands runs out of battery?",
+          name: "What happens if the wearable band runs out of battery?",
           acceptedAnswer: {
             "@type": "Answer",
             text: "The thigh and wrist bands work independently. If one battery dies, the other keeps monitoring. For example, if the thigh band stops, the wristband continues to track heart rate and oxygen levels seamlessly.",
