@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Activity, Droplets, AlertTriangle, Server, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
+import { useDashboardWebSocket } from "./WebSocketContext";
 
 // Mapping event types to UI styles
 const getEventTheme = (type: string) => {
@@ -14,16 +15,29 @@ const getEventTheme = (type: string) => {
 };
 
 export default function ActivityTimeline() {
+  const { deviceId } = useDashboardWebSocket();
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchEvents = async () => {
+    if (!deviceId) return;
     setLoading(true);
     setError("");
     try {
-      const res = await dashboardApi.getTimelineEvents();
-      setEvents(Array.isArray(res.payload) ? res.payload : []);
+      const date = new Date().toISOString().split("T")[0];
+      const res = await dashboardApi.getTimelineEvents({ deviceId, period: "day", date });
+      console.log("[REST] Events response:", res);
+      
+      // Auto-detect the array envelope
+      const rawArray = Array.isArray(res) ? res : (res.payload || res.events || res.logs || res.data || []);
+      
+      const mappedEvents = Array.isArray(rawArray) ? rawArray.map((ev: any) => ({
+        ...ev,
+        type: ev.type || (ev.fall_alert ? "Fall Detected" : ev.sos ? "Emergency SOS" : (ev.moisture > 0 ? "Moisture Alert" : ev.gait_label || "Routine Check")),
+      })) : [];
+
+      setEvents(mappedEvents);
     } catch (err) {
       console.error("Failed to load timeline events:", err);
       setError("Failed to load events.");
@@ -33,8 +47,10 @@ export default function ActivityTimeline() {
   };
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    if (deviceId) {
+      fetchEvents();
+    }
+  }, [deviceId]);
 
   return (
     <section className="flex-1 flex flex-col relative">
@@ -67,8 +83,13 @@ export default function ActivityTimeline() {
             />
             <div className="flex flex-col gap-0 overflow-y-auto flex-1 min-h-[300px] pr-1 slim-scroll overscroll-contain">
               {events.map((ev, idx) => {
-                const theme = getEventTheme(ev.type || "Event");
-                const timeStr = ev.timestamp ? new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently";
+                const displayType = ev.label || ev.type || ev.gait_label || "Activity";
+                const theme = getEventTheme(ev.type || displayType);
+                
+                let timeStr = ev.time;
+                if (!timeStr) {
+                   timeStr = ev.timestamp ? new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently";
+                }
                 
                 return (
                   <div key={ev.id || idx}>
@@ -82,7 +103,7 @@ export default function ActivityTimeline() {
                       <div
                         className={`flex-1 flex items-center justify-between px-5 py-3.5 rounded-2xl ${theme.pillBg} ${theme.pillText}`}
                       >
-                        <span className="font-bold text-[15px]">{ev.type || "Activity"}</span>
+                        <span className="font-bold text-[15px]">{displayType}</span>
                         <span className="text-sm font-semibold opacity-60 ml-4 whitespace-nowrap">{timeStr}</span>
                       </div>
                     </div>

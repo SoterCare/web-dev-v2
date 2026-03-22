@@ -3,6 +3,13 @@ import { apiFetch } from "./api";
 export const dashboardApi = {
   getLatestVitals: () => apiFetch("/dashboard/vitals/latest").then(r => r.json()),
   
+  getDevices: () => apiFetch("/devices").then(r => r.json()),
+  
+  getRecentAlerts: (params?: Record<string, any>) => {
+    const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
+    return apiFetch(`/alerts/recent${qs}`).then(r => r.json());
+  },
+  
   getTimelineVitals: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return apiFetch(`/timeline/vitals${qs}`).then(r => r.json());

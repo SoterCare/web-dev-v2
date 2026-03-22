@@ -3,26 +3,53 @@
 import { useState, useEffect } from "react";
 import { Calendar, ChevronDown, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
+import { useDashboardWebSocket } from "./WebSocketContext";
 
 const TABS = ["Day", "Month", "Custom"] as const;
 
 export default function TemperatureStatistics() {
+  const { deviceId } = useDashboardWebSocket();
   const [activeTab, setActiveTab] = useState<typeof TABS[number]>("Day");
   const [dataPoints, setDataPoints] = useState<{ timestamp: string; value: number }[]>([]);
+  const [stats, setStats] = useState<{ min?: number; max?: number; avg?: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchChartData = async (period: string) => {
+    if (!deviceId) return;
     setLoading(true);
     setError("");
     try {
       // Assuming today's date for demonstration, can be dynamic later
       const date = new Date().toISOString().split("T")[0];
-      const res = await dashboardApi.getTimelineVitals({ metric: "skinTemp", period: period.toLowerCase(), date });
       
-      // Expected structure: { success: true, payload: [{ timestamp, value }, ...] }
-      const points = Array.isArray(res.payload) ? res.payload : [];
+      const [vitalsRes, statsRes] = await Promise.all([
+        dashboardApi.getTimelineVitals({ deviceId, metric: "temperature", period: period.toLowerCase(), date }).catch(e => null),
+        dashboardApi.getTimelineStats({ deviceId, period: period.toLowerCase(), date }).catch(e => null)
+      ]);
+      
+      // Auto-detect the arrays
+      const rawVitals = Array.isArray(vitalsRes) ? vitalsRes : (vitalsRes?.payload || vitalsRes?.vitals || vitalsRes?.data || []);
+      
+      const points = Array.isArray(rawVitals) ? rawVitals.map((p: any) => ({
+        timestamp: p.timestamp,
+        value: p.value !== undefined ? p.value : (p.temperature !== undefined ? p.temperature : p.skinTemp || 0)
+      })) : [];
+      
       setDataPoints(points);
+
+      // Map statistics
+      const rawStats = statsRes?.payload || statsRes?.data || statsRes || null;
+      if (rawStats && !Array.isArray(rawStats)) {
+        setStats({
+          min: rawStats.min !== undefined ? rawStats.min : rawStats.minTemp,
+          max: rawStats.max !== undefined ? rawStats.max : rawStats.maxTemp,
+          avg: rawStats.avg !== undefined ? rawStats.avg : rawStats.avgTemp,
+        });
+      } else {
+        setStats(null);
+      }
+
     } catch (err: any) {
       console.error("Failed to load timeline vitals:", err);
       setError("Failed to load chart data");
@@ -32,8 +59,10 @@ export default function TemperatureStatistics() {
   };
 
   useEffect(() => {
-    fetchChartData(activeTab);
-  }, [activeTab]);
+    if (deviceId) {
+      fetchChartData(activeTab);
+    }
+  }, [activeTab, deviceId]);
 
   // Generate SVG curve
   const width = 800;
@@ -94,7 +123,24 @@ export default function TemperatureStatistics() {
       </div>
 
       {/* Chart */}
-      <div className="depth-card p-6 relative overflow-hidden">
+      <div className="depth-card p-6 relative overflow-hidden flex flex-col gap-4">
+        {stats && (
+           <div className="flex items-center justify-between border-b pb-4 border-gray-100">
+             <div className="text-center">
+                <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Target Avg</p>
+                <p className="text-xl font-bold text-[var(--text)]">{stats.avg ? stats.avg.toFixed(1) : "--"}°</p>
+             </div>
+             <div className="text-center border-l pl-6 border-gray-100">
+                <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Peak High</p>
+                <p className="text-xl font-bold text-red-500">{stats.max ? stats.max.toFixed(1) : "--"}°</p>
+             </div>
+             <div className="text-center border-l pl-6 border-gray-100">
+                <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Valley Low</p>
+                <p className="text-xl font-bold text-blue-500">{stats.min ? stats.min.toFixed(1) : "--"}°</p>
+             </div>
+           </div>
+        )}
+
         {loading && (
           <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center rounded-[1rem]">
              <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
