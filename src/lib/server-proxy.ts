@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function proxyGet(request: Request, backendPath: string) {
+export async function proxyRequest(request: Request, backendPath: string) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value;
@@ -13,13 +13,24 @@ export async function proxyGet(request: Request, backendPath: string) {
       ? `${API_BASE}${backendPath}${new URL(request.url).search}`
       : `${API_BASE}${backendPath}`;
 
-    const res = await fetch(backendUrl, {
-      method: "GET",
+    const options: RequestInit = {
+      method: request.method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       }
-    });
+    };
+
+    // Forward body for non-GET requests
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      // Clone the request if we need to read body multiple times, but here once is fine
+      const bodyText = await request.text();
+      if (bodyText) {
+        options.body = bodyText;
+      }
+    }
+
+    const res = await fetch(backendUrl, options);
 
     if (!res.ok) {
       const text = await res.text();
@@ -43,4 +54,9 @@ export async function proxyGet(request: Request, backendPath: string) {
     console.error(`[Proxy] Error fetching ${backendPath}:`, err.message);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
+}
+
+// Backward compatibility
+export async function proxyGet(request: Request, backendPath: string) {
+  return proxyRequest(request, backendPath);
 }
