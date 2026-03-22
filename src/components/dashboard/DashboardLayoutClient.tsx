@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import DashboardFooter from "./DashboardFooter";
+import { WebSocketProvider } from "./WebSocketContext";
 
 export default function DashboardLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -17,9 +18,11 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 p-5 md:p-8">
-          <div className="max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-3 duration-500 ease-out">
-            {children}
-          </div>
+          <WebSocketProvider>
+            <div className="max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-3 duration-500 ease-out">
+              {children}
+            </div>
+          </WebSocketProvider>
         </main>
         <DashboardFooter />
       </div>

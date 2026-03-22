@@ -8,7 +8,6 @@ export function proxy(request: NextRequest) {
   const isLoginPage = pathname === '/dashboard/login';
   const isDashboardRoute = pathname.startsWith('/dashboard');
 
-  // Add the current pathname as a header so Server Components can read it
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-pathname', pathname);
 
@@ -32,5 +31,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/dashboard/:path*',
+  // Match dashboard pages and our WebSocket proxy route to inject the Authorization header!
+  matcher: ['/dashboard/:path*', '/api/ws/:path*'],
 };
