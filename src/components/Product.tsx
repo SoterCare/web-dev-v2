@@ -114,7 +114,7 @@ const Product = () => {
               {/* Central Image */}
               <div className="relative z-10 max-w-lg md:max-w-3xl w-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
                 <Image
-                  src="/assets/features/UI-Mockup.webp"
+                  src="/assets/features/new-mobileapp-mockup.webp"
                   alt="Mobile App UI Mockup"
                   width={1200}
                   height={1000}
