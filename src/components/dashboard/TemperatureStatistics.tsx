@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calendar, ChevronDown, Loader2 } from "lucide-react";
+import { Calendar, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDashboardWebSocket } from "./WebSocketContext";
 
@@ -156,20 +156,16 @@ export default function TemperatureStatistics() {
             </button>
           </div>
         ) : (
-          <label className="depth-panel relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-[var(--text)] cursor-pointer select-none">
-            <Calendar className="w-4 h-4 text-[var(--text-muted)]" />
-            {new Date(selectedDate + "T00:00:00").toLocaleDateString("en-GB")}
-            <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+          <div className="depth-panel relative flex items-center rounded-xl overflow-hidden">
+            <Calendar className="absolute left-3 w-4 h-4 text-[var(--text-muted)] pointer-events-none z-10" />
             <input
               type="date"
               value={selectedDate}
               max={new Date().toISOString().split("T")[0]}
-              onChange={e => {
-                if (e.target.value) setSelectedDate(e.target.value);
-              }}
-              className="absolute inset-0 opacity-0 w-full cursor-pointer"
+              onChange={e => { if (e.target.value) setSelectedDate(e.target.value); }}
+              className="pl-9 pr-4 py-2.5 text-sm font-bold text-[var(--text)] bg-transparent cursor-pointer outline-none border-none [color-scheme:light] w-40"
             />
-          </label>
+          </div>
         )}
       </div>
 
