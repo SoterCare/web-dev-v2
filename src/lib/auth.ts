@@ -9,7 +9,7 @@ export async function setAuthTokens(accessToken: string, refreshToken: string) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24, // 1 day
+    maxAge: 60 * 60 * 24 * 90, // 90 days — matches backend JWT expiry
   });
   cookieStore.set("refreshToken", refreshToken, {
     httpOnly: true,

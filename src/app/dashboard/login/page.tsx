@@ -116,8 +116,21 @@ export default function LoginPage() {
       if (data.success === false) {
         throw new Error(data.message || "Invalid OTP");
       }
-      if (mode === "login" || data.accessToken) {
-        await setAuthTokens(data.accessToken || "mock-token", data.refreshToken || "mock-refresh");
+      if (mode === "login") {
+        // Extract token — backend may nest under data.data or at top level
+        const accessToken = data.accessToken || data.data?.accessToken || data.token;
+        const refreshToken = data.refreshToken || data.data?.refreshToken || data.refresh;
+
+        if (!accessToken) {
+          throw new Error("No access token received. Please try again.");
+        }
+
+        await setAuthTokens(accessToken, refreshToken || "");
+        router.push("/dashboard");
+      } else if (data.accessToken || data.data?.accessToken) {
+        const accessToken = data.accessToken || data.data.accessToken;
+        const refreshToken = data.refreshToken || data.data?.refreshToken || "";
+        await setAuthTokens(accessToken, refreshToken);
         router.push("/dashboard");
       } else {
         setSuccessMsg("Account verified! Please sign in.");

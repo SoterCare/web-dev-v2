@@ -8,6 +8,12 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
       ...options.headers,
     },
   });
+
+  // Auto-redirect to login on auth failure
+  if (res.status === 401 && typeof window !== "undefined") {
+    window.location.href = "/dashboard/login";
+  }
+
   return res;
 };
 
