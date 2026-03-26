@@ -45,8 +45,8 @@ const Features = () => {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
                                 {
-                                    title: 'Proactive "Risky Movement" Detection',
-                                    desc: 'Unlike standard alarms that ring after a crash, SoterCare uses Machine Learning to identify "pre-fall" behaviors, such as unsteady attempts to stand, sending proactive warnings to caregivers.',
+                                    title: 'Gait Analysis ML Model',
+                                    desc: 'A unified Machine Learning model that monitors movement and posture transitions. It specifically detects when a patient is attempting to stand up or sit down, sending real-time alerts to caregivers to prevent accidents during high-risk transitions.',
                                     Icon: Activity,
                                     color: 'text-blue-500',
                                     span: 'md:col-span-2'
