@@ -116,23 +116,14 @@ export default function LoginPage() {
       if (data.success === false) {
         throw new Error(data.message || "Invalid OTP");
       }
-      if (mode === "login") {
-        // Extract token — backend may nest under data.data or at top level
-        const accessToken = data.accessToken || data.data?.accessToken || data.token;
-        const refreshToken = data.refreshToken || data.data?.refreshToken || data.refresh;
+      // API response: { success, message, accessToken, user } — no refreshToken
+      const accessToken = data.accessToken || data.data?.accessToken || data.token;
 
-        if (!accessToken) {
-          throw new Error("No access token received. Please try again.");
-        }
-
-        await setAuthTokens(accessToken, refreshToken || "");
-        router.push("/dashboard");
-      } else if (data.accessToken || data.data?.accessToken) {
-        const accessToken = data.accessToken || data.data.accessToken;
-        const refreshToken = data.refreshToken || data.data?.refreshToken || "";
-        await setAuthTokens(accessToken, refreshToken);
+      if (accessToken) {
+        await setAuthTokens(accessToken, data.refreshToken || "");
         router.push("/dashboard");
       } else {
+        // Registration without immediate token — prompt user to sign in
         setSuccessMsg("Account verified! Please sign in.");
         setMode("login"); setStep("form"); setOtp("");
       }
