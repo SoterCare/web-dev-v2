@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { Calendar, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
-import { useDashboardWebSocket } from "./WebSocketContext";
+import { useDeviceId } from "@/lib/useDeviceId";
 
 const TABS = ["Day", "Week", "Custom"] as const;
 
 export default function TemperatureStatistics() {
-  const { deviceId } = useDashboardWebSocket();
+  const { deviceId, deviceIdReady } = useDeviceId();
   const [activeTab, setActiveTab] = useState<typeof TABS[number]>("Day");
   const [dataPoints, setDataPoints] = useState<{ xLabel: string; value: number }[]>([]);
   const [yAxis, setYAxis] = useState<{ label: string; minValue: number; maxValue: number; unit: string }>({
@@ -62,9 +62,13 @@ export default function TemperatureStatistics() {
   };
 
   useEffect(() => {
-    if (deviceId) fetchChartData(activeTab);
+    if (deviceId) {
+      fetchChartData(activeTab);
+    } else if (deviceIdReady) {
+      setLoading(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, deviceId, selectedDate]);
+  }, [activeTab, deviceId, deviceIdReady, selectedDate]);
 
   // SVG dimensions
   const svgW = 800;

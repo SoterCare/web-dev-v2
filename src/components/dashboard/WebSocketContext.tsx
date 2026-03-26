@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
-import { dashboardApi } from "@/lib/dashboardApi";
 
 export interface VitalsPayload {
   skinTemp?: number;
@@ -19,6 +18,8 @@ interface WebSocketContextValue {
   latestLog: any | null;
   isConnected: boolean;
   error: string | null;
+  /** deviceId received over WebSocket — useful for real-time components only.
+   *  For REST data components, use the useDeviceId() hook instead. */
   deviceId: string | null;
 }
 
@@ -35,10 +36,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
   const [latestLog, setLatestLog] = useState<any | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
-  // Use any to quickly adapt to Socket interface without deep prop typing overhead
   const socketRef = useRef<any>(null);
 
   useEffect(() => {
@@ -46,27 +45,15 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
     const connect = async () => {
       try {
-        // Pre-fetch device context explicitly
-        const devicesRes = await dashboardApi.getDevices().catch(() => null);
-        if (devicesRes) {
-          const list = Array.isArray(devicesRes.devices) ? devicesRes.devices : (Array.isArray(devicesRes.data) ? devicesRes.data : []);
-          const rootDev = list[0]?.id || list[0]?.deviceId;
-          if (rootDev && active) setDeviceId(rootDev);
-        }
-
-        // Fetch token securely from Next.js proxy
         const res = await fetch("/api/auth/token");
         if (!res.ok) throw new Error("Failed to authenticate Socket.IO");
         const { token } = await res.json();
 
-        if (!active) return; // Prevent connecting if component unmounted
+        if (!active) return;
 
-        // Connect directly to backend using Socket.IO conventions
         const socket = io("wss://backend.sotercare.com/realtime", {
           transports: ["websocket"],
-          auth: {
-            token: token
-          }
+          auth: { token },
         });
 
         socketRef.current = socket;
@@ -78,23 +65,27 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
           console.log("[Socket.IO] Connected successfully");
         });
 
-        // Listen for standard event channels
         const handleVitalsUpdate = (data: any) => {
           if (!active) return;
           try {
-            // Extrapolate the root device_id broadcasted by Koyeb
             if (data?.device_id) setDeviceId(data.device_id);
 
-            // The backend emits a { logs: [...] } array instead of a direct object
-            const logEntry = data?.logs && data.logs.length > 0 ? data.logs[data.logs.length - 1] : data;
+            const logEntry =
+              data?.logs && data.logs.length > 0
+                ? data.logs[data.logs.length - 1]
+                : data;
 
-            // Dispatch discrete snapshot immediately to listeners unbothered by formatting changes
             setLatestLog(logEntry);
 
-            // Map the specific snake_case backend keys to our UI React Component keys
             const mappedPayload: VitalsPayload = {
-              skinTemp: logEntry.temperature !== undefined ? logEntry.temperature : logEntry.skinTemp,
-              roomTemp: logEntry.ambient_temp !== undefined ? logEntry.ambient_temp : logEntry.roomTemp,
+              skinTemp:
+                logEntry.temperature !== undefined
+                  ? logEntry.temperature
+                  : logEntry.skinTemp,
+              roomTemp:
+                logEntry.ambient_temp !== undefined
+                  ? logEntry.ambient_temp
+                  : logEntry.roomTemp,
               moisture: logEntry.moisture,
               gaitLabel: logEntry.gait_label || logEntry.gaitLabel,
               timestamp: logEntry.timestamp,
@@ -119,10 +110,9 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
         });
 
         socket.on("connect_error", (err: any) => {
-          console.error("[Socket.IO] Authentication or Network Error:", err.message);
-          if (active) setError("Real-time connection failed.");
+          console.error("[Socket.IO] Connection Error:", err.message);
+          if (active) setError("Real-time connection failed. Historical data is still available.");
         });
-
       } catch (err: any) {
         if (active) setError(err.message || "Failed to initialize Socket.IO");
       }

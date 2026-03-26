@@ -1,27 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, Droplets, AlertTriangle, Server, Loader2 } from "lucide-react";
+import { Activity, Droplets, AlertTriangle, Phone, Server, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
-import { useDashboardWebSocket } from "./WebSocketContext";
+import { useDeviceId } from "@/lib/useDeviceId";
 
 // Mapping event types to UI styles
 const getEventTheme = (type: string) => {
   const t = type.toLowerCase();
   if (t.includes("fall")) return { Icon: AlertTriangle, nodeBg: "bg-[#f87171]", pillBg: "bg-[#fee2e2]", pillText: "text-[#b91c1c]" };
+  if (t.includes("help") || t.includes("sos") || t.includes("help_call")) return { Icon: Phone, nodeBg: "bg-[#fb923c]", pillBg: "bg-[#ffedd5]", pillText: "text-[#9a3412]" };
   if (t.includes("urine") || t.includes("moisture")) return { Icon: Droplets, nodeBg: "bg-[#93c5fd]", pillBg: "bg-[#dbeafe]", pillText: "text-[#1e40af]" };
   if (t.includes("connect") || t.includes("system")) return { Icon: Server, nodeBg: "bg-[#9ca3af]", pillBg: "bg-[#f3f4f6]", pillText: "text-[#374151]" };
-  return { Icon: Activity, nodeBg: "bg-[#2dd4bf]", pillBg: "bg-[#ccfbf1]", pillText: "text-[#0f766e]" }; // default (movement)
+  return { Icon: Activity, nodeBg: "bg-[#2dd4bf]", pillBg: "bg-[#ccfbf1]", pillText: "text-[#0f766e]" };
 };
 
 export default function ActivityTimeline() {
-  const { deviceId } = useDashboardWebSocket();
+  const { deviceId, deviceIdReady } = useDeviceId();
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchEvents = async () => {
-    if (!deviceId) return;
+    if (!deviceId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -29,15 +33,16 @@ export default function ActivityTimeline() {
       const res = await dashboardApi.getTimelineEvents({ deviceId, period: "day", date });
       console.log("[REST] Events response:", res);
       
-      // Auto-detect the array envelope
-      const rawArray = Array.isArray(res) ? res : (res.payload || res.events || res.logs || res.data || []);
-      
-      const mappedEvents = Array.isArray(rawArray) ? rawArray.map((ev: any) => ({
-        ...ev,
-        type: ev.type || (ev.fall_alert ? "Fall Detected" : ev.sos ? "Emergency SOS" : (ev.moisture > 0 ? "Moisture Alert" : ev.gait_label || "Routine Check")),
-      })) : [];
+      // API response: { data: { events: [...] } }  each item: { id, type, label, time }
+      const rawArray = Array.isArray(res?.data?.events)
+        ? res.data.events
+        : Array.isArray(res?.events)
+        ? res.events
+        : Array.isArray(res)
+        ? res
+        : [];
 
-      setEvents(mappedEvents);
+      setEvents(rawArray);
     } catch (err) {
       console.error("Failed to load timeline events:", err);
       setError("Failed to load events.");
@@ -49,8 +54,10 @@ export default function ActivityTimeline() {
   useEffect(() => {
     if (deviceId) {
       fetchEvents();
+    } else if (deviceIdReady) {
+      setLoading(false);
     }
-  }, [deviceId]);
+  }, [deviceId, deviceIdReady]);
 
   return (
     <section className="flex-1 flex flex-col relative">

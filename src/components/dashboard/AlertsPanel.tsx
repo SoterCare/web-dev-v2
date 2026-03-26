@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState, useMemo, useRef } from "react";
-import { Activity, Droplets, AlertTriangle, ChevronDown, CheckCircle, XCircle, Loader2, Trash2, History, RotateCcw } from "lucide-react";
+import { Activity, Droplets, AlertTriangle, Phone, ChevronDown, CheckCircle, XCircle, Loader2, Trash2, History, RotateCcw } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDashboardWebSocket } from "./WebSocketContext";
+import { useDeviceId } from "@/lib/useDeviceId";
 
 // Define the exact Alert interface based on the mobile app documentation
 interface AlertRecord {
@@ -19,10 +20,13 @@ const getAlertTheme = (type: string) => {
   if (t.includes("fall")) {
     return { Icon: AlertTriangle, iconBg: "bg-[#FF9D93]", iconColor: "text-red-900" };
   }
+  if (t.includes("help") || t.includes("sos") || t.includes("help_call")) {
+    return { Icon: Phone, iconBg: "bg-[#FED7AA]", iconColor: "text-orange-900" };
+  }
   if (t.includes("urine") || t.includes("moisture")) {
     return { Icon: Droplets, iconBg: "bg-[#91D7E4]", iconColor: "text-blue-900" };
   }
-  // Default to movement / sos
+  // Default: movement / routine
   return { Icon: Activity, iconBg: "bg-[#42dfdf]", iconColor: "text-cyan-950" };
 };
 
@@ -124,7 +128,8 @@ function AlertCard({ alert, onAction }: { alert: AlertRecord, onAction: (id: str
 }
 
 export default function AlertsPanel() {
-  const { deviceId, latestLog } = useDashboardWebSocket();
+  const { deviceId, deviceIdReady } = useDeviceId();
+  const { latestLog } = useDashboardWebSocket();
   // EXPLICIT LOGIC: Real-time update list using Array State (Prepending Pattern)
   const [alerts, setAlerts] = useState<AlertRecord[]>([]);
   const [dismissedAlerts, setDismissedAlerts] = useState<AlertRecord[]>([]);
@@ -134,7 +139,10 @@ export default function AlertsPanel() {
   const [error, setError] = useState("");
 
   const fetchAlerts = async () => {
-    if (!deviceId) return;
+    if (!deviceId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -181,8 +189,10 @@ export default function AlertsPanel() {
   useEffect(() => {
     if (deviceId) {
       fetchAlerts();
+    } else if (deviceIdReady) {
+      setLoading(false);
     }
-  }, [deviceId]);
+  }, [deviceId, deviceIdReady]);
 
   useEffect(() => {
     if (showRecycleBin) {
