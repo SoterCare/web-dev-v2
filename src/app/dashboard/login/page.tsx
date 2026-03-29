@@ -10,10 +10,8 @@ import Image from "next/image";
 export default function LoginPage() {
   const router = useRouter();
 
-  const [mode, setMode] = useState<"login" | "register">("login");
   const [step, setStep] = useState<"form" | "otp">("form");
 
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,14 +57,8 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     setSuccessMsg("");
-    console.log(`[AUTH] Initiating ${mode} for:`, email);
     try {
-      let res;
-      if (mode === "login") {
-        res = await authService.login({ email });
-      } else {
-        res = await authService.register({ name, email });
-      }
+      const res = await authService.login({ email });
       console.log(`[AUTH] Response:`, res.status, res.statusText);
       if (!res.ok) {
         const text = await res.text().catch(() => "");
@@ -95,14 +87,9 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     setSuccessMsg("");
-    console.log(`[AUTH] Verifying ${mode} for:`, email, "otp:", otp);
+    console.log(`[AUTH] Verifying login for:`, email, "otp:", otp);
     try {
-      let res;
-      if (mode === "login") {
-        res = await authService.verifyLogin({ email, otp });
-      } else {
-        res = await authService.verifyRegistration({ email, otp });
-      }
+      const res = await authService.verifyLogin({ email, otp });
       console.log(`[AUTH] Verify Response:`, res.status, res.statusText);
       if (!res.ok) {
         const text = await res.text().catch(() => "");
@@ -123,9 +110,9 @@ export default function LoginPage() {
         await setAuthTokens(accessToken, data.refreshToken || "");
         router.push("/dashboard");
       } else {
-        // Registration without immediate token — prompt user to sign in
+        // Unexpected fallback, just clear state
         setSuccessMsg("Account verified! Please sign in.");
-        setMode("login"); setStep("form"); setOtp("");
+        setStep("form"); setOtp("");
       }
     } catch (err: any) {
       // We don't console.error expected validation errors (like wrong OTP) to avoid Next.js dev overlay popups
@@ -156,13 +143,11 @@ export default function LoginPage() {
             />
           </div>
           <h1 className="text-2xl font-bold text-[var(--text)] tracking-tight">
-            {step === "form" 
-              ? (mode === "login" ? "Welcome Back" : "Create Account")
-              : "Verify Email"}
+            {step === "form" ? "Sign In" : "Verify Email"}
           </h1>
           <p className="text-[var(--text-muted)] mt-2 font-medium">
             {step === "form"
-              ? (mode === "login" ? "Sign in to access your dashboard" : "Join us to start monitoring health")
+              ? "In order to sign in, use the mobile application and set up your account first."
               : `We've sent a code to ${email}`}
           </p>
         </div>
@@ -188,23 +173,6 @@ export default function LoginPage() {
         <form onSubmit={step === "form" ? handleAuthSubmit : handleVerifySubmit} className="space-y-5">
           {step === "form" ? (
             <>
-              {mode === "register" && (
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[var(--text-muted)] ml-1 uppercase tracking-wider">Full Name</label>
-                  <div className="relative">
-                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      required={mode === "register"}
-                      className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-400 transition-all placeholder:text-gray-400 text-gray-800 font-medium"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
-                </div>
-              )}
-
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-[var(--text-muted)] ml-1 uppercase tracking-wider">Email Address</label>
                 <div className="relative">
@@ -220,19 +188,6 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="text-center pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMode(mode === "login" ? "register" : "login");
-                    setError("");
-                    setSuccessMsg("");
-                  }}
-                  className="text-sm font-bold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-                >
-                  {mode === "login" ? "Need an account? Create one" : "Already have an account? Sign in"}
-                </button>
-              </div>
             </>
           ) : (
             <div className="space-y-6">
@@ -274,7 +229,7 @@ export default function LoginPage() {
             ) : (
               <>
                 {step === "form" 
-                  ? (cooldown > 0 ? `Wait ${cooldown}s to Resend` : (mode === "login" ? "Receive Sign-in Code" : "Create Account")) 
+                  ? (cooldown > 0 ? `Wait ${cooldown}s to Resend` : "Receive Sign-in Code") 
                   : "Verify & Continue"}
                 <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </>
