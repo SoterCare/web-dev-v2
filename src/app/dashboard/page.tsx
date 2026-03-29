@@ -5,7 +5,6 @@ import { Box, Smartphone } from "lucide-react";
 
 import VitalsDisplay from "@/components/dashboard/VitalsDisplay";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
-import DeviceStatus from "@/components/dashboard/DeviceStatus";
 import TemperatureStatistics from "@/components/dashboard/TemperatureStatistics";
 import ActivityTimeline from "@/components/dashboard/ActivityTimeline";
 
@@ -97,7 +96,6 @@ export default async function DashboardPage() {
 
         {/* Right column */}
         <div className="lg:col-span-5 flex flex-col gap-6">
-          <DeviceStatus />
           <ActivityTimeline />
         </div>
       </div>
