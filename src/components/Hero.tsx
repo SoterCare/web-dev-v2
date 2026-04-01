@@ -91,7 +91,7 @@ const Hero = () => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full flex justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10 pb-4 md:pb-0 px-2 sm:px-4">
+          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10 pb-4 md:pb-0 px-2 sm:px-4">
             <div className="w-20 sm:w-32 hidden md:block">#SDGP</div>
 
             <div className="flex flex-col items-center">
