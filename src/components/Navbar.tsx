@@ -13,15 +13,47 @@ gsap.registerPlugin(ScrollTrigger);
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const videoActiveRef = useRef(false); // Use ref so scroll handler sees latest state
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 500);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 500);
+
+      // If video is active, hide nav ONLY when scrolled to the very bottom
+      if (videoActiveRef.current) {
+        const isNearBottom =
+          window.innerHeight + scrollY >= document.documentElement.scrollHeight - 50;
+        setIsHidden(isNearBottom);
+      } else {
+        setIsHidden(false);
+      }
     };
+
     handleScroll(); // Check on initial mount
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleVideoStart = () => {
+      videoActiveRef.current = true;
+      setIsOpen(false); // Close mobile menu if open
+      handleScroll(); // Check immediately
+    };
+
+    const handleVideoEnd = () => {
+      videoActiveRef.current = false;
+      handleScroll(); // Check immediately
+    };
+
+    window.addEventListener("video-view-start", handleVideoStart);
+    window.addEventListener("video-view-end", handleVideoEnd);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("video-view-start", handleVideoStart);
+      window.removeEventListener("video-view-end", handleVideoEnd);
+    };
   }, []);
 
   useGSAP(() => {
@@ -49,7 +81,8 @@ const Navbar = () => {
   return (
     <nav
       ref={navRef}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl"
+      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isHidden ? "-translate-y-[150%]" : "translate-y-0"
+        }`}
     >
       <div
         className={`rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative z-50 shadow-lg ${isScrolled

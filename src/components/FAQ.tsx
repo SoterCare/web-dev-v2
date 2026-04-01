@@ -10,24 +10,24 @@ gsap.registerPlugin(ScrollTrigger);
 
 const faqs = [
   {
-    question: "How is SoterCare different from a standard SOS panic button?",
-    answer: "Unlike panic buttons that require you to press them after an accident, SoterCare is proactive. It uses AI to detect \"risky movements\" (like unassisted standing) and alerts caregivers before a fall happens. It also works automatically if the user is unconscious."
+    "question": "How does the gait analysis model prevent falls?",
+    "answer": "The model identifies risky movements with 97.65% accuracy. It triggers haptic vibrations in the thigh node, allowing users to self-correct their posture before an actual fall occurs."
   },
   {
-    question: "Will the system work if my home Wi-Fi goes down?",
-    answer: "Yes. SoterCare has an Offline Safety Mode. The central hub processes alerts locally, triggering instant buzzers and lights for falls even without internet. Data syncs to the cloud automatically once Wi-Fi is restored."
+    "question": "Does SoterCare use cameras to monitor the elderly?",
+    "answer": "No, SoterCare is camera-free. It uses motion sensors and conductivity clips to protect user privacy and dignity while providing 24/7 monitoring without invasive visual surveillance."
   },
   {
-    question: "How does the \"Recycle Bin\" feature help with false alarms?",
-    answer: "It helps reduce annoying alerts. If you get a false alarm, you can mark it as \"False\" in the app. This moves it to the Recycle Bin and uses that data to retrain our system, making it smarter and more accurate for you over time."
+    "question": "Does the system work without an internet connection?",
+    "answer": "Yes. Critical alerts process locally on the Raspberry Pi 5 gateway. This \"Edge-First\" approach ensures fall and hygiene detections function with near-zero latency even during Wi-Fi outages."
   },
   {
-    question: "Is the urinary incontinence alert discreet?",
-    answer: "Yes. To protect dignity, there are no loud \"bathroom\" alarms. The system detects moisture and sends a private, silent notification to the caregiver’s phone. A small blue light on the hub provides a discreet visual cue."
+    "question": "How is urinary incontinence detected by the wearable?",
+    "answer": "Real-time conductivity clips detect moisture instantly. This replaces slow chemical sensors and invasive manual checks, allowing caregivers to respond immediately while fully preserving the user's dignity."
   },
   {
-    question: "What happens if one of the wearable bands runs out of battery?",
-    answer: "The thigh and wrist bands work independently. If one battery dies, the other keeps monitoring. For example, if the thigh band stops, the wristband continues to track heart rate and oxygen levels seamlessly."
+    "question": "What is the cost of the SoterCare system?",
+    "answer": "The hardware kit costs under $150. A premium subscription for AI-generated health summaries and advanced clinical analytics is available for approximately $1.99 per month."
   }
 ];
 

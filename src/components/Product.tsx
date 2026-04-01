@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,19 @@ gsap.registerPlugin(ScrollTrigger);
 const Product = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    // itemWidth = width of one card + gap (gap-4 = 16px)
+    const itemWidth = scrollRef.current.children[0].clientWidth + 16;
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
 
   // GSAP Animation
   useGSAP(
@@ -122,8 +135,12 @@ const Product = () => {
                 />
               </div>
 
-              {/* Mobile List View */}
-              <div className="flex md:hidden flex-col gap-4 w-full mt-8 z-20">
+              {/* Mobile List View (Horizontal Slider) */}
+              <div
+                ref={scrollRef}
+                onScroll={handleScroll}
+                className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 w-full mt-8 z-20 pb-6 slim-scroll"
+              >
                 {[
                   {
                     text: "Recycle Bin",
@@ -158,13 +175,24 @@ const Product = () => {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="bg-bg-card p-6 rounded-2xl shadow-sm border border-black/5"
+                    className="bg-bg-card p-6 rounded-2xl shadow-sm border border-black/5 flex-shrink-0 w-[85vw] snap-center min-h-[160px]"
                   >
                     <h3 className="text-xl font-bold mb-2">{item.text}</h3>
                     <p className="text-text-muted text-sm leading-relaxed">
                       {item.description}
                     </p>
                   </div>
+                ))}
+              </div>
+
+              {/* Mobile Pagination Dots */}
+              <div className="flex md:hidden justify-center items-center gap-2 mt-2 pb-8">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIndex ? "w-5 bg-[#a0cbdb]" : "w-1.5 bg-text-muted/30"
+                      }`}
+                  />
                 ))}
               </div>
 

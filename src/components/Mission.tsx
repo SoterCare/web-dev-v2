@@ -29,7 +29,7 @@ const Mission = () => {
 
   const missionText =
     '"' +
-    "We believe caring for those who raised us should be an act of love, not a source of stress. Our technology acts as a gentle guardian, watching over your parents’ well-being so you can step back from the role of 'caregiver' and simply enjoy being their child again." +
+    "We believe that caring for parents should be love. Our technology can lift every worry by watching over the absolute truth of their safety. Now, drop that weight and simply be their child again." +
     '"';
   const words = missionText.split(" ");
 
@@ -78,18 +78,28 @@ const Mission = () => {
   return (
     <section
       ref={sectionRef}
-      className="pt-32 pb-0 bg-bg-body overflow-hidden relative z-10 min-h-screen flex flex-col justify-center"
+      className="pt-24 md:pt-32 pb-6 md:pb-12 bg-bg-body overflow-hidden relative z-10 min-h-screen flex flex-col justify-between"
     >
       <div
-        className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10"
+        className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10 flex-1 flex flex-col justify-center"
         ref={textRef}
       >
-        <div className="text-2xl sm:text-4xl md:text-6xl font-medium mb-8 text-text opacity-100 leading-tight">
-          {words.map((word, i) => (
-            <span key={i} className="word inline-block mr-[0.25em] opacity-10">
-              {word}
-            </span>
-          ))}
+        <div className="text-[38px] leading-[1.1] sm:text-[48px] sm:leading-tight md:text-6xl font-medium mb-2 md:mb-8 text-text opacity-100">
+          {words.map((word, i) => {
+            const cleanWord = word.replace(/[^a-zA-Z’']/g, "").toLowerCase();
+            const highlightWords = ["we", "lift", "the", "weight"];
+            const isHighlighted = highlightWords.includes(cleanWord);
+
+            return (
+              <span
+                key={i}
+                className={`word inline-block mr-[0.2em] opacity-10 ${isHighlighted ? "text-[#a0cbdb] font-bold" : ""
+                  }`}
+              >
+                {word}
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -97,18 +107,18 @@ const Mission = () => {
       <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
 
       {/* Tech Stack Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="w-full bg-transparent border border-white/10 flex items-center overflow-hidden rounded-[1.5rem]">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 w-full">
+        <div className="w-full bg-transparent border border-white/10 flex items-center overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
           {/* Label */}
-          <div className="flex-shrink-0 px-6 sm:px-10 py-8 z-10 bg-bg-transparent relative border-r border-white/5">
-            <span className="font-bold md:text-2xl text-text uppercase tracking-widest whitespace-nowrap">
+          <div className="flex-shrink-0 px-4 sm:px-10 py-4 sm:py-8 z-10 bg-bg-transparent relative border-r border-white/5">
+            <span className="font-bold text-sm md:text-2xl text-text uppercase tracking-widest whitespace-nowrap">
               Tech Stack
             </span>
           </div>
 
           {/* Slider with Fade Mask */}
           <div
-            className="flex-1 flex overflow-hidden py-8 max-w-full relative"
+            className="flex-1 flex overflow-hidden py-4 sm:py-8 max-w-full relative"
             ref={containerRef}
             style={{
               maskImage:
@@ -124,7 +134,7 @@ const Mission = () => {
               {technologies.map((tech, index) => (
                 <div
                   key={index}
-                  className="mx-8 md:mx-12 relative h-16 w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
+                  className="mx-4 md:mx-12 relative h-10 w-10 sm:h-16 sm:w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
                 >
                   <Image
                     src={tech.src}
@@ -143,7 +153,7 @@ const Mission = () => {
               {technologies.map((tech, index) => (
                 <div
                   key={`clone-${index}`}
-                  className="mx-8 md:mx-12 relative h-16 w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
+                  className="mx-4 md:mx-12 relative h-10 w-10 sm:h-16 sm:w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
                 >
                   <Image
                     src={tech.src}

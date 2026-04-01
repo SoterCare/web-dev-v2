@@ -12,6 +12,15 @@ const Hero = () => {
   const [time, setTime] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const bgImageRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
+
+  // Quick setters for performant mouse tracking
+  const bgXTo = useRef<any>(null);
+  const bgYTo = useRef<any>(null);
+  const textXTo = useRef<any>(null);
+  const textYTo = useRef<any>(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -25,9 +34,44 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!contentRef.current) return;
+
+    const rect = contentRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Parallax logic (-0.5 to 0.5 ratio)
+    const xPercent = x / rect.width - 0.5;
+    const yPercent = y / rect.height - 0.5;
+
+    // Background moves subtly opposite
+    bgXTo.current?.(-xPercent * 30);
+    bgYTo.current?.(-yPercent * 30);
+
+    // Text moves slightly towards cursor
+    textXTo.current?.(xPercent * 20);
+    textYTo.current?.(yPercent * 20);
+  };
+
   useGSAP(
     () => {
       if (!containerRef.current || !contentRef.current) return;
+
+      // Initialize GSAP QuickTo for parallax mouse tracking
+      bgXTo.current = gsap.quickTo(bgImageRef.current, "x", { duration: 1, ease: "power2.out" });
+      bgYTo.current = gsap.quickTo(bgImageRef.current, "y", { duration: 1, ease: "power2.out" });
+      textXTo.current = gsap.quickTo(textContainerRef.current, "x", { duration: 1.5, ease: "power2.out" });
+      textYTo.current = gsap.quickTo(textContainerRef.current, "y", { duration: 1.5, ease: "power2.out" });
+
+
+
+      // Staggered Text Load Animation
+      gsap.fromTo(
+        ".reveal-text",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power4.out", delay: 0.2 }
+      );
 
       ScrollTrigger.create({
         trigger: document.body,
@@ -39,7 +83,10 @@ const Hero = () => {
           .to(contentRef.current, {
             scale: 0.8,
             opacity: 0.8,
-            borderRadius: "2.5rem",
+            borderBottomLeftRadius: "2.5rem",
+            borderBottomRightRadius: "2.5rem",
+            borderTopLeftRadius: "0px",
+            borderTopRightRadius: "0px",
             ease: "none",
           })
           .to(contentRef.current, {
@@ -53,13 +100,16 @@ const Hero = () => {
 
   return (
     <div ref={containerRef} className="h-screen w-full sticky top-0 z-0">
-      <div className="p-2 md:p-4 h-full w-full">
+      <div className="px-2 pb-2 md:px-4 md:pb-4 h-full w-full">
         <section
           ref={contentRef}
-          className="relative h-full w-full overflow-hidden flex flex-col justify-between pt-24 md:pt-32 pb-6 md:pb-8 px-4 sm:px-6 lg:px-8 rounded-[1.5rem] md:rounded-[1.5rem] origin-top"
+          onMouseMove={handleMouseMove}
+          className="relative h-full w-full overflow-hidden flex flex-col justify-between pt-28 md:pt-36 pb-6 md:pb-8 px-4 sm:px-6 lg:px-8 rounded-b-[1.5rem] md:rounded-b-[1.5rem] rounded-t-none origin-top"
         >
-          {/* Background Image & Overlay */}
-          <div className="absolute inset-0 w-full h-full z-0 font-sans">
+
+
+          {/* Background Image & Overlay (scaled up safely for parallax space) */}
+          <div ref={bgImageRef} className="absolute inset-0 w-[110%] h-[110%] -left-[5%] -top-[5%] z-0 font-sans">
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out hover:scale-[1.02]"
               style={{
@@ -67,23 +117,26 @@ const Hero = () => {
               }}
             />
             {/* Modern dark gradient overlay to ensure text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#0f172a]/60 to-[#020617]/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#0f172a]/70 to-[#020617]/90" />
           </div>
 
-          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 pt-12 md:pt-0 px-4">
+          <div
+            ref={textContainerRef}
+            className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-20 pt-12 md:pt-0 px-4 will-change-transform"
+          >
             <div className="flex flex-col items-center">
               <h1 className="mb-6 md:mb-8 leading-tight">
-                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent leading-none tracking-tighter pb-1">
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent leading-none tracking-tighter pb-1 reveal-text opacity-0">
                   Proactive Elderly Care
                 </span>
-                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#a0cbdb] leading-none tracking-tight mt-1 md:mt-2">
+                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#a0cbdb] leading-none tracking-tight mt-1 md:mt-2 reveal-text opacity-0">
                   Monitoring System
                 </span>
               </h1>
-              <span className="block text-xl md:text-2xl font-medium text-white/80 leading-snug mt-2 mb-4 md:mb-6 tracking-wide">
+              <span className="block text-xl md:text-2xl font-medium text-white/80 leading-snug mt-2 mb-4 md:mb-6 tracking-wide reveal-text opacity-0">
                 Wellness simplified.
               </span>
-              <span className="max-w-sm sm:max-w-2xl mx-auto leading-relaxed text-base md:text-lg tracking-wide text-white/60">
+              <span className="max-w-sm sm:max-w-2xl mx-auto leading-relaxed text-base md:text-lg tracking-wide text-white/60 reveal-text opacity-0">
                 Advanced real-time health monitoring ensuring safety and peace of
                 mind for your loved ones.
               </span>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -110,6 +110,19 @@ const TEAM_MEMBERS = [
 const Team = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    // itemWidth = width of one card + gap (gap-x-6 = 24px)
+    const itemWidth = scrollRef.current.children[0].clientWidth + 24;
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
 
   useGSAP(
     () => {
@@ -160,12 +173,16 @@ const Team = () => {
           </p>
         </div>
 
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 pt-12 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        {/* Team Grid (Mobile Slider / Desktop Grid) */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto snap-x snap-mandatory pt-12 md:grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 pb-8 slim-scroll md:overflow-visible"
+        >
           {TEAM_MEMBERS.map((member, index) => (
             <div
               key={index}
-              className="relative flex flex-col items-center group"
+              className="relative flex flex-col items-center group snap-center w-[85vw] sm:w-[60vw] flex-shrink-0 md:w-auto"
             >
               {/* Image Container - Floating above */}
               <div className="relative z-20 w-64 -mb-6 transition-transform duration-300 h-80 group-hover:scale-105 group-hover:-translate-y-2">
@@ -182,7 +199,7 @@ const Team = () => {
               <div className="relative z-10 w-full overflow-hidden transition-all duration-300 border shadow-md bg-bg-card rounded-2xl border-black/5 group-hover:shadow-xl group-hover:ring-1 group-hover:ring-black/5">
                 {/* Name Bar (Always visible) */}
                 <div className="p-6 pt-10 text-center">
-                  <h3 className="text-xl font-bold text-foreground">
+                  <h3 className="text-xl font-bold text-[#a0cbdb]">
                     {member.name}
                   </h3>
                   <p className="mt-1 text-sm font-medium tracking-wider uppercase text-text-muted">
@@ -247,6 +264,17 @@ const Team = () => {
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Mobile Pagination Dots */}
+        <div className="flex justify-center items-center gap-2 mt-4 md:hidden pb-4">
+          {TEAM_MEMBERS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "w-6 bg-[#a0cbdb]" : "w-2 bg-text-muted/30"
+                }`}
+            />
           ))}
         </div>
       </div>

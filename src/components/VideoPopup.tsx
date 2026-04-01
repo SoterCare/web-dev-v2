@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { X } from "lucide-react"
 import { createPortal } from "react-dom"
+import Image from "next/image"
 
 export default function VideoPopup() {
     const [isOpen, setIsOpen] = useState(false)
@@ -32,7 +33,7 @@ export default function VideoPopup() {
             />
 
             {/* Card */}
-            <div className="relative w-full max-w-6xl flex flex-col items-center animate-in zoom-in-95 duration-300 slide-in-from-bottom-4">
+            <div className="relative w-full max-w-[95vw] md:max-w-[85vw] xl:max-w-7xl flex flex-col items-center animate-in zoom-in-95 duration-300 slide-in-from-bottom-4">
                 <div className="w-full flex justify-end mb-4 sm:mb-6">
                     {/* White plate close button */}
                     <button
@@ -44,17 +45,34 @@ export default function VideoPopup() {
                     </button>
                 </div>
 
-                <div className="relative w-full aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl border border-white/20">
-                    {isOpen && (
-                        <iframe
-                            className="absolute top-0 left-0 w-full h-full"
-                            src="https://www.youtube.com/embed/2bcujj8dd_M?autoplay=1"
-                            title="SoterCare Demo Video"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                        ></iframe>
-                    )}
+                {/* Footer-styled Frame */}
+                <div className="relative w-full p-4 sm:p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl">
+                    {/* Background layers exactly matching Footer */}
+                    <div className="absolute inset-0 z-0 select-none pointer-events-none">
+                        <Image
+                            src="/assets/testfooter1.png"
+                            alt="Background pattern"
+                            fill
+                            className="object-cover opacity-[0.8]"
+                            quality={100}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/90 via-[#0f172a]/80 to-[#0f172a]/95" />
+                        <div className="absolute inset-0 border border-white/20 rounded-[1.5rem] md:rounded-[2.5rem]" />
+                    </div>
+
+                    {/* Video Container inside the styled frame */}
+                    <div className="relative z-10 w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden bg-black shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5">
+                        {isOpen && (
+                            <iframe
+                                className="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/2bcujj8dd_M?autoplay=1"
+                                title="SoterCare Demo Video"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>,
