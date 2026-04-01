@@ -41,7 +41,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#fafafa] text-foreground selection:bg-blue-100 selection:text-blue-900 relative">
-      <div ref={bgRef} className="fixed top-0 left-0 z-0 h-[200%] w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none will-change-transform"></div>
+      <div
+        ref={bgRef}
+        className="fixed top-0 left-0 z-0 h-[200%] w-full pointer-events-none will-change-transform bg-fixed"
+        style={{
+          backgroundImage: 'radial-gradient(#e5e7eb 2px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }}
+      ></div>
       <SplashScreen />
       <Navbar />
       <Hero />

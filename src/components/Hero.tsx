@@ -33,7 +33,7 @@ const Hero = () => {
         trigger: document.body,
         start: "top top",
         end: "+=1000",
-        scrub: true,
+        scrub: 1.5,
         animation: gsap
           .timeline()
           .to(contentRef.current, {
@@ -58,41 +58,44 @@ const Hero = () => {
           ref={contentRef}
           className="relative h-full w-full overflow-hidden flex flex-col justify-between pt-24 md:pt-32 pb-6 md:pb-8 px-4 sm:px-6 lg:px-8 rounded-[1.5rem] md:rounded-[1.5rem] origin-top"
         >
-          {/* Background Image & Noise */}
+          {/* Background Image & Overlay */}
           <div className="absolute inset-0 w-full h-full z-0 font-sans">
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out hover:scale-[1.02]"
               style={{
-                backgroundImage: 'url("/assets/hero-background-test1.webp")',
+                backgroundImage: 'url("/assets/herotest1.png")',
               }}
             />
-            <div className="absolute inset-0 bg-[#a0cbdb]/80" />
+            {/* Modern dark gradient overlay to ensure text contrast */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#0f172a]/60 to-[#020617]/90" />
           </div>
 
-          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 text-white pt-12 md:pt-0">
-            <h1 className="mb-6 md:mb-2 leading-[1.1] md:leading-[1]">
-              <span className="block text-[10vw] sm:text-6xl md:text-[12vh] font-medium opacity-90 text-white leading-none tracking-tight">
-                Smart Elderly Care
-              </span>
-              <span className="block text-[8vw] sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-2 md:-mt-1 tracking-tight">
-                Monitoring System
-              </span>
-              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-80 text-[#2f2f2f] leading-none mt-6 md:mt-8">
+          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-10 pt-12 md:pt-0 px-4">
+            <div className="flex flex-col items-center">
+              <h1 className="mb-6 md:mb-8 leading-tight">
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent leading-none tracking-tighter pb-1">
+                  Proactive Elderly Care
+                </span>
+                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#a0cbdb] leading-none tracking-tight mt-1 md:mt-2">
+                  Monitoring System
+                </span>
+              </h1>
+              <span className="block text-xl md:text-2xl font-medium text-white/80 leading-snug mt-2 mb-4 md:mb-6 tracking-wide">
                 Wellness simplified.
               </span>
-            </h1>
-            <span className="max-w-xs sm:max-w-xl mx-auto leading-relaxed text-sm sm:text-lg tracking-wide opacity-80 text-[#2f2f2f] px-2">
-              Advanced real-time health monitoring ensuring safety and peace of
-              mind for your loved ones.
-            </span>
+              <span className="max-w-sm sm:max-w-2xl mx-auto leading-relaxed text-base md:text-lg tracking-wide text-white/60">
+                Advanced real-time health monitoring ensuring safety and peace of
+                mind for your loved ones.
+              </span>
+            </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10 pb-4 md:pb-0">
+          <div className="w-full flex justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 z-10 pb-4 md:pb-0 px-2 sm:px-4">
             <div className="w-20 sm:w-32 hidden md:block">#SDGP</div>
 
-            <div className="flex flex-col items-center gap-2">
-              <span className="bg-white bg-clip-text text-transparent animate-jump font-bold text-xs sm:text-sm whitespace-nowrap">
+            <div className="flex flex-col items-center">
+              <span className="text-shimmer font-bold text-sm sm:text-base whitespace-nowrap tracking-widest uppercase">
                 Scroll to Explore
               </span>
             </div>

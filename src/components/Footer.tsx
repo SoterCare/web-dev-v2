@@ -46,10 +46,11 @@ const Footer = () => {
             src="/assets/footer_1BNW.webp"
             alt="Background"
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.02]"
             priority
           />
-          <div className="absolute inset-0 bg-[#a0cbdb]/80" />
+          {/* Modern dark metallic gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#0f172a]/60 to-[#020617]/50" />
         </div>
 
         {/* Content Wrapper specifically z-index relative to appear above background */}
@@ -59,29 +60,31 @@ const Footer = () => {
             ref={mainContentRef}
             className="flex-grow flex flex-col items-center justify-center p-8 text-center mt-20"
           >
-            <h2 className="mb-4 md:mb-2 leading-[1.1] md:leading-[1]">
-              <span className="block text-2xl sm:text-4xl md:text-[4vh] font-medium opacity-80 text-[#2f2f2f] leading-none">
-                That&apos;s our story
+            <h2 className="mb-6 md:mb-10 leading-tight">
+              <span className="block text-3xl sm:text-4xl md:text-5xl font-bold text-[#a0cbdb] leading-none tracking-tight pb-2 md:pb-4">
+                That&apos;s our story.
               </span>
-              <span className="block text-2xl sm:text-4xl md:text-[8vh] font-medium opacity-90 text-white leading-none mt-4 md:mt-6">
+              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent leading-none tracking-tighter">
                 Wellness Simplified.
               </span>
             </h2>
 
-            <div className="flex flex-col md:flex-row gap-4 mt-10 md:mt-8">
-              <Link
-                href="#"
-                className="bg-bg-card shadow-m text-text px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-200 transition-colors duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+            <div className="flex flex-col md:flex-row gap-6 mt-6 md:mt-8 justify-center w-full max-w-xl mx-auto">
+              <button
+                onClick={() =>
+                  window.dispatchEvent(new Event("open-video-popup"))
+                }
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
               >
                 <Play size={20} fill="currentColor" />
-                Watch a Demo
-              </Link>
+                Watch
+              </button>
 
               <button
                 onClick={() =>
                   window.dispatchEvent(new Event("open-newsletter-popup"))
                 }
-                className="bg-[#2f2f2f] text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-black transition-colors duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+                className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 hover:bg-neutral-200 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-[0_4px_14px_0_rgba(255,255,255,0.39)]"
               >
                 <Mail size={20} />
                 Subscribe
@@ -91,7 +94,7 @@ const Footer = () => {
 
           {/* Bottom Bar */}
           <div ref={bottomBarRef} className="w-full px-8 pb-8 pt-20">
-            <div className="border-t border-white pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-[#fafafa]">
+            <div className="border-t border-white/20 pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-white/80">
               {/* Copyright */}
               <div className="order-3 xl:order-1 text-center xl:text-left w-full xl:w-auto">
                 &copy; {new Date().getFullYear()} SoterCare. | All Rights

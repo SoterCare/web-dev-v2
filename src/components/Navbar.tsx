@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
@@ -12,7 +12,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 500);
+    };
+    handleScroll(); // Check on initial mount
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -29,8 +39,8 @@ const Navbar = () => {
         scrollTrigger: {
           trigger: document.body,
           start: "+=300",
-          end: "+=330",
-          scrub: true,
+          end: "+=390",
+          scrub: 1, // Adds standard easing to catch up with the scroll
         },
       },
     );
@@ -41,17 +51,22 @@ const Navbar = () => {
       ref={navRef}
       className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl"
     >
-      <div className="bg-bg-card shadow-m border border-white/10 shadow-lg rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-300 relative z-50">
+      <div
+        className={`rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative z-50 shadow-lg ${isScrolled
+          ? "bg-bg-card shadow-m border border-white/10"
+          : "bg-black/20 backdrop-blur-md border border-[rgba(255,255,255,0.15)]"
+          }`}
+      >
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
           <Link href="#" className="flex items-center gap-2" scroll={false}>
             <Image
-              src="/assets/SoterCare-Primary-logo-brandblue.webp"
+              src={isScrolled ? "/assets/SoterCare-Primary-logo-brandblue.webp" : "/assets/SoterCare-Primary-logo-white.webp"}
               alt="SoterCare"
               width={0}
               height={0}
               sizes="100vw"
-              className="h-12 w-auto object-contain"
+              className="h-12 w-auto object-contain transition-opacity duration-700 ease-in-out"
               style={{ width: "auto", height: "48px" }}
               priority
             />
@@ -62,28 +77,32 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-8">
           <Link
             href="#product"
-            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
             scroll={false}
           >
             Product
           </Link>
           <Link
             href="#features"
-            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
             scroll={false}
           >
             Features
           </Link>
           <Link
             href="#pricing"
-            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
             scroll={false}
           >
             Pricing
           </Link>
           <Link
             href="#team"
-            className="text-[#797979] hover:text-[black] transition-colors text-base font-medium"
+            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
             scroll={false}
           >
             Team
@@ -94,7 +113,10 @@ const Navbar = () => {
         <div className="hidden md:flex items-center">
           <Link
             href="/dashboard"
-            className="bg-bg-card shadow-m text-foreground px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95"
+            className={`px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95 ${isScrolled
+              ? "bg-bg-card shadow-m text-foreground"
+              : "bg-white/10 text-white backdrop-blur-sm border border-white/20 hover:bg-white/20"
+              }`}
           >
             Dashboard
           </Link>
@@ -103,7 +125,8 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button
-            className="text-[#797979] hover:text-[black] p-2 transition-transform active:scale-95"
+            className={`p-2 transition-transform active:scale-95 ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -157,6 +180,7 @@ const Navbar = () => {
 
     </nav>
   );
+
 };
 
 export default Navbar;

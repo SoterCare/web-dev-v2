@@ -204,6 +204,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import NewsletterPopup from "@/components/NewsletterPopup";
 import JsonLd from "@/components/JsonLd";
 import HashScroll from "@/components/HashScroll";
+import VideoPopup from "@/components/VideoPopup";
 
 export default function RootLayout({
   children,
@@ -239,6 +240,7 @@ export default function RootLayout({
         <SmoothScroll />
         <HashScroll />
         <NewsletterPopup />
+        <VideoPopup />
         {children}
         <Analytics />
       </body>

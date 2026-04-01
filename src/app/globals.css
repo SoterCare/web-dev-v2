@@ -37,9 +37,14 @@
   --text-muted: oklch(0.4 0 264);
 
   /* SHADOWS */
-  --shadow-m: inset 0 2px 0 #ffffff9d, /* Top Edge */ inset 0 -1px 0 #adadad17,
-    /* Bottom Edge */ 0 -6px 8px -2px #00000008,
-    /* Top Drop Shadow */ 0 6px 8px -2px #00000012; /* Drop Shadow */
+  --shadow-m: inset 0 2px 0 #ffffff9d,
+    /* Top Edge */
+    inset 0 -1px 0 #adadad17,
+    /* Bottom Edge */
+    0 -6px 8px -2px #00000008,
+    /* Top Drop Shadow */
+    0 6px 8px -2px #00000012;
+  /* Drop Shadow */
 }
 
 @theme {
@@ -76,10 +81,12 @@ h1 {
   font: 700 clamp(3rem, 5vw + 1rem, 6rem) / 1.2em "URWGeometric";
   color: var(--text);
 }
+
 h2 {
   font: 500 clamp(2.5rem, 4vw + 1rem, 5rem) / 1.4em "URWGeometric";
   color: var(--text);
 }
+
 p {
   font: 400 clamp(1rem, 2vw, 1.2rem) / 1.6em "URWGeometric";
   color: var(--text-muted);
@@ -100,10 +107,12 @@ p {
 }
 
 @keyframes jump {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-5px);
   }
@@ -114,23 +123,53 @@ p {
 }
 
 .dotted-bg {
-  @apply absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] bg-fixed;
+  @apply absolute inset-0 z-0 h-full w-full bg-fixed;
+  background-image: radial-gradient(#e5e7eb 2px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 .slim-scroll {
   scrollbar-width: thin;
   scrollbar-color: #d1d5db transparent;
 }
+
 .slim-scroll::-webkit-scrollbar {
   width: 4px;
 }
+
 .slim-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .slim-scroll::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 99px;
 }
+
 .slim-scroll::-webkit-scrollbar-thumb:hover {
   background-color: #9ca3af;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(110deg,
+      rgba(255, 255, 255, 0.3) 15%,
+      rgba(255, 255, 255, 0.6) 45%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.6) 55%,
+      rgba(255, 255, 255, 0.3) 85%);
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 6s infinite ease-in-out;
 }
