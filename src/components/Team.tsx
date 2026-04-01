@@ -150,7 +150,7 @@ const Team = () => {
     <section
       id="team"
       ref={sectionRef}
-      className="relative z-10 pt-24 pb-24 overflow-hidden bg-transparent md:pt-32"
+      className="relative z-10 pt-12 md:pt-16 pb-20 md:pb-24 overflow-hidden bg-transparent"
     >
       {/* Dotted Background removed (global) */}
 

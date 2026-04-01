@@ -34,7 +34,7 @@ const Features = () => {
         <section id="features" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden">
             {/* Dotted Background removed (global) */}
             {/* --- Section 3: Core Features --- */}
-            <div ref={contentRef} className="w-full relative z-10 flex items-center justify-center px-8 pt-24 md:pt-32 pb-8 feature-section-reveal">
+            <div ref={contentRef} className="w-full relative z-10 flex items-center justify-center px-8 pt-16 md:pt-24 pb-8 feature-section-reveal">
                 <div className="w-full max-w-7xl mx-auto flex flex-col justify-center h-full">
                     <div className="flex flex-col gap-12">
                         <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">

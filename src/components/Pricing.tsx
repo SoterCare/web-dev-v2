@@ -75,7 +75,7 @@ const Pricing = () => {
   }, { scope: sectionRef });
 
   return (
-    <section id="pricing" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 pt-24 md:pt-32 pb-24 bg-transparent relative z-10 overflow-hidden">
+    <section id="pricing" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 pt-12 md:pt-16 pb-12 md:pb-16 bg-transparent relative z-10 overflow-hidden">
       {/* Shorten the background decoration or allow it to blend */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[20%] right-[-5%] w-[800px] h-[800px] bg-white rounded-full blur-[100px] opacity-40 mix-blend-multiply"></div>
@@ -83,7 +83,7 @@ const Pricing = () => {
       {/* Dotted Background removed (global) */}
 
       <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-block mb-6">
             <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60">
               Pricing
@@ -95,7 +95,7 @@ const Pricing = () => {
         </div>
 
         {/* --- Pre-Order Section --- */}
-        <div className="w-full max-w-4xl mx-auto mb-20">
+        <div className="w-full max-w-4xl mx-auto mb-12">
           <div className="bg-bg-card rounded-[2.5rem] shadow-xl border border-black/5 overflow-hidden flex flex-col md:flex-row relative">
             <div className="absolute top-0 right-0 p-4 z-10">
               <span className="bg-black text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Early Bird</span>
