@@ -63,7 +63,7 @@ const Hero = () => {
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out hover:scale-[1.02]"
               style={{
-                backgroundImage: 'url("/assets/herotest1.png")',
+                backgroundImage: 'url("/assets/herotest1.webp")',
               }}
             />
             {/* Modern dark gradient overlay to ensure text contrast */}
