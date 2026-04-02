@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ArrowDown } from "lucide-react";
+import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -109,12 +110,15 @@ const Hero = () => {
 
 
           {/* Background Image & Overlay (scaled up safely for parallax space) */}
-          <div ref={bgImageRef} className="absolute inset-0 w-[110%] h-[110%] -left-[5%] -top-[5%] z-0 font-sans">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out hover:scale-[1.02]"
-              style={{
-                backgroundImage: 'url("/assets/herotest1.webp")',
-              }}
+          <div ref={bgImageRef} className="absolute inset-0 w-[110%] h-[110%] -left-[5%] -top-[5%] z-0">
+            <Image
+              src="/assets/herotest1.webp"
+              alt="SoterCare elderly care monitoring system - IoT wearable devices and AI dashboard"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+              quality={85}
             />
             {/* Modern dark gradient overlay to ensure text contrast */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#0f172a]/70 to-[#020617]/90" />

@@ -10,16 +10,13 @@ gsap.registerPlugin(ScrollTrigger);
 const TEAM_MEMBERS = [
   {
     name: "Daham Dissanayake",
-    role: "Team Lead / IoT Sub Lead",
-    skills: [
-      "JavaScript",
-      "React",
-      "Python",
-      "C++",
-      "Figma",
-      "MySQL",
-      "Git",
-      "Adobe Creative Cloud",
+    role: "Team Lead & IoT Sub Lead",
+    contributions: [
+      "Project Management",
+      "Gait Analysis ML Model build",
+      "IoT prototyping and soldering",
+      "Web site handling",
+      "Gateway backend build",
     ],
     image: "/assets/team/Daham.webp",
     email: "daham@sotercare.com",
@@ -32,8 +29,13 @@ const TEAM_MEMBERS = [
   },
   {
     name: "Sanjula Herath",
-    role: "SysInt & Testing Sub Lead",
-    skills: ["Rust", "Python", "Go", "gRPC", "Javascript", "Java"],
+    role: "Backend & Mobile Sub Lead",
+    contributions: [
+      "Mobile app building",
+      "App backend building",
+      "Testing and deployment",
+      "Microservices",
+    ],
     image: "/assets/team/Sanjula.webp",
     email: "sanjula@sotercare.com",
     socials: {
@@ -44,17 +46,29 @@ const TEAM_MEMBERS = [
     },
   },
   {
+    name: "Komudi Senarachchi",
+    role: "UI/UX Sub Lead",
+    contributions: [
+      "Mobile UI Design",
+      "3D model building",
+      "Mobile app frontend development",
+      "Documentation",
+    ],
+    image: "/assets/team/Komudi.webp",
+    email: "komudi@sotercare.com",
+    socials: {
+      github: "https://github.com/KomuDhara",
+      linkedin: "https://www.linkedin.com/in/komudi-senarachchi-3bba102ba/",
+      instagram: "https://www.instagram.com/komu_dhara",
+      website: "",
+    },
+  },
+  {
     name: "Kanchana Wickramarathna",
-    role: "ML/ALGO Sub Lead",
-    skills: [
-      "Python",
-      "Java",
-      "React",
-      "Nextjs",
-      "OpenAI",
-      "LangGraph",
-      "LlamaIndex",
-      "Helicone",
+    role: "Agent Development",
+    contributions: [
+      "Agent development",
+      "RAG system implementation",
     ],
     image: "/assets/team/Kanchana.webp",
     email: "kanchana@sotercare.com",
@@ -66,35 +80,13 @@ const TEAM_MEMBERS = [
     },
   },
   {
-    name: "Komudi Senarachchi",
-    role: "UI/UX Sub Lead",
-    skills: ["Figma", "Java", "JavaScript", "Python", "C#", "Nextjs", "React"],
-    image: "/assets/team/Komudi.webp",
-    email: "komudi@sotercare.com",
-    socials: {
-      github: "https://github.com/KomuDhara",
-      linkedin: "https://www.linkedin.com/in/komudi-senarachchi-3bba102ba/",
-      instagram: "https://www.instagram.com/komu_dhara",
-      website: "",
-    },
-  },
-  {
-    name: "Nimna Solaman",
-    role: "Documentation Sub Lead",
-    skills: ["Java", "Python", "React", "Nextjs"],
-    image: "/assets/team/Nimna.webp",
-    email: "nimna@sotercare.com",
-    socials: {
-      github: "https://github.com/nimnaahh",
-      linkedin: "https://www.linkedin.com/in/nimna-minsadi-212454296/",
-      instagram: "https://www.instagram.com/tbh_idk_006/",
-      website: "",
-    },
-  },
-  {
     name: "Hirusha Maduranga",
-    role: "Mobile Dev Sub Lead",
-    skills: ["Java", "Python", "React", "Nextjs", "Javascript"],
+    role: "Mobile Development",
+    contributions: [
+      "Mobile frontend development",
+      "Web SEO",
+      "Documentation",
+    ],
     image: "/assets/team/Hirusha.webp",
     email: "hirusha@sotercare.com",
     socials: {
@@ -105,6 +97,19 @@ const TEAM_MEMBERS = [
       website: "",
     },
   },
+  {
+    name: "Nimna Solaman",
+    role: "Documentation",
+    contributions: ["Documentation"],
+    image: "/assets/team/Nimna.webp",
+    email: "nimna@sotercare.com",
+    socials: {
+      github: "https://github.com/nimnaahh",
+      linkedin: "https://www.linkedin.com/in/nimna-minsadi-212454296/",
+      instagram: "https://www.instagram.com/tbh_idk_006/",
+      website: "",
+    },
+  }
 ];
 
 const Team = () => {
@@ -199,10 +204,10 @@ const Team = () => {
               <div className="relative z-10 w-full overflow-hidden transition-all duration-300 border shadow-md bg-bg-card rounded-2xl border-black/5 group-hover:shadow-xl group-hover:ring-1 group-hover:ring-black/5">
                 {/* Name Bar (Always visible) */}
                 <div className="p-6 pt-10 text-center">
-                  <h3 className="text-xl font-bold text-[#a0cbdb]">
+                  <h3 className="text-2xl font-bold text-[#a0cbdb]">
                     {member.name}
                   </h3>
-                  <p className="mt-1 text-sm font-medium tracking-wider uppercase text-text-muted">
+                  <p className="mt-1 text-xs font-medium text-text-muted">
                     {member.role}
                   </p>
                 </div>
@@ -210,9 +215,10 @@ const Team = () => {
                 {/* Expanded Details (Revealed on Hover) */}
                 <div className="transition-all duration-500 ease-in-out opacity-0 max-h-0 group-hover:max-h-60 group-hover:opacity-100 bg-bg-panel/50">
                   <div className="flex flex-col items-center gap-4 p-6 pt-2 border-t border-black/5">
-                    {/* Skills */}
-                    <p className="text-[10px] font-medium text-foreground/50 tracking-widest text-center">
-                      {member.skills.join(", ")}
+                    {/* Contributions */}
+                    <p className="text-[11px] font-medium text-foreground/60 text-center leading-relaxed">
+                      {/* Using member as any here temporarily because TS might warn without type definition change */}
+                      {(member as any).contributions.join(", ")}
                     </p>
 
                     <a
@@ -229,6 +235,7 @@ const Team = () => {
                         href={member.socials.github}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`${member.name} on GitHub`}
                         className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm"
                       >
                         <Github size={18} />
@@ -237,6 +244,7 @@ const Team = () => {
                         href={member.socials.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`${member.name} on LinkedIn`}
                         className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-600 hover:scale-110"
                       >
                         <Linkedin size={18} />
@@ -245,6 +253,7 @@ const Team = () => {
                         href={member.socials.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`${member.name} on Instagram`}
                         className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110"
                       >
                         <Instagram size={18} />
@@ -254,6 +263,7 @@ const Team = () => {
                           href={member.socials.website}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label={`${member.name}'s personal website`}
                           className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-500 hover:scale-110"
                         >
                           <Globe size={18} />

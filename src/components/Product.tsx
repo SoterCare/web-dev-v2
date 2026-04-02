@@ -83,9 +83,10 @@ const Product = () => {
                 <div className="md:w-1/2 flex justify-center md:justify-start">
                   <Image
                     src="/assets/features/thigh-node.webp"
-                    alt="The Thigh Node"
+                    alt="SoterCare Thigh Node wearable - fall detection and incontinence sensor"
                     width={270}
                     height={180}
+                    priority
                     style={{ width: "auto", height: "auto" }}
                     className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                   />
@@ -104,9 +105,10 @@ const Product = () => {
                 <div className="md:w-1/2 flex justify-center md:justify-end">
                   <Image
                     src="/assets/features/edge-gatewaynew.webp"
-                    alt="The Wrist Node"
+                    alt="SoterCare Edge Gateway - local AI hub for offline fall detection and alerts"
                     width={300}
                     height={220}
+                    priority
                     style={{ width: "auto", height: "auto" }}
                     className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
                   />
@@ -128,7 +130,7 @@ const Product = () => {
               <div className="relative z-10 max-w-lg md:max-w-3xl w-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
                 <Image
                   src="/assets/features/new-mobileapp-mockup.webp"
-                  alt="Mobile App UI Mockup"
+                  alt="SoterCare mobile app showing real-time vitals, fall alerts, and health summaries for elderly care"
                   width={1200}
                   height={1000}
                   className="w-full h-auto object-contain drop-shadow-2xl"

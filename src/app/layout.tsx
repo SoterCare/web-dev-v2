@@ -82,6 +82,30 @@ const jsonLd = {
           name: "Home",
           item: "https://sotercare.com",
         },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "IoT Devices",
+          item: "https://sotercare.com/#product",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Features",
+          item: "https://sotercare.com/#features",
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: "Pricing",
+          item: "https://sotercare.com/#pricing",
+        },
+        {
+          "@type": "ListItem",
+          position: 5,
+          name: "Team",
+          item: "https://sotercare.com/#team",
+        },
       ],
     },
     {
@@ -179,7 +203,7 @@ export const metadata: Metadata = {
       "AI-powered elderly care monitoring with fall detection, vital sign tracking, and instant caregiver alerts. Wellness simplified.",
     images: [
       {
-        url: "https://sotercare.com/og.webp",
+        url: "https://sotercare.com/og.png",
         width: 1200,
         height: 630,
         alt: "SoterCare IoT elderly care monitoring dashboard showing fall detection and vital signs",
@@ -191,7 +215,7 @@ export const metadata: Metadata = {
     title: "SoterCare - Smart Elderly Care Monitoring System",
     description:
       "AI-powered elderly care monitoring with fall detection, vital sign tracking, and instant caregiver alerts.",
-    images: ["https://sotercare.com/og.webp"],
+    images: ["https://sotercare.com/og.png"],
     creator: "@sotercare",
   },
   alternates: {
@@ -229,6 +253,10 @@ export default function RootLayout({
           type="font/otf"
           crossOrigin="anonymous"
         />
+        {/* Apple Touch Icon for iOS home screen */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/SoterCare-centered-logo.webp" />
+        {/* Theme color for browser chrome */}
+        <meta name="theme-color" content="#a0cbdb" />
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://va.vercel-scripts.com" />
         {/* DNS prefetch for faster resolution */}

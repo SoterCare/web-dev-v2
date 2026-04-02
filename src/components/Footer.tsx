@@ -207,7 +207,8 @@ const Footer = () => {
           <div className="absolute inset-0 z-0 select-none pointer-events-none">
             <Image
               src="/assets/footer_1BNW.webp"
-              alt="Background"
+              alt=""
+              aria-hidden="true"
               fill
               className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.02]"
               priority
@@ -287,6 +288,8 @@ const Footer = () => {
                     <a
                       href="https://www.instagram.com/sotercare_"
                       target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="SoterCare on Instagram"
                       className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
                     >
                       <Instagram size={20} />
@@ -294,6 +297,8 @@ const Footer = () => {
                     <a
                       href="https://www.linkedin.com/company/sotercare/"
                       target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="SoterCare on LinkedIn"
                       className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
                     >
                       <Linkedin size={20} />

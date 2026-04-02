@@ -76,8 +76,11 @@ const FAQ = () => {
                 }`}
             >
               <button
-                className="w-full flex items-center justify-between p-4 md:p-6 text-left focus:outline-none"
+                className="w-full flex items-center justify-between p-4 md:p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#a0cbdb] focus-visible:ring-offset-2 rounded-[32px]"
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
+                id={`faq-question-${index}`}
               >
                 <span className="font-bold text-foreground text-xl tracking-tight">{faq.question}</span>
                 {openIndex === index ? (
@@ -88,6 +91,9 @@ const FAQ = () => {
               </button>
 
               <div
+                id={`faq-answer-${index}`}
+                role="region"
+                aria-labelledby={`faq-question-${index}`}
                 className={`px-8 transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-48 opacity-100 pb-8' : 'max-h-0 opacity-0'
                   }`}
               >
