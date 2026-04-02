@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Thermometer, Home, Droplets, Activity, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDashboardWebSocket } from "./WebSocketContext";
+
+// How long (ms) with no gateway data before showing Offline
+const DATA_TIMEOUT_MS = 3000;
 
 export default function VitalsDisplay() {
   const { vitals: wsVitals, isConnected } = useDashboardWebSocket();
   const [initialVitals, setInitialVitals] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isDataLive, setIsDataLive] = useState(false);
+  const lastDataAtRef = useRef<number | null>(null);
 
   useEffect(() => {
     // Fetch fallback/initial vitals on mount
@@ -19,6 +24,27 @@ export default function VitalsDisplay() {
       })
       .catch((err) => console.error("Failed to load initial vitals:", err))
       .finally(() => setLoading(false));
+  }, []);
+
+  // Stamp the last time we received fresh gateway data
+  useEffect(() => {
+    if (wsVitals && Object.keys(wsVitals).length > 0) {
+      lastDataAtRef.current = Date.now();
+      setIsDataLive(true);
+    }
+  }, [wsVitals]);
+
+  // Poll every 500ms — if more than DATA_TIMEOUT_MS since last data, go Offline
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (lastDataAtRef.current === null) {
+        setIsDataLive(false);
+        return;
+      }
+      const elapsed = Date.now() - lastDataAtRef.current;
+      setIsDataLive(elapsed < DATA_TIMEOUT_MS);
+    }, 500);
+    return () => clearInterval(interval);
   }, []);
 
   // Use WebSocket data if available, otherwise use initial API data, otherwise fallback to dashes
@@ -64,15 +90,20 @@ export default function VitalsDisplay() {
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-2xl font-bold text-[var(--text)]">Live Statistics</h2>
         <div className="flex items-center gap-2">
-          {isConnected ? (
+          {isDataLive ? (
             <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100/50">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Live
             </span>
+          ) : isConnected ? (
+            <span className="flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              Waiting...
+            </span>
           ) : (
-            <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-              Connecting...
+            <span className="flex items-center gap-1.5 text-xs font-bold text-red-500 bg-red-50 px-2.5 py-1 rounded-full border border-red-100/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+              Offline
             </span>
           )}
         </div>
