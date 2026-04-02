@@ -63,7 +63,7 @@ const Product = () => {
               <span className="bg-bg-card px-8 md:px-10 py-2 md:py-3 rounded-[2rem] flex items-center justify-center mb-2 md:mb-4 shadow-m border-none text-sm md:text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
                 Product
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-8xl font-bold text-center md:text-left leading-none tracking-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-8xl font-bold text-center leading-none tracking-tight">
                 IoT Devices
               </h2>
             </div>
