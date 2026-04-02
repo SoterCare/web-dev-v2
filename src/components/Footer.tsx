@@ -200,7 +200,7 @@ const Footer = () => {
   }, [viewState]);
 
   return (
-    <footer ref={containerRef} className="h-screen w-full bg-bg-body relative z-10">
+    <footer id="contact" ref={containerRef} className="h-screen w-full bg-bg-body relative z-10">
       <div className="px-2 pt-2 md:px-4 md:pt-4 h-full w-full pb-0">
         <div className="w-full h-full mx-auto text-white rounded-t-[1.5rem] md:rounded-t-[2.5rem] rounded-b-none relative overflow-hidden flex flex-col justify-between">
           {/* Background Image */}
@@ -228,17 +228,17 @@ const Footer = () => {
             return (
               <div className="absolute inset-0 z-[1] flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
                 {marqueeRows.map((row, i) => {
-                  const repeated = `${row.text} · ${row.text} · ${row.text} · ${row.text} · `;
+                  const repeated = Array(8).fill(`${row.text} · `).join('');
                   return (
                     <div key={i} className="overflow-hidden py-1 sm:py-2">
                       <div
                         className="flex whitespace-nowrap will-change-transform"
                         style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
                       >
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03] pr-20">
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03]">
                           {repeated}
                         </span>
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03] pr-20" aria-hidden="true">
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03]" aria-hidden="true">
                           {repeated}
                         </span>
                       </div>
@@ -279,12 +279,12 @@ const Footer = () => {
 
                 <button
                   onClick={() =>
-                    window.dispatchEvent(new Event("open-newsletter-popup"))
+                    window.dispatchEvent(new Event("open-contact-popup"))
                   }
                   className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 hover:bg-neutral-200 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
                 >
                   <Mail size={20} />
-                  Subscribe
+                  Send a Message
                 </button>
               </div>
             </div>

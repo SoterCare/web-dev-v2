@@ -140,6 +140,14 @@ const Navbar = () => {
           >
             Team
           </Link>
+          <Link
+            href="#contact"
+            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
+              }`}
+            scroll={false}
+          >
+            Contact
+          </Link>
         </div>
 
         {/* CTA Button */}
@@ -201,6 +209,14 @@ const Navbar = () => {
           scroll={false}
         >
           Team
+        </Link>
+        <Link
+          href="#contact"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+          scroll={false}
+        >
+          Contact
         </Link>
         <Link
           href="/dashboard"

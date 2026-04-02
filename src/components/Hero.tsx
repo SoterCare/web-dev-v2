@@ -126,7 +126,7 @@ const Hero = () => {
           {/* ── Marquee Bands — inside section, covering full height ── */}
           <div className="absolute inset-0 z-10 flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
             {marqueeRows.map((row, i) => {
-              const repeated = `${row.text} · ${row.text} · ${row.text} · ${row.text} · `;
+              const repeated = Array(8).fill(`${row.text} · `).join('');
               return (
                 <div key={i} className="overflow-hidden py-1 sm:py-2">
                   <div
@@ -135,10 +135,10 @@ const Hero = () => {
                       animation: `marquee-${row.dir} ${row.duration} linear infinite`,
                     }}
                   >
-                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.04] pr-20">
+                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.04]">
                       {repeated}
                     </span>
-                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.04] pr-20" aria-hidden="true">
+                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.04]" aria-hidden="true">
                       {repeated}
                     </span>
                   </div>

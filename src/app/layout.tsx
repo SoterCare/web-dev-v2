@@ -227,6 +227,7 @@ import NewsletterPopup from "@/components/NewsletterPopup";
 import JsonLd from "@/components/JsonLd";
 import HashScroll from "@/components/HashScroll";
 import VideoPopup from "@/components/VideoPopup";
+import ContactPopup from "@/components/ContactPopup";
 
 export default function RootLayout({
   children,
@@ -267,6 +268,7 @@ export default function RootLayout({
         <HashScroll />
         <NewsletterPopup />
         <VideoPopup />
+        <ContactPopup />
         {children}
         <Analytics />
       </body>
