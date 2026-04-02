@@ -160,7 +160,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sotercare.com"),
   title: {
     default:
-      "SoterCare - Smart Elderly Care Monitoring System | Fall Detection & Vital Signs",
+      "SoterCare - Proactive Elderly Care Monitoring System",
     template: "%s | SoterCare",
   },
   description:
@@ -172,8 +172,6 @@ export const metadata: Metadata = {
     "IoT health monitoring",
     "senior care technology",
     "caregiver alerts",
-    "heart rate monitoring",
-    "SpO2 monitoring",
     "AI health monitoring",
     "wearable health device",
     "elderly safety system",

@@ -121,7 +121,6 @@ const Team = () => {
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const scrollLeft = scrollRef.current.scrollLeft;
-    // itemWidth = width of one card + gap (gap-x-6 = 24px)
     const itemWidth = scrollRef.current.children[0].clientWidth + 24;
     const newIndex = Math.round(scrollLeft / itemWidth);
     if (newIndex !== activeIndex) {
@@ -157,8 +156,6 @@ const Team = () => {
       ref={sectionRef}
       className="relative z-10 pt-12 md:pt-16 pb-20 md:pb-24 overflow-hidden bg-transparent"
     >
-      {/* Dotted Background removed (global) */}
-
       <div
         ref={contentRef}
         className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8"
@@ -182,7 +179,7 @@ const Team = () => {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory pt-12 md:grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 pb-8 slim-scroll md:overflow-visible"
+          className="flex overflow-x-auto snap-x snap-mandatory pt-12 md:grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14 pb-8 slim-scroll md:overflow-visible"
         >
           {TEAM_MEMBERS.map((member, index) => (
             <div
@@ -190,73 +187,81 @@ const Team = () => {
               className="relative flex flex-col items-center group snap-center w-[85vw] sm:w-[60vw] flex-shrink-0 md:w-auto"
             >
               {/* Image Container - Floating above */}
-              <div className="relative z-20 w-64 -mb-6 transition-transform duration-300 h-80 group-hover:scale-105 group-hover:-translate-y-2">
+              <div className="relative z-20 w-56 h-72 -mb-8 transition-all duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-3">
                 <Image
                   src={member.image}
                   alt={member.name}
                   width={300}
                   height={400}
-                  className="object-cover object-top w-full h-full transition-opacity opacity-90 group-hover:opacity-100"
+                  className="object-cover object-top w-full h-full transition-all duration-500 opacity-90 group-hover:opacity-100 drop-shadow-lg"
                 />
               </div>
 
-              {/* Info Card - The "Bar" */}
-              <div className="relative z-10 w-full overflow-hidden transition-all duration-300 border shadow-md bg-bg-card rounded-2xl border-black/5 group-hover:shadow-xl group-hover:ring-1 group-hover:ring-black/5">
+              {/* Info Card */}
+              <div className="relative z-10 w-full overflow-hidden transition-all duration-500 ease-out bg-bg-card rounded-3xl shadow-m group-hover:shadow-xl">
+                {/* Subtle gradient overlay on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-b from-[#a0cbdb]/5 via-transparent to-transparent rounded-3xl" />
+
                 {/* Name Bar (Always visible) */}
-                <div className="p-6 pt-10 text-center">
-                  <h3 className="text-2xl font-bold text-[#a0cbdb]">
+                <div className="relative p-6 pt-12 text-center">
+                  <h3 className="text-xl font-bold text-[#a0cbdb] tracking-tight">
                     {member.name}
                   </h3>
-                  <p className="mt-1 text-xs font-medium text-text-muted">
+                  {/* Decorative accent line */}
+                  <div className="mx-auto mt-2.5 mb-2 w-8 h-[2px] rounded-full bg-[#a0cbdb]/30 group-hover:w-12 group-hover:bg-[#a0cbdb]/60 transition-all duration-500" />
+                  <p className="text-xs font-medium tracking-wide uppercase text-text-muted/70">
                     {member.role}
                   </p>
                 </div>
 
                 {/* Expanded Details (Revealed on Hover) */}
-                <div className="transition-all duration-500 ease-in-out opacity-0 max-h-0 group-hover:max-h-60 group-hover:opacity-100 bg-bg-panel/50">
-                  <div className="flex flex-col items-center gap-4 p-6 pt-2 border-t border-black/5">
+                <div className="transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] opacity-0 max-h-0 group-hover:max-h-72 group-hover:opacity-100">
+                  <div className="flex flex-col items-center gap-4 px-6 pb-6 pt-2">
+                    {/* Divider */}
+                    <div className="w-full h-px bg-gradient-to-r from-transparent via-black/8 to-transparent" />
+
                     {/* Contributions */}
-                    <p className="text-[11px] font-medium text-foreground/60 text-center leading-relaxed">
-                      {/* Using member as any here temporarily because TS might warn without type definition change */}
-                      {(member as any).contributions.join(", ")}
+                    <p className="text-[11px] font-medium text-text-muted/70 text-center leading-relaxed">
+                      {member.contributions.join(", ")}
                     </p>
 
+                    {/* Email */}
                     <a
                       href={`mailto:${member.email}`}
-                      className="text-s text-text-muted hover:text-foreground transition-colors flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/50 border border-black/5"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[13px] font-medium text-text-muted/70 hover:text-[#a0cbdb] transition-colors duration-300 rounded-full bg-bg-panel/60 border border-black/5 hover:border-[#a0cbdb]/20"
                     >
-                      <Mail size={12} />
+                      <Mail size={14} />
                       {member.email}
                     </a>
 
                     {/* Socials */}
-                    <div className="flex items-center gap-4 pt-1">
+                    <div className="flex items-center gap-2 pt-0.5">
                       <a
                         href={member.socials.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${member.name} on GitHub`}
-                        className="p-2 bg-white rounded-full text-foreground/70 hover:text-black hover:scale-110 transition-all shadow-sm"
+                        className="p-2 rounded-xl bg-bg-panel/80 text-text-muted/60 hover:text-[#333] hover:bg-bg-panel hover:scale-110 transition-all duration-300 border border-transparent hover:border-black/5"
                       >
-                        <Github size={18} />
+                        <Github size={16} />
                       </a>
                       <a
                         href={member.socials.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${member.name} on LinkedIn`}
-                        className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-600 hover:scale-110"
+                        className="p-2 rounded-xl bg-bg-panel/80 text-text-muted/60 hover:text-[#0A66C2] hover:bg-bg-panel hover:scale-110 transition-all duration-300 border border-transparent hover:border-black/5"
                       >
-                        <Linkedin size={18} />
+                        <Linkedin size={16} />
                       </a>
                       <a
                         href={member.socials.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${member.name} on Instagram`}
-                        className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-pink-600 hover:scale-110"
+                        className="p-2 rounded-xl bg-bg-panel/80 text-text-muted/60 hover:text-[#E4405F] hover:bg-bg-panel hover:scale-110 transition-all duration-300 border border-transparent hover:border-black/5"
                       >
-                        <Instagram size={18} />
+                        <Instagram size={16} />
                       </a>
                       {member.socials.website && (
                         <a
@@ -264,9 +269,9 @@ const Team = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`${member.name}'s personal website`}
-                          className="p-2 transition-all bg-white rounded-full shadow-sm text-foreground/70 hover:text-blue-500 hover:scale-110"
+                          className="p-2 rounded-xl bg-bg-panel/80 text-text-muted/60 hover:text-[#a0cbdb] hover:bg-bg-panel hover:scale-110 transition-all duration-300 border border-transparent hover:border-black/5"
                         >
-                          <Globe size={18} />
+                          <Globe size={16} />
                         </a>
                       )}
                     </div>

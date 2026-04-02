@@ -217,6 +217,38 @@ const Footer = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#0f172a]/60 to-[#020617]/50" />
           </div>
 
+          {/* ── Marquee Bands — inside footer, full height watermark ── */}
+          {(() => {
+            const marqueeRows = [
+              { text: "WELLNESS SIMPLIFIED", dir: "left",  duration: "35s" },
+              { text: "SOTERCARE",           dir: "right", duration: "28s" },
+              { text: "WEIGHT INTO WELLNESS",dir: "left",  duration: "38s" },
+              { text: "MEDTECH CARE",        dir: "right", duration: "32s" },
+            ];
+            return (
+              <div className="absolute inset-0 z-[1] flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
+                {marqueeRows.map((row, i) => {
+                  const repeated = `${row.text} · ${row.text} · ${row.text} · ${row.text} · `;
+                  return (
+                    <div key={i} className="overflow-hidden py-1 sm:py-2">
+                      <div
+                        className="flex whitespace-nowrap will-change-transform"
+                        style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
+                      >
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03] pr-20">
+                          {repeated}
+                        </span>
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03] pr-20" aria-hidden="true">
+                          {repeated}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+
           {/* Content Wrapper */}
           <div className="relative z-10 flex flex-col flex-grow justify-between">
             {/* Main Content Center */}
@@ -249,7 +281,7 @@ const Footer = () => {
                   onClick={() =>
                     window.dispatchEvent(new Event("open-newsletter-popup"))
                   }
-                  className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 hover:bg-neutral-200 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-[0_4px_14px_0_rgba(255,255,255,0.39)]"
+                  className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 hover:bg-neutral-200 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
                 >
                   <Mail size={20} />
                   Subscribe
