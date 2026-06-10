@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animation Style</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; font-family: system-ui, sans-serif; color: #fff; padding: 2rem; }
+
+  h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+  .subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; }
+
+  .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .option-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+    background: #0d0d0d;
+  }
+  .option-card:hover { border-color: rgba(160,203,219,0.4); transform: translateY(-2px); }
+  .option-card.selected { border-color: #a0cbdb; box-shadow: 0 0 0 2px rgba(160,203,219,0.3); }
+
+  .preview-box {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #050814;
+  }
+  .preview-box::before {
+    content: "▶ Click to replay";
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font: 600 9px/1 sans-serif;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+  }
+
+  .card-body { padding: 1.25rem; }
+  .card-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff; }
+  .card-body p { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  .indicator-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(20,20,20,0.95);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(8px);
+  }
+  .indicator-bar .selected-label { color: #a0cbdb; font-weight: 700; }
+
+  /* ─── ANIMATION A: Line Mask Reveal ─── */
+  .mask-line { overflow: hidden; display: block; }
+  .mask-inner {
+    display: block;
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .anim-a-active .mask-inner:nth-child(1) { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+  .anim-a-active .mask-inner:nth-child(2) { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.22s forwards; }
+  .anim-a-active .mask-inner:nth-child(3) { animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.34s forwards; }
+  .anim-a-active .tag-pill { animation: fadeIn 0.5s ease 0.5s forwards; }
+  .anim-a-active .cta-row { animation: fadeIn 0.6s ease 0.65s forwards; }
+  .anim-a-active .glow-orb { animation: glowPulse 0.8s ease 0s forwards; }
+  @keyframes slideUp {
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* ─── ANIMATION B: Character/Word Float ─── */
+  .word-span { display: inline-block; opacity: 0; transform: translateY(20px) rotateX(30deg); }
+  .anim-b-active .word-span { animation: wordFloat 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .anim-b-active .word-span:nth-child(1) { animation-delay: 0.05s; }
+  .anim-b-active .word-span:nth-child(2) { animation-delay: 0.13s; }
+  .anim-b-active .word-span:nth-child(3) { animation-delay: 0.21s; }
+  .anim-b-active .word-span:nth-child(4) { animation-delay: 0.29s; }
+  .anim-b-active .word-span:nth-child(5) { animation-delay: 0.37s; }
+  .anim-b-active .tag-pill { animation: fadeIn 0.5s ease 0.5s forwards; }
+  .anim-b-active .cta-row { animation: fadeIn 0.6s ease 0.65s forwards; }
+  .anim-b-active .glow-orb { animation: glowPulse 0.8s ease 0s forwards; }
+  @keyframes wordFloat {
+    to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+  }
+
+  /* ─── ANIMATION C: Cinematic Bloom ─── */
+  .cinematic-text { opacity: 0; transform: scale(0.96) translateY(12px); filter: blur(6px); }
+  .anim-c-active .cinematic-text:nth-child(1) { animation: cinematicIn 1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+  .anim-c-active .cinematic-text:nth-child(2) { animation: cinematicIn 1s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
+  .anim-c-active .cinematic-text:nth-child(3) { animation: cinematicIn 1s cubic-bezier(0.16,1,0.3,1) 0.4s forwards; }
+  .anim-c-active .tag-pill { animation: fadeIn 0.6s ease 0.6s forwards; }
+  .anim-c-active .cta-row { animation: fadeIn 0.7s ease 0.8s forwards; }
+  .anim-c-active .glow-orb { animation: glowBloom 1.2s ease 0s forwards; }
+  @keyframes cinematicIn {
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); }
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes glowPulse {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+    100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  }
+  @keyframes glowBloom {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(0.2); }
+    60% { opacity: 1; }
+    100% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.3); }
+  }
+
+  /* Shared preview elements */
+  .glow-orb {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 220px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(160,203,219,0.18) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .tag-pill {
+    display: inline-block;
+    border: 1px solid rgba(160,203,219,0.3);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font: 600 8px/1.6 sans-serif;
+    letter-spacing: 2px;
+    color: rgba(160,203,219,0.85);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0;
+  }
+  .cta-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    opacity: 0;
+    justify-content: center;
+  }
+  .cta-primary {
+    background: rgba(255,255,255,0.92);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font: 700 9px/1.5 sans-serif;
+    color: #050814;
+  }
+  .cta-secondary {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font: 600 9px/1.5 sans-serif;
+    color: rgba(255,255,255,0.75);
+  }
+  .preview-content { text-align: center; position: relative; z-index: 2; padding: 0 16px; }
+</style>
+</head>
+<body>
+
+<h2>GSAP Animation Style</h2>
+<p class="subtitle">All three use GSAP under the hood. Click each preview to replay the animation and feel the difference.</p>
+
+<div class="options-grid">
+
+  <!-- Option A: Line Mask Reveal -->
+  <div class="option-card" id="card-a" onclick="selectCard('a')">
+    <div class="preview-box" id="preview-a" onclick="event.stopPropagation(); replay('a')">
+      <div class="glow-orb"></div>
+      <div class="preview-content">
+        <div class="tag-pill">IoT · AI · Wellness</div>
+        <div class="mask-line"><span class="mask-inner" style="font:900 28px/0.9 sans-serif;color:#fff;letter-spacing:-1.5px;display:block;">Proactive</span></div>
+        <div class="mask-line"><span class="mask-inner" style="font:900 28px/0.9 sans-serif;background:linear-gradient(90deg,#a0cbdb,#c8e6f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1.5px;display:block;">Elderly Care</span></div>
+        <div class="mask-line"><span class="mask-inner" style="font:400 8px/2.5 sans-serif;letter-spacing:4px;color:rgba(255,255,255,0.4);text-transform:uppercase;display:block;">Monitoring System</span></div>
+        <div class="cta-row">
+          <div class="cta-primary">Get Started</div>
+          <div class="cta-secondary">Watch Demo</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Line Mask Reveal</h3>
+      <p>Each text line slides up from a hidden clip. The most used technique in premium agency sites. Feels polished and editorial. GSAP SplitText or manual overflow:hidden divs per line.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Word Float -->
+  <div class="option-card" id="card-b" onclick="selectCard('b')">
+    <div class="preview-box" id="preview-b" onclick="event.stopPropagation(); replay('b')">
+      <div class="glow-orb"></div>
+      <div class="preview-content">
+        <div class="tag-pill">IoT · AI · Wellness</div>
+        <div style="font:900 28px/1.1 sans-serif;letter-spacing:-1.5px;margin-bottom:2px;">
+          <span class="word-span" style="color:#fff;">Proactive</span>
+        </div>
+        <div style="font:900 28px/1.1 sans-serif;letter-spacing:-1.5px;background:linear-gradient(90deg,#a0cbdb,#c8e6f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px;">
+          <span class="word-span">Elderly</span>
+          <span class="word-span"> Care</span>
+        </div>
+        <div style="font:400 8px/2.5 sans-serif;letter-spacing:4px;text-transform:uppercase;">
+          <span class="word-span" style="color:rgba(255,255,255,0.4);">Monitoring</span>
+          <span class="word-span" style="color:rgba(255,255,255,0.4);">System</span>
+        </div>
+        <div class="cta-row">
+          <div class="cta-primary">Get Started</div>
+          <div class="cta-secondary">Watch Demo</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Word Float (Springy)</h3>
+      <p>Each word bounces up with a slight spring overshoot. More playful and energetic than the mask reveal. Uses GSAP stagger with <code>power2.out</code> or elastic ease. Feels fresh and modern.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Cinematic Bloom -->
+  <div class="option-card" id="card-c" onclick="selectCard('c')">
+    <div class="preview-box" id="preview-c" onclick="event.stopPropagation(); replay('c')">
+      <div class="glow-orb"></div>
+      <div class="preview-content">
+        <div class="tag-pill">IoT · AI · Wellness</div>
+        <div class="cinematic-text" style="font:900 28px/0.9 sans-serif;color:#fff;letter-spacing:-1.5px;">Proactive</div>
+        <div class="cinematic-text" style="font:900 28px/0.9 sans-serif;background:linear-gradient(90deg,#a0cbdb,#c8e6f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1.5px;margin-bottom:2px;">Elderly Care</div>
+        <div class="cinematic-text" style="font:400 8px/2.5 sans-serif;letter-spacing:4px;color:rgba(255,255,255,0.4);text-transform:uppercase;">Monitoring System</div>
+        <div class="cta-row">
+          <div class="cta-primary">Get Started</div>
+          <div class="cta-secondary">Watch Demo</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Cinematic Blur Bloom</h3>
+      <p>Text fades in from a blurred, slightly scaled-down state — like a camera pulling into focus. A background glow blooms as the text clears. Atmospheric and premium. Uses GSAP with <code>filter:blur()</code> and <code>scale</code>.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="indicator-bar">
+  <span id="selection-text">Click a preview to replay · Click a card to select</span>
+  <span id="selected-label" class="selected-label" style="display:none;"></span>
+</div>
+
+<script>
+  let selected = null;
+
+  function replay(which) {
+    const preview = document.getElementById('preview-' + which);
+    const className = 'anim-' + which + '-active';
+    preview.classList.remove(className);
+    void preview.offsetWidth;
+    preview.classList.add(className);
+  }
+
+  function selectCard(which) {
+    if (selected) {
+      document.getElementById('card-' + selected).classList.remove('selected');
+    }
+    selected = which;
+    document.getElementById('card-' + which).classList.add('selected');
+    const labels = { a: 'A — Line Mask Reveal', b: 'B — Word Float', c: 'C — Cinematic Blur Bloom' };
+    document.getElementById('selected-label').textContent = '✓ ' + labels[which];
+    document.getElementById('selected-label').style.display = 'inline';
+    document.getElementById('selection-text').textContent = 'Selected:';
+
+    // Record selection
+    if (window.recordSelection) window.recordSelection(which, labels[which]);
+    try {
+      fetch('/__select', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({choice: which, text: labels[which]}) }).catch(()=>{});
+    } catch(e) {}
+  }
+
+  // Auto-play all on load
+  window.addEventListener('load', () => {
+    setTimeout(() => replay('a'), 200);
+    setTimeout(() => replay('b'), 300);
+    setTimeout(() => replay('c'), 400);
+  });
+</script>
+</body>
+</html>

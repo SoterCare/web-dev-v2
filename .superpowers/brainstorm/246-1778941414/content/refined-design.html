@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refined Design Direction</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; font-family: system-ui, -apple-system, sans-serif; color: #fff; }
+
+  .page-header {
+    padding: 1.5rem 2rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .page-header h2 { font-size: 1.2rem; font-weight: 700; color: #fff; }
+  .page-header p { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
+
+  .split-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: calc(100vh - 100px);
+  }
+
+  .col {
+    padding: 2rem;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .col:last-child { border-right: none; }
+
+  .col-label {
+    font: 600 9px/1 monospace;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ─── MOCKUP FRAMES ─── */
+  .hero-frame {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .footer-frame {
+    width: 100%;
+    aspect-ratio: 16/7;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .replay-hint {
+    position: absolute;
+    bottom: 8px; right: 10px;
+    font: 600 8px/1 monospace;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    z-index: 10;
+  }
+
+  /* ══════════════════════════════════════
+     TAKE 1 — ARCHITECTURAL
+  ══════════════════════════════════════ */
+  .t1-hero {
+    background: #060a10;
+  }
+  .t1-hero .bg-img {
+    position: absolute; inset: 0;
+    background: linear-gradient(165deg, #060e1c 0%, #020609 60%, #060a10 100%);
+  }
+  /* subtle grid lines */
+  .t1-hero .grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  /* Top bar */
+  .t1-hero .top-bar {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    z-index: 2;
+  }
+  .t1-hero .top-bar .logo { font: 700 10px/1 sans-serif; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
+  .t1-hero .top-bar .nav { display: flex; gap: 16px; }
+  .t1-hero .top-bar .nav span { font: 400 8px/1 sans-serif; color: rgba(255,255,255,0.35); }
+
+  /* Left column index */
+  .t1-hero .left-col {
+    position: absolute; left: 20px; top: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    z-index: 2;
+  }
+  .t1-hero .left-col .index {
+    font: 700 9px/1 monospace; letter-spacing: 2px;
+    color: rgba(255,255,255,0.18); text-transform: uppercase;
+    writing-mode: vertical-lr; transform: rotate(180deg);
+    letter-spacing: 3px;
+  }
+
+  /* Main content */
+  .t1-hero .main {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; z-index: 2; width: 80%;
+  }
+  .t1-hero .category {
+    font: 500 7px/1 monospace; letter-spacing: 4px;
+    color: rgba(160,203,219,0.7); text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    opacity: 0;
+  }
+  .t1-hero .category::before,
+  .t1-hero .category::after {
+    content: ''; display: inline-block;
+    width: 20px; height: 1px; background: rgba(160,203,219,0.4);
+  }
+  .t1-hero .h1-line { overflow: hidden; }
+  .t1-hero .h1-inner {
+    font: 900 32px/0.9 sans-serif;
+    letter-spacing: -2px;
+    display: block;
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .t1-hero .h1-inner.white { color: #fff; }
+  .t1-hero .h1-inner.accent { color: #a0cbdb; }
+
+  .t1-hero .sub {
+    font: 400 7px/1 sans-serif; letter-spacing: 5px;
+    color: rgba(255,255,255,0.28); text-transform: uppercase;
+    margin-top: 12px; opacity: 0;
+  }
+  .t1-hero .cta-group {
+    margin-top: 16px; display: flex; gap: 8px; justify-content: center; opacity: 0;
+  }
+  .t1-hero .btn-solid {
+    background: #fff; color: #060a10;
+    padding: 7px 18px; border-radius: 4px;
+    font: 700 8px/1.4 sans-serif; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .t1-hero .btn-outline {
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.65);
+    padding: 7px 18px; border-radius: 4px;
+    font: 500 8px/1.4 sans-serif; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* Bottom row */
+  .t1-hero .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    z-index: 2;
+  }
+  .t1-hero .bottom-bar span { font: 400 7px/1 monospace; letter-spacing: 2px; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+  .t1-hero .scroll-line {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t1-hero .scroll-line .dot {
+    width: 4px; height: 4px; border-radius: 50%; background: rgba(160,203,219,0.6);
+  }
+
+  /* T1 Footer */
+  .t1-footer { background: #060a10; }
+  .t1-footer .bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, #060a10 0%, #020406 100%);
+  }
+  .t1-footer .grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .t1-footer .main {
+    position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; z-index: 2; width: 80%;
+  }
+  .t1-footer .eyebrow {
+    font: 500 7px/1 monospace; letter-spacing: 4px;
+    color: rgba(160,203,219,0.6); text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .t1-footer .eyebrow::before, .t1-footer .eyebrow::after {
+    content: ''; display: inline-block;
+    width: 20px; height: 1px; background: rgba(160,203,219,0.3);
+  }
+  .t1-footer .tagline {
+    font: 900 26px/0.9 sans-serif; color: #fff; letter-spacing: -1.5px;
+    margin-bottom: 4px;
+  }
+  .t1-footer .tagline-sub { font: 900 26px/0.9 sans-serif; color: rgba(255,255,255,0.2); letter-spacing: -1.5px; }
+  .t1-footer .ctas { margin-top: 14px; display: flex; gap: 8px; justify-content: center; }
+  .t1-footer .btn-solid { background: #fff; color: #060a10; padding: 7px 18px; border-radius: 4px; font: 700 8px/1.4 sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .t1-footer .btn-ghost { border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); padding: 7px 18px; border-radius: 4px; font: 500 8px/1.4 sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+  .t1-footer .bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 10px 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: center; z-index: 2;
+  }
+  .t1-footer .bottom span { font: 400 7px/1 monospace; letter-spacing: 1.5px; color: rgba(255,255,255,0.18); text-transform: uppercase; }
+
+  /* ══════════════════════════════════════
+     TAKE 2 — ORGANIC DARK
+  ══════════════════════════════════════ */
+  .t2-hero { background: #080b14; }
+  .t2-hero .bg-glow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 70%, rgba(160,203,219,0.06) 0%, transparent 70%),
+      linear-gradient(180deg, #080b14 0%, #050810 100%);
+  }
+  .t2-hero .noise {
+    position: absolute; inset: 0; opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .t2-hero .pill {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 99px; padding: 4px 14px;
+    font: 500 7px/1.6 monospace; letter-spacing: 2px; color: rgba(255,255,255,0.35); text-transform: uppercase;
+    z-index: 2; white-space: nowrap;
+  }
+
+  .t2-hero .main {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; z-index: 2; width: 85%;
+  }
+  .t2-hero .line-wrap { overflow: hidden; display: block; }
+  .t2-hero .line-inner {
+    display: block;
+    font: 900 30px/0.88 sans-serif;
+    letter-spacing: -2px;
+    transform: translateY(110%); opacity: 0;
+  }
+  .t2-hero .line-inner.l1 { color: #fff; }
+  .t2-hero .line-inner.l2 { color: #fff; }
+  .t2-hero .line-inner.l3 { color: rgba(255,255,255,0.22); }
+
+  .t2-hero .descriptor {
+    font: 400 7px/1.8 sans-serif; letter-spacing: 3px;
+    color: rgba(255,255,255,0.3); text-transform: uppercase;
+    margin-top: 10px; opacity: 0;
+  }
+  .t2-hero .cta-group {
+    margin-top: 14px; display: flex; gap: 6px; justify-content: center; opacity: 0;
+  }
+  .t2-hero .btn-white {
+    background: rgba(255,255,255,0.95); color: #080b14;
+    padding: 7px 20px; border-radius: 99px;
+    font: 700 8px/1.4 sans-serif; letter-spacing: 0.5px;
+  }
+  .t2-hero .btn-dim {
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.55);
+    padding: 7px 20px; border-radius: 99px;
+    font: 500 8px/1.4 sans-serif; letter-spacing: 0.5px;
+  }
+  .t2-hero .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 8px 18px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center; z-index: 2;
+  }
+  .t2-hero .bottom-bar .stat {
+    display: flex; gap: 12px;
+  }
+  .t2-hero .bottom-bar .stat-item {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .t2-hero .bottom-bar .stat-val { font: 700 9px/1 sans-serif; color: rgba(255,255,255,0.7); }
+  .t2-hero .bottom-bar .stat-lbl { font: 400 6px/1 monospace; letter-spacing: 1px; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+  .t2-hero .scroll-cue { font: 400 7px/1 monospace; letter-spacing: 2px; color: rgba(255,255,255,0.18); text-transform: uppercase; }
+
+  /* T2 Footer */
+  .t2-footer { background: #080b14; }
+  .t2-footer .bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(160,203,219,0.05) 0%, transparent 65%),
+      linear-gradient(180deg, #080b14 0%, #04060c 100%);
+  }
+  .t2-footer .main {
+    position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; z-index: 2; width: 80%;
+  }
+  .t2-footer .eyebrow {
+    font: 400 7px/1 monospace; letter-spacing: 3px; color: rgba(255,255,255,0.25);
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .t2-footer .big-line { font: 900 26px/0.9 sans-serif; letter-spacing: -1.5px; }
+  .t2-footer .big-line.lit { color: #fff; }
+  .t2-footer .big-line.dim { color: rgba(255,255,255,0.15); }
+  .t2-footer .ctas { margin-top: 14px; display: flex; gap: 6px; justify-content: center; }
+  .t2-footer .btn-white { background: rgba(255,255,255,0.95); color: #08010b; padding: 7px 20px; border-radius: 99px; font: 700 8px/1.4 sans-serif; letter-spacing: 0.5px; }
+  .t2-footer .btn-dim { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.45); padding: 7px 20px; border-radius: 99px; font: 500 8px/1.4 sans-serif; }
+  .t2-footer .bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 10px 18px; border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center; z-index: 2;
+  }
+  .t2-footer .bottom span { font: 400 7px/1 monospace; letter-spacing: 1.5px; color: rgba(255,255,255,0.15); text-transform: uppercase; }
+  .t2-footer .socials { display: flex; gap: 8px; }
+  .t2-footer .socials span { width: 14px; height: 14px; border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; color: rgba(255,255,255,0.3); }
+
+  /* ─── ANIMATIONS ─── */
+  /* T1 */
+  .run-t1 .t1-hero .category { animation: aFadeIn 0.5s ease 0.05s forwards; }
+  .run-t1 .t1-hero .h1-inner:nth-child(1) { animation: aSlideUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
+  .run-t1 .t1-hero .h1-inner:nth-child(2) { animation: aSlideUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.32s forwards; }
+  .run-t1 .t1-hero .sub { animation: aFadeIn 0.5s ease 0.48s forwards; }
+  .run-t1 .t1-hero .cta-group { animation: aFadeIn 0.5s ease 0.62s forwards; }
+
+  /* T2 */
+  .run-t2 .t2-hero .line-inner.l1 { animation: aSlideUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.15s forwards; }
+  .run-t2 .t2-hero .line-inner.l2 { animation: aSlideUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.27s forwards; }
+  .run-t2 .t2-hero .line-inner.l3 { animation: aSlideUp 0.65s cubic-bezier(0.16,1,0.3,1) 0.39s forwards; }
+  .run-t2 .t2-hero .descriptor { animation: aFadeIn 0.5s ease 0.54s forwards; }
+  .run-t2 .t2-hero .cta-group { animation: aFadeIn 0.5s ease 0.68s forwards; }
+
+  @keyframes aSlideUp { to { transform: translateY(0); opacity: 1; } }
+  @keyframes aFadeIn { to { opacity: 1; } }
+
+  /* ─── INFO PANELS ─── */
+  .info-panel {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.45);
+  }
+  .info-panel strong { color: rgba(255,255,255,0.8); font-weight: 600; }
+  .info-panel ul { padding-left: 1rem; margin-top: 0.4rem; }
+  .info-panel li { margin-bottom: 0.2rem; }
+
+  /* ─── SELECT CARDS ─── */
+  .select-row {
+    display: flex; gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 1rem;
+  }
+  .pick-btn {
+    flex: 1; padding: 0.65rem 1rem;
+    border-radius: 6px; cursor: pointer;
+    font: 700 0.8rem/1 sans-serif;
+    letter-spacing: 0.5px;
+    text-align: center;
+    transition: all 0.2s;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.03);
+  }
+  .pick-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
+  .pick-btn.active { background: rgba(160,203,219,0.12); border-color: rgba(160,203,219,0.4); color: #a0cbdb; }
+
+  .replay-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px; cursor: pointer;
+    font: 600 0.75rem/1 sans-serif;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.3);
+    background: transparent;
+    transition: all 0.2s;
+  }
+  .replay-btn:hover { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.15); }
+
+  .bottom-bar-ui {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,10,0.95); border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(8px);
+    font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  }
+  .bottom-bar-ui .chosen { color: #a0cbdb; font-weight: 700; }
+
+  @media (max-width: 700px) {
+    .split-view { grid-template-columns: 1fr; }
+    .col { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h2>Refined Execution — Two Takes</h2>
+  <p>Same direction (B), same animation (A mask reveal). Different design language. Click Replay to see the animation on each hero.</p>
+</div>
+
+<div class="split-view" id="root">
+
+  <!-- ─── COL 1: ARCHITECTURAL ─── -->
+  <div class="col">
+    <div class="col-label">Take 1 — Architectural Grid</div>
+
+    <!-- Hero -->
+    <div class="hero-frame t1-hero" id="t1-hero-frame" onclick="replayT1()">
+      <div class="bg-img"></div>
+      <div class="grid-lines"></div>
+      <span class="replay-hint">▶ click to replay</span>
+
+      <div class="top-bar">
+        <div class="logo">SoterCare</div>
+        <div class="nav">
+          <span>Product</span><span>Features</span><span>Pricing</span><span>Team</span>
+        </div>
+      </div>
+
+      <div class="left-col">
+        <div class="index">01 — HERO</div>
+      </div>
+
+      <div class="main">
+        <div class="category">Healthcare IoT System</div>
+        <div class="h1-line"><span class="h1-inner white">Proactive</span></div>
+        <div class="h1-line"><span class="h1-inner white">Elderly Care</span></div>
+        <div class="sub">Advanced Monitoring System</div>
+        <div class="cta-group">
+          <div class="btn-solid">Get Started</div>
+          <div class="btn-outline">Watch Demo</div>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <span>#SDGP · IIT-CS-42</span>
+        <div class="scroll-line">
+          <div class="dot"></div>
+          <span style="font:400 7px/1 monospace;letter-spacing:2px;color:rgba(255,255,255,0.2);text-transform:uppercase;">Scroll</span>
+        </div>
+        <span>2025</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-frame t1-footer">
+      <div class="bg"></div>
+      <div class="grid-lines"></div>
+      <div class="main">
+        <div class="eyebrow">That's our story</div>
+        <div class="tagline">Wellness</div>
+        <div class="tagline-sub">Simplified.</div>
+        <div class="ctas">
+          <div class="btn-solid">Send a Message</div>
+          <div class="btn-ghost">Watch Demo</div>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>© 2025 SoterCare · All rights reserved</span>
+        <span>support@sotercare.com · +94 70 4888 440</span>
+        <span>IG · LI</span>
+      </div>
+    </div>
+
+    <div class="info-panel">
+      <strong>What's different here:</strong>
+      <ul>
+        <li>Subtle grid overlay replaces the marquee watermark</li>
+        <li>Flat white + single accent color — no gradient text fills</li>
+        <li>Square-cornered buttons feel more <em>product</em>, less landing page</li>
+        <li>Structural index label on the left rail</li>
+        <li>Footer uses ghost/muted headline — "Simplified." fades back</li>
+      </ul>
+    </div>
+
+    <div class="select-row">
+      <button class="replay-btn" onclick="replayT1()">↺ Replay Animation</button>
+      <button class="pick-btn" id="pick-t1" onclick="pick('t1')">Select Take 1</button>
+    </div>
+  </div>
+
+  <!-- ─── COL 2: ORGANIC DARK ─── -->
+  <div class="col">
+    <div class="col-label">Take 2 — Organic Dark</div>
+
+    <!-- Hero -->
+    <div class="hero-frame t2-hero" id="t2-hero-frame" onclick="replayT2()">
+      <div class="bg-glow"></div>
+      <span class="replay-hint">▶ click to replay</span>
+
+      <div class="pill">Healthcare Monitoring · 2025</div>
+
+      <div class="main">
+        <div class="line-wrap"><span class="line-inner l1">Proactive</span></div>
+        <div class="line-wrap"><span class="line-inner l2">Elderly Care.</span></div>
+        <div class="line-wrap"><span class="line-inner l3">Monitoring System.</span></div>
+        <div class="descriptor">Real-time · IoT · AI-Powered</div>
+        <div class="cta-group">
+          <div class="btn-white">Get Started</div>
+          <div class="btn-dim">Watch Demo</div>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="stat">
+          <div class="stat-item">
+            <div class="stat-val">24/7</div>
+            <div class="stat-lbl">Monitoring</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val">&lt;2s</div>
+            <div class="stat-lbl">Alert Time</div>
+          </div>
+        </div>
+        <div class="scroll-cue">Scroll to explore</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-frame t2-footer">
+      <div class="bg"></div>
+      <div class="main">
+        <div class="eyebrow">That's our story.</div>
+        <div class="big-line lit">Wellness</div>
+        <div class="big-line dim">Simplified.</div>
+        <div class="ctas">
+          <div class="btn-white">Send a Message</div>
+          <div class="btn-dim">Watch Demo</div>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>© 2025 SoterCare</span>
+        <span>support@sotercare.com</span>
+        <div class="socials">
+          <span>IG</span><span>LI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-panel">
+      <strong>What's different here:</strong>
+      <ul>
+        <li>Radial glow orb instead of grid — atmospheric but restrained</li>
+        <li>Rounded pill buttons (matches navbar style) — feels cohesive</li>
+        <li>Third headline line is intentionally faded — creates depth without color</li>
+        <li>Mini stats in the bottom bar (24/7, &lt;2s) — product credibility signal</li>
+        <li>No decorative watermarks anywhere</li>
+      </ul>
+    </div>
+
+    <div class="select-row">
+      <button class="replay-btn" onclick="replayT2()">↺ Replay Animation</button>
+      <button class="pick-btn" id="pick-t2" onclick="pick('t2')">Select Take 2</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-bar-ui">
+  <span id="hint">Replay the hero animations · select the take that fits</span>
+  <span id="chosen" class="chosen" style="display:none"></span>
+</div>
+
+<script>
+  let current = null;
+
+  function replayT1() {
+    const root = document.getElementById('root');
+    root.classList.remove('run-t1');
+    void root.offsetWidth;
+    root.classList.add('run-t1');
+  }
+
+  function replayT2() {
+    const root = document.getElementById('root');
+    root.classList.remove('run-t2');
+    void root.offsetWidth;
+    root.classList.add('run-t2');
+  }
+
+  function pick(which) {
+    if (current) document.getElementById('pick-' + current).classList.remove('active');
+    current = which;
+    document.getElementById('pick-' + which).classList.add('active');
+    const label = which === 't1' ? 'Take 1 — Architectural Grid' : 'Take 2 — Organic Dark';
+    document.getElementById('chosen').textContent = '✓ ' + label;
+    document.getElementById('chosen').style.display = 'inline';
+    document.getElementById('hint').textContent = 'Selected:';
+    try {
+      fetch('/__select', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({choice: which, text: label}) }).catch(()=>{});
+    } catch(e) {}
+  }
+
+  // Auto-replay both on load
+  window.addEventListener('load', () => {
+    setTimeout(() => { replayT1(); replayT2(); }, 300);
+  });
+</script>
+</body>
+</html>
