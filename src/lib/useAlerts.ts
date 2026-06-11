@@ -154,39 +154,37 @@ export function useAlerts() {
       removeAlertById(id);
   }, [latestAlertUpdated, removeAlertById]);
 
-  // Actions
+  // Actions — optimistic only; 15 s poll is the background sync.
+  // No post-action REST refresh so there is no re-render / flicker on button click.
   const handleAttend = useCallback(
     async (alertId: string) => {
-      removeAlertById(alertId); // optimistic
+      removeAlertById(alertId); // instant UI update
       try {
         await dashboardApi.attendAlert(alertId);
         postAlertAction("alert.attended", alertId);
-        await refreshRestAlerts();
       } catch {
-        // On failure remove from removedRef so REST can restore it
+        // Rollback: let REST restore it on the next poll
         removedRef.current.delete(alertId);
-        await refreshRestAlerts();
       }
     },
-    [removeAlertById, refreshRestAlerts, postAlertAction]
+    [removeAlertById, postAlertAction]
   );
 
   const handleFalseAlarm = useCallback(
     async (alertId: string) => {
-      removeAlertById(alertId); // optimistic
+      removeAlertById(alertId); // instant UI update
       try {
         await Promise.all([
           dashboardApi.markFalseAlarm(alertId),
           dashboardApi.dismissAlert(alertId),
         ]);
         postAlertAction("alert.dismissed", alertId);
-        await refreshRestAlerts();
       } catch {
+        // Rollback: let REST restore it on the next poll
         removedRef.current.delete(alertId);
-        await refreshRestAlerts();
       }
     },
-    [removeAlertById, refreshRestAlerts, postAlertAction]
+    [removeAlertById, postAlertAction]
   );
 
   return { alerts, loading, error, handleAttend, handleFalseAlarm, refreshRestAlerts };
