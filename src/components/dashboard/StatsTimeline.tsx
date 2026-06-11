@@ -181,7 +181,7 @@ export default function StatsTimeline() {
                          <span className="flex items-center gap-1">
                            <Clock className="w-3.5 h-3.5" />
                            {event.timestamp
-                             ? new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                             ? new Intl.DateTimeFormat(undefined, { timeStyle: "short" }).format(new Date(event.timestamp))
                              : "Recently"}
                          </span>
                          <span className="uppercase text-[10px] tracking-wider opacity-60">{event.type}</span>

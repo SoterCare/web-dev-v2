@@ -93,10 +93,9 @@ export default function ActivityTimeline() {
                 const displayType = ev.label || ev.type || ev.gait_label || "Activity";
                 const theme = getEventTheme(ev.type || displayType);
                 
-                let timeStr = ev.time;
-                if (!timeStr) {
-                   timeStr = ev.timestamp ? new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently";
-                }
+                const timeStr = ev.timestamp
+                  ? new Intl.DateTimeFormat(undefined, { timeStyle: "short" }).format(new Date(ev.timestamp))
+                  : "Recently";
                 
                 return (
                   <div key={ev.id || idx}>

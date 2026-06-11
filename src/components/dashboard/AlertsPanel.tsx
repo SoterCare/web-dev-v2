@@ -11,7 +11,7 @@ interface AlertRecord {
   id: string;
   type: string;
   title: string;
-  timestamp: string | number;
+  timestamp: number;
 }
 
 // Map types to exact official visual requirements
@@ -31,11 +31,9 @@ const getAlertTheme = (type: string) => {
 };
 
 // Relative time formatter mimicking strict "5s ago", "12m ago" logic
-function getRelativeTime(timestamp: string | number): string {
+function getRelativeTime(timestamp: number): string {
   if (!timestamp) return "Just now";
-  const date = new Date(timestamp);
-  if (isNaN(date.getTime())) return "Unknown time";
-  const diffMs = Date.now() - date.getTime();
+  const diffMs = Date.now() - timestamp;
   const diffSec = Math.floor(diffMs / 1000);
   if (diffSec < 60) return `${Math.max(0, diffSec)}s ago`;
   const diffMin = Math.floor(diffSec / 60);
@@ -176,7 +174,7 @@ export default function AlertsPanel() {
         id: a.id,
         type: a.type || "movement",
         title: a.title || "Dismissed Alert",
-        timestamp: a.time || a.timestamp || Date.now(),
+        timestamp: a.timestamp || Date.now(),
       }));
       setDismissedAlerts(mapped);
     } catch (err) {

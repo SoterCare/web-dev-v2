@@ -17,22 +17,23 @@ export interface DashboardAlert {
   id: string;
   type: "Fall Detected" | "Abnormal Temperature" | "Moisture Detected" | "Irregular Gait";
   severity: "Critical" | "Warning" | "Info";
-  timestamp: string;
+  timestamp: number;
+  attendedAt?: number;
   resolved: boolean;
   message?: string;
 }
 
 export interface TimelineEvent {
   id: string;
-  timestamp: string;
+  timestamp: number;
   type: "Movement" | "Resting" | "Alert";
   description: string;
   duration?: number; // in minutes
 }
 
 export interface ActivityDataPoint {
-  timestamp: string;
-  value: number; // e.g. activity intensity or temperature reading
+  timestamp: number;
+  value: number;
 }
 
 export interface UserProfile {

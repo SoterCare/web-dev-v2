@@ -8,7 +8,7 @@ export interface VitalsPayload {
   roomTemp?: number;
   moisture?: number | string;
   gaitLabel?: string;
-  timestamp?: string;
+  timestamp?: number;
   device_id?: string;
   [key: string]: any;
 }
