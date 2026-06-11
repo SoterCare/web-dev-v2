@@ -3,13 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import { Thermometer, Home, Droplets, Activity, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
-import { useDashboardWebSocket } from "./WebSocketContext";
+import { useVitals } from "./WebSocketContext";
 
 // How long (ms) with no gateway data before showing Offline
 const DATA_TIMEOUT_MS = 3000;
 
 export default function VitalsDisplay() {
-  const { vitals: wsVitals, isConnected } = useDashboardWebSocket();
+  const { vitals: wsVitals, isConnected } = useVitals();
   const [initialVitals, setInitialVitals] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isDataLive, setIsDataLive] = useState(false);

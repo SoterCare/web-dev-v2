@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDeviceId } from "@/lib/useDeviceId";
 import { useDashboardWebSocket } from "@/components/dashboard/WebSocketContext";
-import { parseToUnixMs } from "@/lib/timeUtils";
+import { parseToUnixMs } from "@/lib/timeUtils"; // still used in normaliseAlerts
 import type { RecentAlert } from "@/types/dashboard";
 
 function normaliseAlerts(list: any[]): RecentAlert[] {
@@ -32,7 +32,6 @@ function unwrapAlerts(res: any): any[] {
 export function useAlerts() {
   const { deviceId, deviceIdReady } = useDeviceId();
   const {
-    latestLog,
     latestAlertNew,
     latestAlertAttended,
     latestAlertDismissed,
@@ -118,25 +117,6 @@ export function useAlerts() {
     if (!latestAlertNew) return;
     addAlert(latestAlertNew);
   }, [latestAlertNew, addAlert]);
-
-  // Source C — device.logs.ingested: synthesise fall / sos / moisture alerts
-  useEffect(() => {
-    if (!latestLog || !deviceId) return;
-    const log = latestLog;
-    const tsMs = parseToUnixMs(log.timestamp ?? log.ts);
-
-    if (log.fall_alert && String(log.fall_alert) !== "0" && String(log.fall_alert) !== "false")
-      addAlert({ id: `fall_${deviceId}_${tsMs}`, type: "fall", title: "Fall Detected", timestamp: tsMs });
-
-    if (log.sos && String(log.sos) !== "0" && String(log.sos) !== "false")
-      addAlert({ id: `sos_${deviceId}_${tsMs}`, type: "help_call", title: "Help Call", timestamp: tsMs });
-
-    if (Number(log.moisture) > 25) {
-      const lastUrine = alertsRef.current.find((a) => a.type === "urine");
-      if (!lastUrine || Date.now() - lastUrine.timestamp >= 5 * 60 * 1000)
-        addAlert({ id: `urine_${deviceId}_${tsMs}`, type: "urine", title: "High Moisture Detected", timestamp: tsMs });
-    }
-  }, [latestLog, deviceId, addAlert]);
 
   // Cross-client sync: remove from list when any client attends / dismisses
   useEffect(() => {

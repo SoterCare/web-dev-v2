@@ -55,6 +55,7 @@ function AlertCard({ alert, onAttend, onFalse }: {
       {expanded && (
         <div className="flex items-center gap-3 mt-4 pt-3 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
           <button
+            type="button"
             onClick={(e) => { e.stopPropagation(); run(() => onAttend(alert.id)); }}
             disabled={loading}
             className="flex-1 py-2 rounded-xl text-sm font-bold bg-[#42dfdf] text-cyan-950 flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50"
@@ -62,6 +63,7 @@ function AlertCard({ alert, onAttend, onFalse }: {
             <CheckCircle className="w-4 h-4" /> Attended
           </button>
           <button
+            type="button"
             onClick={(e) => { e.stopPropagation(); run(() => onFalse(alert.id)); }}
             disabled={loading}
             className="flex-1 py-2 rounded-xl text-sm font-bold bg-gray-100 text-gray-700 flex items-center justify-center gap-2 hover:bg-gray-200 disabled:opacity-50"
@@ -82,6 +84,7 @@ export default function AlertsPanel() {
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-bold text-[var(--text)]">Recent Alerts</h3>
         <button
+          type="button"
           onClick={refreshRestAlerts}
           className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
         >
