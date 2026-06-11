@@ -66,16 +66,16 @@ export default async function DashboardPage() {
       {/* Top: 4 vitals cards */}
       <VitalsDisplay />
 
-      {/* Main grid: alerts left, temperature chart right */}
+      {/* Main grid: temperature chart left, alerts right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* Left: Recent Alerts */}
-        <div className="lg:col-span-5 flex flex-col">
-          <AlertsPanel />
-        </div>
-
-        {/* Right: Temperature Statistics */}
+        {/* Left: Temperature Statistics */}
         <div className="lg:col-span-7 flex flex-col">
           <TemperatureStatistics />
+        </div>
+
+        {/* Right: Recent Alerts */}
+        <div className="lg:col-span-5 flex flex-col">
+          <AlertsPanel />
         </div>
       </div>
     </div>

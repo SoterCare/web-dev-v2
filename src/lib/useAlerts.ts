@@ -19,10 +19,13 @@ function normaliseAlerts(list: any[]): RecentAlert[] {
 }
 
 function unwrapAlerts(res: any): any[] {
+  // Handle every envelope shape the backend / proxy may return
   const raw = res?.data ?? res;
-  if (Array.isArray(raw)) return raw;
-  if (Array.isArray(raw?.alerts)) return raw.alerts;
-  if (Array.isArray(raw?.items)) return raw.items;
+  if (Array.isArray(raw)) return raw;                     // { data: [...] } or plain [...]
+  if (Array.isArray(raw?.alerts)) return raw.alerts;      // { alerts: [...] }
+  if (Array.isArray(raw?.items)) return raw.items;        // { items: [...] }
+  if (Array.isArray(raw?.payload)) return raw.payload;    // { payload: [...] }
+  if (Array.isArray(raw?.data)) return raw.data;          // { data: { data: [...] } }
   return [];
 }
 
@@ -36,10 +39,15 @@ export function useAlerts() {
     latestAlertUpdated,
     postAlertAction,
   } = useDashboardWebSocket();
+
   const [restAlerts, setRestAlerts] = useState<RecentAlert[]>([]);
   const [wsAlerts, setWsAlerts] = useState<RecentAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // IDs explicitly removed this session — filtered out of every REST response
+  // so attended/dismissed alerts don't snap back after the next poll.
+  const removedRef = useRef(new Set<string>());
 
   // Merged, deduped, newest-first, max 5
   const alerts = useMemo<RecentAlert[]>(() => {
@@ -48,11 +56,13 @@ export function useAlerts() {
     return unique.sort((a, b) => b.timestamp - a.timestamp).slice(0, 5);
   }, [restAlerts, wsAlerts]);
 
-  // Keep a ref so useEffects can read the latest alerts without stale closure
+  // Ref so effects can read the latest list without stale closures
   const alertsRef = useRef<RecentAlert[]>([]);
   alertsRef.current = alerts;
 
   const addAlert = useCallback((alert: RecentAlert) => {
+    // Skip anything we already removed this session
+    if (removedRef.current.has(alert.id)) return;
     setWsAlerts((prev) => {
       if (prev.some((a) => a.id === alert.id)) return prev;
       return [alert, ...prev];
@@ -60,6 +70,7 @@ export function useAlerts() {
   }, []);
 
   const removeAlertById = useCallback((id: string) => {
+    removedRef.current.add(id);
     setRestAlerts((prev) => prev.filter((a) => a.id !== id));
     setWsAlerts((prev) => prev.filter((a) => a.id !== id));
   }, []);
@@ -68,7 +79,22 @@ export function useAlerts() {
     if (!deviceId) return;
     try {
       const res = await dashboardApi.getRecentAlerts({ deviceId, limit: 20 });
-      setRestAlerts(normaliseAlerts(unwrapAlerts(res)));
+      const all = normaliseAlerts(unwrapAlerts(res));
+
+      // Filter out IDs the user has acted on this session
+      const filtered = all.filter((a) => !removedRef.current.has(a.id));
+      setRestAlerts(filtered);
+
+      // Drop wsAlerts that REST now has (REST is source of truth after poll),
+      // and also drop wsAlerts older than the oldest REST alert to prevent
+      // synthesised entries from getting stuck.
+      const restIds = new Set(filtered.map((a) => a.id));
+      const oldestRestTs =
+        filtered.length > 0 ? Math.min(...filtered.map((a) => a.timestamp)) : Date.now();
+      setWsAlerts((prev) =>
+        prev.filter((a) => !restIds.has(a.id) && a.timestamp > oldestRestTs)
+      );
+
       setError("");
     } catch {
       setError("Failed to load alerts.");
@@ -137,7 +163,9 @@ export function useAlerts() {
         postAlertAction("alert.attended", alertId);
         await refreshRestAlerts();
       } catch {
-        await refreshRestAlerts(); // rollback
+        // On failure remove from removedRef so REST can restore it
+        removedRef.current.delete(alertId);
+        await refreshRestAlerts();
       }
     },
     [removeAlertById, refreshRestAlerts, postAlertAction]
@@ -154,7 +182,8 @@ export function useAlerts() {
         postAlertAction("alert.dismissed", alertId);
         await refreshRestAlerts();
       } catch {
-        await refreshRestAlerts(); // rollback
+        removedRef.current.delete(alertId);
+        await refreshRestAlerts();
       }
     },
     [removeAlertById, refreshRestAlerts, postAlertAction]
