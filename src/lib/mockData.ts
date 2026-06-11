@@ -10,7 +10,7 @@ export const generateMockTemperatureData = (hours: number): ActivityDataPoint[] 
     const baseTemp = 36.5;
     const variant = (Math.random() - 0.5) * 0.8;
     data.push({
-      timestamp: time.toISOString(),
+      timestamp: time.getTime(),
       value: Number((baseTemp + variant).toFixed(1)),
     });
   }
@@ -23,28 +23,28 @@ export const generateMockTimeline = (): TimelineEvent[] => {
   return [
     {
       id: "ev-1",
-      timestamp: new Date(now.getTime() - 5 * 60000).toISOString(),
+      timestamp: new Date(now.getTime() - 5 * 60000).getTime(),
       type: "Movement",
       description: "Walking in hallway",
       duration: 5,
     },
     {
       id: "ev-2",
-      timestamp: new Date(now.getTime() - 45 * 60000).toISOString(),
+      timestamp: new Date(now.getTime() - 45 * 60000).getTime(),
       type: "Resting",
       description: "Resting in living room",
       duration: 40,
     },
     {
       id: "ev-3",
-      timestamp: new Date(now.getTime() - 120 * 60000).toISOString(),
+      timestamp: new Date(now.getTime() - 120 * 60000).getTime(),
       type: "Alert",
       description: "Irregular gait detected during movement",
       duration: 0,
     },
     {
       id: "ev-4",
-      timestamp: new Date(now.getTime() - 240 * 60000).toISOString(),
+      timestamp: new Date(now.getTime() - 240 * 60000).getTime(),
       type: "Movement",
       description: "Morning activity",
       duration: 30,
@@ -74,7 +74,7 @@ export const getMockAlerts = (): DashboardAlert[] => {
       id: "al-1",
       type: "Abnormal Temperature",
       severity: "Warning",
-      timestamp: new Date(now.getTime() - 1000 * 60 * 30).toISOString(),
+      timestamp: new Date(now.getTime() - 1000 * 60 * 30).getTime(),
       resolved: false,
       message: "Body temperature dropped to 35.8°C",
     },
@@ -82,7 +82,7 @@ export const getMockAlerts = (): DashboardAlert[] => {
       id: "al-2",
       type: "Moisture Detected",
       severity: "Info",
-      timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 2).toISOString(),
+      timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 2).getTime(),
       resolved: true,
       message: "Moisture event detected",
     },
@@ -90,7 +90,7 @@ export const getMockAlerts = (): DashboardAlert[] => {
       id: "al-3",
       type: "Fall Detected",
       severity: "Critical",
-      timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 24).toISOString(),
+      timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 24).getTime(),
       resolved: true,
       message: "Hard fall detected in bedroom",
     },
