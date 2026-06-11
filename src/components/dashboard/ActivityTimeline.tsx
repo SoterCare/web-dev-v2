@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { Activity, Droplets, AlertTriangle, Phone, Server, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDeviceId } from "@/lib/useDeviceId";
+import { useDashboardWebSocket } from "@/components/dashboard/WebSocketContext";
+import { parseToUnixMs, toTimeStr } from "@/lib/timeUtils";
 
-// Mapping event types to UI styles
 const getEventTheme = (type: string) => {
   const t = type.toLowerCase();
   if (t.includes("fall")) return { Icon: AlertTriangle, nodeBg: "bg-[#f87171]", pillBg: "bg-[#fee2e2]", pillText: "text-[#b91c1c]" };
@@ -17,34 +18,26 @@ const getEventTheme = (type: string) => {
 
 export default function ActivityTimeline() {
   const { deviceId, deviceIdReady } = useDeviceId();
+  const { latestAlertAttended, latestAlertUpdated } = useDashboardWebSocket();
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchEvents = async () => {
-    if (!deviceId) {
-      setLoading(false);
-      return;
-    }
+    if (!deviceId) { setLoading(false); return; }
     setLoading(true);
     setError("");
     try {
       const date = new Date().toISOString().split("T")[0];
       const res = await dashboardApi.getTimelineEvents({ deviceId, period: "day", date });
-      console.log("[REST] Events response:", res);
-      
-      // API response: { data: { events: [...] } }  each item: { id, type, label, time }
-      const rawArray = Array.isArray(res?.data?.events)
-        ? res.data.events
-        : Array.isArray(res?.events)
-        ? res.events
-        : Array.isArray(res)
-        ? res
-        : [];
-
-      setEvents(rawArray);
-    } catch (err) {
-      console.error("Failed to load timeline events:", err);
+      const raw = res?.data ?? res;
+      const result = raw?.data ?? raw;
+      let list: any[] = [];
+      if (Array.isArray(result)) list = result;
+      else if (Array.isArray(result?.events)) list = result.events;
+      else if (Array.isArray(result?.items)) list = result.items;
+      setEvents(list.map((e: any) => ({ ...e, timestamp: parseToUnixMs(e.timestamp ?? e.ts ?? e.time) })));
+    } catch {
       setError("Failed to load events.");
     } finally {
       setLoading(false);
@@ -52,12 +45,15 @@ export default function ActivityTimeline() {
   };
 
   useEffect(() => {
-    if (deviceId) {
-      fetchEvents();
-    } else if (deviceIdReady) {
-      setLoading(false);
-    }
+    if (deviceId) fetchEvents();
+    else if (deviceIdReady) setLoading(false);
   }, [deviceId, deviceIdReady]);
+
+  // Re-fetch when any client attends an alert
+  useEffect(() => { if (latestAlertAttended) fetchEvents(); }, [latestAlertAttended]);
+  useEffect(() => {
+    if (latestAlertUpdated?.status === "attended") fetchEvents();
+  }, [latestAlertUpdated]);
 
   return (
     <section className="flex-1 flex flex-col relative">
@@ -78,25 +74,18 @@ export default function ActivityTimeline() {
         )}
 
         {events.length === 0 && !loading && !error ? (
-           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-              <Activity className="w-8 h-8 opacity-20 mb-3" />
-              <p className="text-sm font-bold">No recent activities</p>
-           </div>
+          <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <Activity className="w-8 h-8 opacity-20 mb-3" />
+            <p className="text-sm font-bold">No recent activities</p>
+          </div>
         ) : (
           <div className="relative flex-1 flex flex-col">
-            <div
-              className="absolute bg-gray-200"
-              style={{ left: 22, top: 24, bottom: 24, width: 2 }}
-            />
+            <div className="absolute bg-gray-200" style={{ left: 22, top: 24, bottom: 24, width: 2 }} />
             <div className="flex flex-col gap-0 overflow-y-auto flex-1 min-h-[300px] pr-1 slim-scroll overscroll-contain">
               {events.map((ev, idx) => {
                 const displayType = ev.label || ev.type || ev.gait_label || "Activity";
                 const theme = getEventTheme(ev.type || displayType);
-                
-                const timeStr = ev.timestamp
-                  ? new Intl.DateTimeFormat(undefined, { timeStyle: "short" }).format(new Date(ev.timestamp))
-                  : "Recently";
-                
+                const timeDisplay = toTimeStr(ev.timestamp);
                 return (
                   <div key={ev.id || idx}>
                     <div className="flex items-center gap-4 relative z-10">
@@ -106,22 +95,19 @@ export default function ActivityTimeline() {
                       >
                         <theme.Icon className="w-5 h-5" strokeWidth={2.5} />
                       </div>
-                      <div
-                        className={`flex-1 flex items-center justify-between px-5 py-3.5 rounded-2xl ${theme.pillBg} ${theme.pillText}`}
-                      >
+                      <div className={`flex-1 flex items-center justify-between px-5 py-3.5 rounded-2xl ${theme.pillBg} ${theme.pillText}`}>
                         <span className="font-bold text-[15px]">{displayType}</span>
-                        <span className="text-sm font-semibold opacity-60 ml-4 whitespace-nowrap">{timeStr}</span>
+                        <span className="text-sm font-semibold opacity-60 ml-4 whitespace-nowrap">{timeDisplay}</span>
                       </div>
                     </div>
                     {ev.sub ? (
                       <div className="pl-16 py-3 flex flex-col gap-1">
-                        {Array.isArray(ev.sub) ? ev.sub.map((txt: string, i: number) => (
-                          <p key={i} className="text-[11px] font-semibold text-[var(--text-muted)] text-center">
-                            {txt}
-                          </p>
-                        )) : (
-                          <p className="text-[11px] font-semibold text-[var(--text-muted)] text-center">{ev.sub}</p>
-                        )}
+                        {Array.isArray(ev.sub)
+                          ? ev.sub.map((txt: string, i: number) => (
+                              <p key={i} className="text-[11px] font-semibold text-[var(--text-muted)] text-center">{txt}</p>
+                            ))
+                          : <p className="text-[11px] font-semibold text-[var(--text-muted)] text-center">{ev.sub}</p>
+                        }
                       </div>
                     ) : (
                       idx < events.length - 1 && <div className="h-3" />

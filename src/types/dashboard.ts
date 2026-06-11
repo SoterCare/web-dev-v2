@@ -36,6 +36,14 @@ export interface ActivityDataPoint {
   value: number;
 }
 
+export interface RecentAlert {
+  id: string;
+  type: "movement" | "fall" | "urine" | "sos" | "help_call" | "moisture";
+  title: string;
+  timestamp: number;
+  attendedAt?: number;
+}
+
 export interface UserProfile {
   id: string;
   name: string;

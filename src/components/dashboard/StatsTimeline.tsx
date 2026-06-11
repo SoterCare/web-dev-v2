@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Activity, Clock, TrendingUp, Loader2, AlertCircle } from "lucide-react";
+import { toTimeStr } from "@/lib/timeUtils";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDeviceId } from "@/lib/useDeviceId";
 
@@ -180,9 +181,7 @@ export default function StatsTimeline() {
                        <div className="flex items-center justify-between text-xs font-bold text-gray-400 mt-2">
                          <span className="flex items-center gap-1">
                            <Clock className="w-3.5 h-3.5" />
-                           {event.timestamp
-                             ? new Intl.DateTimeFormat(undefined, { timeStyle: "short" }).format(new Date(event.timestamp))
-                             : "Recently"}
+                           {event.timestamp ? toTimeStr(event.timestamp) : "Recently"}
                          </span>
                          <span className="uppercase text-[10px] tracking-wider opacity-60">{event.type}</span>
                        </div>
