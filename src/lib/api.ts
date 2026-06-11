@@ -9,9 +9,11 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     },
   });
 
-  // Auto-redirect to login on auth failure
-  if (res.status === 401 && typeof window !== "undefined") {
-    window.location.href = "/dashboard/login";
+  // On 401 throw so callers handle it gracefully.
+  // Page-level auth is enforced server-side; hard navigation here would
+  // destroy in-flight React state (removedRef, etc.) and cause visual "refreshes".
+  if (res.status === 401) {
+    throw new Error("unauthorized");
   }
 
   return res;

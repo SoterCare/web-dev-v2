@@ -135,16 +135,22 @@ export function useAlerts() {
   }, [latestAlertUpdated, removeAlertById]);
 
   // Actions — optimistic only; 15 s poll is the background sync.
-  // No post-action REST refresh so there is no re-render / flicker on button click.
+  // On failure: immediate rollback (re-add to wsAlerts) so the alert reappears
+  // instantly rather than waiting for the next 15 s REST poll.
   const handleAttend = useCallback(
     async (alertId: string) => {
-      removeAlertById(alertId); // instant UI update
+      const snapshot = alertsRef.current.find((a) => a.id === alertId);
+      removeAlertById(alertId);
       try {
         await dashboardApi.attendAlert(alertId);
         postAlertAction("alert.attended", alertId);
       } catch {
-        // Rollback: let REST restore it on the next poll
         removedRef.current.delete(alertId);
+        if (snapshot) {
+          setWsAlerts((prev) =>
+            prev.some((a) => a.id === snapshot.id) ? prev : [snapshot, ...prev]
+          );
+        }
       }
     },
     [removeAlertById, postAlertAction]
@@ -152,7 +158,8 @@ export function useAlerts() {
 
   const handleFalseAlarm = useCallback(
     async (alertId: string) => {
-      removeAlertById(alertId); // instant UI update
+      const snapshot = alertsRef.current.find((a) => a.id === alertId);
+      removeAlertById(alertId);
       try {
         await Promise.all([
           dashboardApi.markFalseAlarm(alertId),
@@ -160,8 +167,12 @@ export function useAlerts() {
         ]);
         postAlertAction("alert.dismissed", alertId);
       } catch {
-        // Rollback: let REST restore it on the next poll
         removedRef.current.delete(alertId);
+        if (snapshot) {
+          setWsAlerts((prev) =>
+            prev.some((a) => a.id === snapshot.id) ? prev : [snapshot, ...prev]
+          );
+        }
       }
     },
     [removeAlertById, postAlertAction]

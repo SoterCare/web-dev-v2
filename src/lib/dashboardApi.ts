@@ -10,11 +10,17 @@ export const dashboardApi = {
     return apiFetch(`/alerts/recent${qs}`).then(r => r.json());
   },
 
-  attendAlert: (id: string) => 
-    apiFetch(`/alerts/${id}/attend`, { method: "PATCH" }).then(r => r.json()),
+  attendAlert: (id: string) =>
+    apiFetch(`/alerts/${id}/attend`, { method: "PATCH" }).then(async r => {
+      if (!r.ok) throw new Error(`attend_${r.status}`);
+      return r.json().catch(() => ({}));
+    }),
 
-  markFalseAlarm: (id: string) => 
-    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH" }).then(r => r.json()),
+  markFalseAlarm: (id: string) =>
+    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH" }).then(async r => {
+      if (!r.ok) throw new Error(`false_alarm_${r.status}`);
+      return r.json().catch(() => ({}));
+    }),
 
   getDismissedAlerts: () => 
     apiFetch("/timeline/dismissed").then(r => r.json()),
