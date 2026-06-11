@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDeviceId } from "@/lib/useDeviceId";
 import { useDashboardWebSocket } from "@/components/dashboard/WebSocketContext";
@@ -37,8 +36,6 @@ export function useAlerts() {
     latestAlertUpdated,
     postAlertAction,
   } = useDashboardWebSocket();
-  const router = useRouter();
-
   const [restAlerts, setRestAlerts] = useState<RecentAlert[]>([]);
   const [wsAlerts, setWsAlerts] = useState<RecentAlert[]>([]);
   const [loading, setLoading] = useState(true);
@@ -139,12 +136,11 @@ export function useAlerts() {
         await dashboardApi.attendAlert(alertId);
         postAlertAction("alert.attended", alertId);
         await refreshRestAlerts();
-        router.push("/dashboard/timeline");
       } catch {
         await refreshRestAlerts(); // rollback
       }
     },
-    [removeAlertById, refreshRestAlerts, postAlertAction, router]
+    [removeAlertById, refreshRestAlerts, postAlertAction]
   );
 
   const handleFalseAlarm = useCallback(

@@ -6,7 +6,6 @@ import { Box, Smartphone } from "lucide-react";
 import VitalsDisplay from "@/components/dashboard/VitalsDisplay";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
 import TemperatureStatistics from "@/components/dashboard/TemperatureStatistics";
-import ActivityTimeline from "@/components/dashboard/ActivityTimeline";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -67,17 +66,16 @@ export default async function DashboardPage() {
       {/* Top: 4 vitals cards */}
       <VitalsDisplay />
 
-      {/* Middle grid: alerts+stats on left, devices+timeline on right */}
+      {/* Main grid: alerts left, temperature chart right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* Left column */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
+        {/* Left: Recent Alerts */}
+        <div className="lg:col-span-5 flex flex-col">
           <AlertsPanel />
-          <TemperatureStatistics />
         </div>
 
-        {/* Right column */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <ActivityTimeline />
+        {/* Right: Temperature Statistics */}
+        <div className="lg:col-span-7 flex flex-col">
+          <TemperatureStatistics />
         </div>
       </div>
     </div>

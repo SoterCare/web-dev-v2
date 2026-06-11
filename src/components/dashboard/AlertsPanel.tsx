@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, Droplets, AlertTriangle, Phone, ChevronDown, CheckCircle, XCircle, Loader2, Trash2 } from "lucide-react";
+import { Activity, Droplets, AlertTriangle, Phone, ChevronDown, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { useAlerts } from "@/lib/useAlerts";
 import { relativeTime } from "@/lib/timeUtils";
 import type { RecentAlert } from "@/types/dashboard";
@@ -67,14 +67,6 @@ function AlertCard({ alert, onAttend, onFalse }: {
             className="flex-1 py-2 rounded-xl text-sm font-bold bg-gray-100 text-gray-700 flex items-center justify-center gap-2 hover:bg-gray-200 disabled:opacity-50"
           >
             <XCircle className="w-4 h-4" /> False Alarm
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); run(() => onFalse(alert.id)); }}
-            disabled={loading}
-            className="flex-none p-2 rounded-xl bg-gray-100 text-gray-500 hover:text-red-500 hover:bg-red-50 hover:shadow-sm disabled:opacity-50"
-            title="Dismiss to Recycle Bin"
-          >
-            <Trash2 className="w-5 h-5" />
           </button>
         </div>
       )}
