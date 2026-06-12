@@ -145,6 +145,7 @@ export function useAlerts() {
         const results = await Promise.allSettled([
           dashboardApi.attendAlert(alertId),
           dashboardApi.timelineAttend(alertId),
+          dashboardApi.markAttended(alertId),
         ]);
         if (results.every((r) => r.status === "rejected")) throw new Error("attend_failed");
         postAlertAction("alert.attended", alertId);

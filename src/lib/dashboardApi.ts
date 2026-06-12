@@ -44,7 +44,19 @@ export const dashboardApi = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
-    }).then(r => r.json()),
+    }).then(async r => {
+      if (!r.ok) throw new Error(`timeline_attend_${r.status}`);
+      return r.json().catch(() => ({}));
+    }),
+
+  markAttended: (id: string) =>
+    apiFetch(`/alerts/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ isAttended: true }),
+    }).then(async r => {
+      if (!r.ok) throw new Error(`mark_attended_${r.status}`);
+      return r.json().catch(() => ({}));
+    }),
   
   getTimelineVitals: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
