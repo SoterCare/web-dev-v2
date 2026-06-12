@@ -7,6 +7,16 @@ import { useDeviceId } from "@/lib/useDeviceId";
 
 const TABS = ["Day", "Week", "Custom"] as const;
 
+// SVG internal coordinate space
+const SVG_W = 800;
+const SVG_H = 220;
+const PAD_TOP = 12;
+const PAD_BOTTOM = 32;
+const CHART_H = SVG_H - PAD_TOP - PAD_BOTTOM; // 176
+
+// Rendered SVG height in pixels (consistent across SVG and y-axis labels)
+const RENDER_H = 260;
+
 export default function TemperatureStatistics() {
   const { deviceId, deviceIdReady } = useDeviceId();
   const [activeTab, setActiveTab] = useState<typeof TABS[number]>("Day");
@@ -16,11 +26,7 @@ export default function TemperatureStatistics() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Day / Week selected date
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split("T")[0]);
-
-  // Custom date range state
   const [startDate, setStartDate] = useState(() => {
     const d = new Date(); d.setDate(d.getDate() - 1);
     return d.toISOString().split("T")[0];
@@ -45,14 +51,22 @@ export default function TemperatureStatistics() {
       }
 
       const res = await dashboardApi.getTimelineVitals(params);
-      const data = res?.data ?? res;
 
-      const points: { xLabel: string; value: number }[] = Array.isArray(data?.points)
-        ? data.points.map((p: any) => ({ xLabel: p.xLabel ?? "", value: Number(p.value ?? 0) }))
-        : [];
+      // Unwrap various envelope shapes
+      const raw = res?.data ?? res;
+      let pts: any[] = [];
+      if (Array.isArray(raw?.points)) pts = raw.points;
+      else if (Array.isArray(raw?.vitals)) pts = raw.vitals;
+      else if (Array.isArray(raw?.data)) pts = raw.data;
+      else if (Array.isArray(raw)) pts = raw;
+
+      const points = pts.map((p: any) => ({
+        xLabel: p.xLabel ?? p.label ?? p.time ?? "",
+        value: Number(p.value ?? p.temperature ?? p.temp ?? p.skinTemp ?? 0),
+      }));
 
       setDataPoints(points);
-      if (data?.yAxis) setYAxis(data.yAxis);
+      if (raw?.yAxis) setYAxis(raw.yAxis);
     } catch (err: any) {
       console.error("Failed to load timeline vitals:", err);
       setError("Failed to load chart data");
@@ -62,48 +76,59 @@ export default function TemperatureStatistics() {
   };
 
   useEffect(() => {
-    if (deviceId) {
-      fetchChartData(activeTab);
-    } else if (deviceIdReady) {
-      setLoading(false);
-    }
+    if (deviceId) fetchChartData(activeTab);
+    else if (deviceIdReady) setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, deviceId, deviceIdReady, selectedDate]);
 
-  // SVG dimensions
-  const svgW = 800;
-  const svgH = 220;
-  const padTop = 10;
-  const padBottom = 30;
-
-  // Y-axis grid labels (6 evenly spaced from max to min)
+  // Y helpers
   const yMin = yAxis.minValue;
   const yMax = yAxis.maxValue;
   const yRange = yMax - yMin || 1;
+
+  const toY = (val: number) =>
+    PAD_TOP + (1 - (val - yMin) / yRange) * CHART_H;
+
+  // 6 evenly-spaced Y labels, top→bottom
   const yLabels = Array.from({ length: 6 }, (_, i) =>
     (yMax - (i / 5) * yRange).toFixed(1)
   );
 
-  const toY = (val: number) =>
-    padTop + (1 - (val - yMin) / yRange) * (svgH - padTop - padBottom);
+  // Y label positions as % of rendered height so the outer div can pin them
+  // Each label sits at the same visual Y as the grid line it annotates.
+  // Grid lines are at 0%, 20%, 40%, 60%, 80%, 100% of the chart area.
+  const yLabelYs = Array.from({ length: 6 }, (_, i) => {
+    const svgY = PAD_TOP + (i / 5) * CHART_H;
+    return (svgY / SVG_H) * RENDER_H; // visual pixel position
+  });
 
-  // Build SVG path strings
+  // Build SVG paths
   let curvePath = "";
   let areaPath = "";
+
   if (dataPoints.length === 1) {
     const y = toY(dataPoints[0].value);
-    curvePath = `M0,${y} L${svgW},${y}`;
-    areaPath = `M0,${y} L${svgW},${y} L${svgW},${svgH} L0,${svgH} Z`;
+    curvePath = `M0,${y} L${SVG_W},${y}`;
+    areaPath = `M0,${y} L${SVG_W},${y} L${SVG_W},${SVG_H} L0,${SVG_H} Z`;
   } else if (dataPoints.length > 1) {
     const pts = dataPoints.map((d, i) => ({
-      x: (i / (dataPoints.length - 1)) * svgW,
+      x: (i / (dataPoints.length - 1)) * SVG_W,
       y: toY(d.value),
     }));
-    curvePath = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-    areaPath = `${curvePath} L${svgW},${svgH} L0,${svgH} Z`;
+
+    // Smooth monotone Bezier through points
+    let d = `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
+    for (let i = 1; i < pts.length; i++) {
+      const prev = pts[i - 1];
+      const curr = pts[i];
+      const cpX = ((prev.x + curr.x) / 2).toFixed(1);
+      d += ` C${cpX},${prev.y.toFixed(1)} ${cpX},${curr.y.toFixed(1)} ${curr.x.toFixed(1)},${curr.y.toFixed(1)}`;
+    }
+    curvePath = d;
+    areaPath = `${d} L${SVG_W},${SVG_H} L0,${SVG_H} Z`;
   }
 
-  // Pick up to 5 evenly-distributed X-axis labels from actual data
+  // X labels: up to 5 evenly-spaced from actual data
   const xSlotCount = 5;
   const xLabelsToShow: string[] = dataPoints.length > 0
     ? Array.from({ length: Math.min(xSlotCount, dataPoints.length) }, (_, i) => {
@@ -118,7 +143,7 @@ export default function TemperatureStatistics() {
     <section className="relative">
       <h2 className="text-2xl font-bold text-[var(--text)] mb-5">Temperature Statistics</h2>
 
-      {/* Controls row */}
+      {/* Controls */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
         <div className="depth-panel flex items-center p-1 gap-1">
           {TABS.map(tab => (
@@ -139,36 +164,22 @@ export default function TemperatureStatistics() {
         {activeTab === "Custom" ? (
           <div className="flex items-center gap-2 depth-panel px-4 py-2 rounded-xl">
             <Calendar className="w-4 h-4 text-[var(--text-muted)]" />
-            <input
-              type="date"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              className="text-sm font-bold text-[var(--text)] bg-transparent outline-none"
-            />
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
+              className="text-sm font-bold text-[var(--text)] bg-transparent outline-none" />
             <span className="text-[var(--text-muted)] text-sm">→</span>
-            <input
-              type="date"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-              className="text-sm font-bold text-[var(--text)] bg-transparent outline-none"
-            />
-            <button
-              onClick={() => fetchChartData("Custom")}
-              className="ml-2 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors"
-            >
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
+              className="text-sm font-bold text-[var(--text)] bg-transparent outline-none" />
+            <button onClick={() => fetchChartData("Custom")}
+              className="ml-2 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors">
               Apply
             </button>
           </div>
         ) : (
           <div className="depth-panel relative flex items-center rounded-xl overflow-hidden">
             <Calendar className="absolute left-3 w-4 h-4 text-[var(--text-muted)] pointer-events-none z-10" />
-            <input
-              type="date"
-              value={selectedDate}
-              max={new Date().toISOString().split("T")[0]}
+            <input type="date" value={selectedDate} max={new Date().toISOString().split("T")[0]}
               onChange={e => { if (e.target.value) setSelectedDate(e.target.value); }}
-              className="pl-9 pr-4 py-2.5 text-sm font-bold text-[var(--text)] bg-transparent cursor-pointer outline-none border-none [color-scheme:light] w-40"
-            />
+              className="pl-9 pr-4 py-2.5 text-sm font-bold text-[var(--text)] bg-transparent cursor-pointer outline-none border-none [color-scheme:light] w-40" />
           </div>
         )}
       </div>
@@ -183,9 +194,7 @@ export default function TemperatureStatistics() {
         {error && !loading && (
           <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex flex-col items-center justify-center rounded-[1rem]">
             <p className="text-sm font-bold text-red-500">{error}</p>
-            <button onClick={() => fetchChartData(activeTab)} className="mt-2 text-xs font-semibold text-blue-500 hover:underline">
-              Retry
-            </button>
+            <button onClick={() => fetchChartData(activeTab)} className="mt-2 text-xs font-semibold text-blue-500 hover:underline">Retry</button>
           </div>
         )}
         {dataPoints.length === 0 && !loading && !error && (
@@ -195,13 +204,27 @@ export default function TemperatureStatistics() {
         )}
 
         <div className={`flex gap-3 transition-opacity duration-300 ${loading ? "opacity-30" : "opacity-100"}`}>
-          {/* Y-axis labels */}
-          <div className="flex flex-col justify-between text-[11px] font-bold text-[var(--text-muted)] pb-6 pr-2 text-right select-none h-[280px]">
-            {yLabels.map(v => <span key={v}>{v}</span>)}
+          {/* Y-axis labels — absolutely positioned to align with SVG grid lines */}
+          <div className="relative shrink-0 w-10 pr-2" style={{ height: RENDER_H }}>
+            {yLabels.map((v, i) => (
+              <span
+                key={v}
+                className="absolute right-2 text-[11px] font-bold text-[var(--text-muted)] select-none -translate-y-1/2"
+                style={{ top: yLabelYs[i] }}
+              >
+                {v}
+              </span>
+            ))}
           </div>
 
-          <div className="flex-1 relative">
-            <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full h-auto overflow-visible" style={{ height: 280 }}>
+          <div className="flex-1 min-w-0">
+            {/* SVG chart — preserveAspectRatio="none" fills the container exactly */}
+            <svg
+              viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+              preserveAspectRatio="none"
+              className="w-full block"
+              style={{ height: RENDER_H }}
+            >
               <defs>
                 <linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#f87171" stopOpacity="0.3" />
@@ -209,34 +232,29 @@ export default function TemperatureStatistics() {
                 </linearGradient>
               </defs>
 
-              {/* Horizontal grid lines at 25 / 50 / 75% of chart height */}
-              {[0.25, 0.5, 0.75].map(t => {
-                const gy = padTop + t * (svgH - padTop - padBottom);
+              {/* Horizontal grid lines aligned with y labels */}
+              {Array.from({ length: 6 }, (_, i) => {
+                const gy = PAD_TOP + (i / 5) * CHART_H;
                 return (
-                  <line key={t} x1="0" y1={gy} x2={svgW} y2={gy}
-                    stroke="#e5e7eb" strokeWidth="1.5" strokeDasharray="6,4" />
+                  <line key={i} x1="0" y1={gy} x2={SVG_W} y2={gy}
+                    stroke="#e5e7eb" strokeWidth="1" strokeDasharray="6,4" />
                 );
               })}
 
-              {/* Filled area under the curve */}
+              {/* Filled area */}
               {areaPath && <path d={areaPath} fill="url(#tempGrad)" />}
 
-              {/* The line itself */}
+              {/* Curve */}
               {curvePath && (
                 <path d={curvePath} fill="none" stroke="#ef4444"
-                  strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               )}
 
-              {/* Data dots */}
-              {dataPoints.map((d, i) => {
-                const x = dataPoints.length > 1
-                  ? (i / (dataPoints.length - 1)) * svgW
-                  : svgW / 2;
+              {/* Data dots — only show if ≤ 24 points (too many = cluttered) */}
+              {dataPoints.length <= 24 && dataPoints.map((d, i) => {
+                const x = dataPoints.length > 1 ? (i / (dataPoints.length - 1)) * SVG_W : SVG_W / 2;
                 const y = toY(d.value);
-                return (
-                  <circle key={i} cx={x} cy={y} r="4"
-                    fill="white" stroke="#ef4444" strokeWidth="2.5" />
-                );
+                return <circle key={i} cx={x} cy={y} r="4" fill="white" stroke="#ef4444" strokeWidth="2" />;
               })}
             </svg>
 
@@ -245,8 +263,7 @@ export default function TemperatureStatistics() {
               {xLabelsToShow.map((t, i) => <span key={i}>{t}</span>)}
             </div>
 
-            {/* Axis label */}
-            <div className="text-[11px] font-bold text-[var(--text-muted)] mt-4 text-center tracking-widest uppercase">
+            <div className="text-[11px] font-bold text-[var(--text-muted)] mt-3 text-center tracking-widest uppercase">
               {yAxis.label}
             </div>
           </div>
