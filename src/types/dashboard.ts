@@ -15,7 +15,7 @@ export interface GaitMetrics {
 
 export interface DashboardAlert {
   id: string;
-  type: "Fall Detected" | "Abnormal Temperature" | "Moisture Detected" | "Irregular Gait";
+  type: "Fall Detected" | "Abnormal Temperature" | "Moisture Detected";
   severity: "Critical" | "Warning" | "Info";
   timestamp: number;
   attendedAt?: number;

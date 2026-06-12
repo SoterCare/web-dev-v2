@@ -144,6 +144,9 @@ export function useAlerts() {
       try {
         await dashboardApi.attendAlert(alertId);
         postAlertAction("alert.attended", alertId);
+        // Immediately re-sync with backend — evicts stale WS-synthesised entries
+        // that share the same event but have a different synthetic ID.
+        refreshRestAlerts();
       } catch {
         removedRef.current.delete(alertId);
         if (snapshot) {
@@ -153,7 +156,7 @@ export function useAlerts() {
         }
       }
     },
-    [removeAlertById, postAlertAction]
+    [removeAlertById, postAlertAction, refreshRestAlerts]
   );
 
   const handleFalseAlarm = useCallback(
@@ -161,11 +164,9 @@ export function useAlerts() {
       const snapshot = alertsRef.current.find((a) => a.id === alertId);
       removeAlertById(alertId);
       try {
-        await Promise.all([
-          dashboardApi.markFalseAlarm(alertId),
-          dashboardApi.dismissAlert(alertId),
-        ]);
+        await dashboardApi.markFalseAlarm(alertId);
         postAlertAction("alert.dismissed", alertId);
+        refreshRestAlerts();
       } catch {
         removedRef.current.delete(alertId);
         if (snapshot) {
@@ -175,7 +176,7 @@ export function useAlerts() {
         }
       }
     },
-    [removeAlertById, postAlertAction]
+    [removeAlertById, postAlertAction, refreshRestAlerts]
   );
 
   return { alerts, loading, error, handleAttend, handleFalseAlarm, refreshRestAlerts };

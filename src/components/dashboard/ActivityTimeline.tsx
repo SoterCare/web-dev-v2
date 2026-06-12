@@ -76,14 +76,14 @@ export default function ActivityTimeline() {
         {events.length === 0 && !loading && !error ? (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
             <Activity className="w-8 h-8 opacity-20 mb-3" />
-            <p className="text-sm font-bold">No recent activities</p>
+            <p className="text-sm font-bold">No attended alerts yet</p>
           </div>
         ) : (
           <div className="relative flex-1 flex flex-col">
             <div className="absolute bg-gray-200" style={{ left: 22, top: 24, bottom: 24, width: 2 }} />
             <div className="flex flex-col gap-0 overflow-y-auto flex-1 min-h-[300px] pr-1 slim-scroll overscroll-contain">
               {events.map((ev, idx) => {
-                const displayType = ev.label || ev.type || ev.gait_label || "Activity";
+                const displayType = ev.label || ev.type || "Activity";
                 const theme = getEventTheme(ev.type || displayType);
                 const timeDisplay = toTimeStr(ev.timestamp);
                 return (

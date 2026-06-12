@@ -259,9 +259,14 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
   const postAlertAction = useCallback(
     (type: "alert.attended" | "alert.dismissed", id: string) => {
-      bcRef.current?.postMessage({ type, id, deviceId: deviceIdRef.current });
+      const dId = deviceIdRef.current ?? "";
+      // Update local tab state immediately so the same tab reacts without waiting
+      // for the backend to echo a WS event back (which may be slow or missing).
+      if (type === "alert.attended") setLatestAlertAttended({ id, deviceId: dId });
+      if (type === "alert.dismissed") setLatestAlertDismissed({ id, deviceId: dId });
+      bcRef.current?.postMessage({ type, id, deviceId: dId });
     },
-    [] // deviceIdRef is a ref, always up to date, no dep needed
+    [] // deviceIdRef is a ref; state setters are stable — no deps needed
   );
 
   // Memoize each context value independently so unrelated state changes

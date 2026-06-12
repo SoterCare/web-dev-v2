@@ -129,7 +129,7 @@ export default function TimelinePage() {
         ) : events.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[240px] text-gray-400">
             <Activity className="w-10 h-10 opacity-20 mb-3" />
-            <p className="text-sm font-bold">No events for this period</p>
+            <p className="text-sm font-bold">No attended alerts for this period</p>
           </div>
         ) : (
           <div className="relative">
