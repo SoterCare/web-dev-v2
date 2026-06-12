@@ -142,14 +142,8 @@ export function useAlerts() {
       const snapshot = alertsRef.current.find((a) => a.id === alertId);
       removeAlertById(alertId);
       try {
-        const results = await Promise.allSettled([
-          dashboardApi.attendAlert(alertId),
-          dashboardApi.timelineAttend(alertId),
-          dashboardApi.markAttended(alertId),
-        ]);
-        if (results.every((r) => r.status === "rejected")) throw new Error("attend_failed");
+        await dashboardApi.attendAlert(alertId);
         postAlertAction("alert.attended", alertId);
-        refreshRestAlerts();
       } catch {
         removedRef.current.delete(alertId);
         if (snapshot) {
@@ -159,7 +153,7 @@ export function useAlerts() {
         }
       }
     },
-    [removeAlertById, postAlertAction, refreshRestAlerts]
+    [removeAlertById, postAlertAction]
   );
 
   const handleFalseAlarm = useCallback(
@@ -167,16 +161,8 @@ export function useAlerts() {
       const snapshot = alertsRef.current.find((a) => a.id === alertId);
       removeAlertById(alertId);
       try {
-        // Fire both endpoints simultaneously. The PATCH is the new-spec route;
-        // the POST /timeline/dismiss is the reliable fallback. We succeed if
-        // at least one resolves — throw only if both reject.
-        const results = await Promise.allSettled([
-          dashboardApi.markFalseAlarm(alertId),
-          dashboardApi.dismissAlert(alertId),
-        ]);
-        if (results.every((r) => r.status === "rejected")) throw new Error("false_alarm_failed");
+        await dashboardApi.markFalseAlarm(alertId);
         postAlertAction("alert.dismissed", alertId);
-        refreshRestAlerts();
       } catch {
         removedRef.current.delete(alertId);
         if (snapshot) {
@@ -186,7 +172,7 @@ export function useAlerts() {
         }
       }
     },
-    [removeAlertById, postAlertAction, refreshRestAlerts]
+    [removeAlertById, postAlertAction]
   );
 
   return { alerts, loading, error, handleAttend, handleFalseAlarm, refreshRestAlerts };

@@ -13,20 +13,20 @@ export async function proxyRequest(request: Request, backendPath: string) {
       ? `${API_BASE}${backendPath}${new URL(request.url).search}`
       : `${API_BASE}${backendPath}`;
 
-    const options: RequestInit = {
-      method: request.method,
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+    const reqHeaders: Record<string, string> = {
+      "Authorization": `Bearer ${token}`,
     };
 
-    // Forward body for non-GET requests
+    const options: RequestInit = { method: request.method, headers: reqHeaders };
+
+    // Only forward body and Content-Type for requests that carry a payload.
+    // Sending Content-Type: application/json on a bodyless PATCH causes some
+    // backends to fail when they try to parse an empty JSON body.
     if (request.method !== "GET" && request.method !== "HEAD") {
-      // Clone the request if we need to read body multiple times, but here once is fine
       const bodyText = await request.text();
       if (bodyText) {
         options.body = bodyText;
+        reqHeaders["Content-Type"] = "application/json";
       }
     }
 

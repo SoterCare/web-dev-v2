@@ -2,74 +2,50 @@ import { apiFetch } from "./api";
 
 export const dashboardApi = {
   getLatestVitals: () => apiFetch("/dashboard/vitals/latest").then(r => r.json()),
-  
+
   getDevices: () => apiFetch("/devices").then(r => r.json()),
-  
+
   getRecentAlerts: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return apiFetch(`/alerts/recent${qs}`).then(r => r.json());
   },
 
+  // PATCH /alerts/:id/attend — sets isAttended:true, no body needed
   attendAlert: (id: string) =>
-    apiFetch(`/alerts/${id}/attend`, { method: "PATCH", body: JSON.stringify({}) }).then(async r => {
+    apiFetch(`/alerts/${id}/attend`, { method: "PATCH" }).then(async r => {
       if (!r.ok) throw new Error(`attend_${r.status}`);
       return r.json().catch(() => ({}));
     }),
 
+  // PATCH /alerts/:id/false-alarm — sets isDismissed:true, no body needed
   markFalseAlarm: (id: string) =>
-    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH", body: JSON.stringify({}) }).then(async r => {
+    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH" }).then(async r => {
       if (!r.ok) throw new Error(`false_alarm_${r.status}`);
       return r.json().catch(() => ({}));
     }),
 
-  getDismissedAlerts: () => 
+  getDismissedAlerts: () =>
     apiFetch("/timeline/dismissed").then(r => r.json()),
 
-  restoreAlert: (id: string) => 
-    apiFetch("/timeline/restore", { 
-      method: "POST", 
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }) 
-    }).then(r => r.json()),
-
-  dismissAlert: (id: string) =>
-    apiFetch("/timeline/dismiss", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id })
-    }).then(r => r.json()),
-
-  timelineAttend: (id: string) =>
-    apiFetch("/timeline/attend", {
+  restoreAlert: (id: string) =>
+    apiFetch("/timeline/restore", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
-    }).then(async r => {
-      if (!r.ok) throw new Error(`timeline_attend_${r.status}`);
-      return r.json().catch(() => ({}));
-    }),
+    }).then(r => r.json()),
 
-  markAttended: (id: string) =>
-    apiFetch(`/alerts/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ isAttended: true }),
-    }).then(async r => {
-      if (!r.ok) throw new Error(`mark_attended_${r.status}`);
-      return r.json().catch(() => ({}));
-    }),
-  
   getTimelineVitals: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return apiFetch(`/timeline/vitals${qs}`).then(r => r.json());
   },
-  
+
   getTimelineStats: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return apiFetch(`/timeline/stats${qs}`).then(r => r.json());
   },
-  
+
   getTimelineEvents: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return apiFetch(`/timeline/events${qs}`).then(r => r.json());
-  }
+  },
 };
