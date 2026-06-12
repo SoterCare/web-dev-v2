@@ -142,10 +142,12 @@ export function useAlerts() {
       const snapshot = alertsRef.current.find((a) => a.id === alertId);
       removeAlertById(alertId);
       try {
-        await dashboardApi.attendAlert(alertId);
+        const results = await Promise.allSettled([
+          dashboardApi.attendAlert(alertId),
+          dashboardApi.timelineAttend(alertId),
+        ]);
+        if (results.every((r) => r.status === "rejected")) throw new Error("attend_failed");
         postAlertAction("alert.attended", alertId);
-        // Immediately re-sync with backend — evicts stale WS-synthesised entries
-        // that share the same event but have a different synthetic ID.
         refreshRestAlerts();
       } catch {
         removedRef.current.delete(alertId);

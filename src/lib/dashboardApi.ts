@@ -32,11 +32,18 @@ export const dashboardApi = {
       body: JSON.stringify({ id }) 
     }).then(r => r.json()),
 
-  dismissAlert: (id: string) => 
-    apiFetch("/timeline/dismiss", { 
-      method: "POST", 
+  dismissAlert: (id: string) =>
+    apiFetch("/timeline/dismiss", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }) 
+      body: JSON.stringify({ id })
+    }).then(r => r.json()),
+
+  timelineAttend: (id: string) =>
+    apiFetch("/timeline/attend", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
     }).then(r => r.json()),
   
   getTimelineVitals: (params?: Record<string, any>) => {
