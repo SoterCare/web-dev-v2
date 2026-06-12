@@ -164,7 +164,14 @@ export function useAlerts() {
       const snapshot = alertsRef.current.find((a) => a.id === alertId);
       removeAlertById(alertId);
       try {
-        await dashboardApi.markFalseAlarm(alertId);
+        // Fire both endpoints simultaneously. The PATCH is the new-spec route;
+        // the POST /timeline/dismiss is the reliable fallback. We succeed if
+        // at least one resolves — throw only if both reject.
+        const results = await Promise.allSettled([
+          dashboardApi.markFalseAlarm(alertId),
+          dashboardApi.dismissAlert(alertId),
+        ]);
+        if (results.every((r) => r.status === "rejected")) throw new Error("false_alarm_failed");
         postAlertAction("alert.dismissed", alertId);
         refreshRestAlerts();
       } catch {

@@ -11,13 +11,13 @@ export const dashboardApi = {
   },
 
   attendAlert: (id: string) =>
-    apiFetch(`/alerts/${id}/attend`, { method: "PATCH" }).then(async r => {
+    apiFetch(`/alerts/${id}/attend`, { method: "PATCH", body: JSON.stringify({}) }).then(async r => {
       if (!r.ok) throw new Error(`attend_${r.status}`);
       return r.json().catch(() => ({}));
     }),
 
   markFalseAlarm: (id: string) =>
-    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH" }).then(async r => {
+    apiFetch(`/alerts/${id}/false-alarm`, { method: "PATCH", body: JSON.stringify({}) }).then(async r => {
       if (!r.ok) throw new Error(`false_alarm_${r.status}`);
       return r.json().catch(() => ({}));
     }),
