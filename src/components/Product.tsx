@@ -127,9 +127,9 @@ const Product = () => {
 
             <div className="relative w-full max-w-7xl mx-auto min-h-auto md:min-h-[700px] flex flex-col md:block items-center justify-center">
               {/* Central Image */}
-              <div className="relative z-10 max-w-lg md:max-w-3xl w-full mx-auto md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
+              <div className="relative z-10 max-w-3xl md:w-[115%] md:max-w-none w-full mx-auto md:absolute md:top-[48%] md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
                 <Image
-                  src="/assets/features/new-mobileapp-mockup.webp"
+                  src="/assets/Mobile Mockup latest.png"
                   alt="SoterCare mobile app showing real-time vitals, fall alerts, and health summaries for elderly care"
                   width={1200}
                   height={1000}

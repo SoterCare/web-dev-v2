@@ -52,8 +52,8 @@ const Features = () => {
                                     span: 'md:col-span-2'
                                 },
                                 {
-                                    title: 'AI-Powered Health Summaries',
-                                    desc: 'We convert complex data into simple English. Integrated LLM generates daily summaries.',
+                                    title: 'AI Nurse Aria',
+                                    desc: 'Your personal AI nurse, always on call. Ask Aria anything about your patient: vitals, fall history, daily patterns, and get clear instant answers in plain language.',
                                     Icon: BrainCircuit,
                                     color: 'text-purple-500',
                                     span: 'md:col-span-1'
@@ -66,8 +66,8 @@ const Features = () => {
                                     span: 'md:col-span-1'
                                 },
                                 {
-                                    title: 'Quick Web Dashboard Access',
-                                    desc: 'Access your health data instantly from any device. Log in to our secure web dashboard for detailed analytics, historical data, and real-time vitals monitoring.',
+                                    title: 'AI Agent Orchestration',
+                                    desc: 'Three specialized AI agents work in coordination behind the scenes: a Monitoring Agent that continuously watches vitals and flags anomalies, a Summary Agent that distills sensor data into readable daily reports, and Aria the Nurse Agent that handles natural language queries about the patient in real time.',
                                     Icon: LayoutDashboard,
                                     color: 'text-indigo-500',
                                     span: 'md:col-span-2'

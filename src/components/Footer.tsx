@@ -3,8 +3,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import Link from "next/link";
-import Image from "next/image";
 import { Instagram, Linkedin, Play, Mail, ArrowLeft } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -202,22 +200,16 @@ const Footer = () => {
   return (
     <footer id="contact" ref={containerRef} className="h-screen w-full bg-bg-body relative z-10">
       <div className="px-2 pt-2 md:px-4 md:pt-4 h-full w-full pb-0">
-        <div className="w-full h-full mx-auto text-white rounded-t-[1.5rem] md:rounded-t-[2.5rem] rounded-b-none relative overflow-hidden flex flex-col justify-between">
-          {/* Background Image */}
-          <div className="absolute inset-0 z-0 select-none pointer-events-none">
-            <Image
-              src="/assets/footer_1BNW.webp"
-              alt=""
-              aria-hidden="true"
-              fill
-              className="object-cover transition-transform duration-1000 ease-out hover:scale-[1.02]"
-              priority
-            />
-            {/* Modern dark metallic gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#0f172a]/60 to-[#020617]/50" />
+        <div className="w-full h-full mx-auto text-text rounded-t-[1.5rem] md:rounded-t-[2.5rem] rounded-b-none relative overflow-hidden flex flex-col justify-between bg-gradient-to-t from-white to-bg-body shadow-m">
+          {/* Dotted grid — continues the page texture through the footer surface */}
+          <div className="absolute inset-0 z-0 bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
+
+          {/* Soft powder-blue ambient glow (matches Pricing's blur blobs) */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="absolute -bottom-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-[#a0cbdb]/20 blur-[120px]" />
           </div>
 
-          {/* ── Marquee Bands — inside footer, full height watermark ── */}
+          {/* ── Marquee Bands — faint dark texture watermark ── */}
           {(() => {
             const marqueeRows = [
               { text: "WELLNESS SIMPLIFIED", dir: "left",  duration: "35s" },
@@ -235,10 +227,10 @@ const Footer = () => {
                         className="flex whitespace-nowrap will-change-transform"
                         style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
                       >
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03]">
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
                           {repeated}
                         </span>
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-white/[0.03]" aria-hidden="true">
+                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]" aria-hidden="true">
                           {repeated}
                         </span>
                       </div>
@@ -257,41 +249,41 @@ const Footer = () => {
               className="flex-grow flex flex-col items-center justify-center p-8 text-center mt-20"
             >
               <h2 ref={headingRef} className="mb-6 md:mb-10 leading-tight">
-                <span className="block text-3xl sm:text-4xl md:text-5xl font-bold text-[#a0cbdb] leading-none tracking-tight pb-2 md:pb-4">
+                <span className="block text-3xl sm:text-4xl md:text-5xl font-bold text-[#3d7e93] leading-none tracking-tight pb-2 md:pb-4">
                   That&apos;s our story.
                 </span>
-                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-br from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent leading-none tracking-tighter">
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-text leading-none tracking-tighter">
                   Wellness Simplified.
                 </span>
               </h2>
 
               <div
                 ref={ctaRef}
-                className="flex flex-col md:flex-row gap-6 mt-6 md:mt-8 justify-center w-full max-w-xl mx-auto"
+                className="flex flex-col md:flex-row gap-4 md:gap-6 mt-6 md:mt-8 justify-center w-full max-w-xl mx-auto"
               >
-                <button
-                  onClick={handleWatchClick}
-                  className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
-                >
-                  <Play size={20} fill="currentColor" />
-                  Watch
-                </button>
-
                 <button
                   onClick={() =>
                     window.dispatchEvent(new Event("open-contact-popup"))
                   }
-                  className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 hover:bg-neutral-200 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+                  className="bg-text text-bg-card px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
                 >
                   <Mail size={20} />
                   Send a Message
+                </button>
+
+                <button
+                  onClick={handleWatchClick}
+                  className="bg-bg-card text-text px-8 py-4 rounded-full font-semibold text-lg shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+                >
+                  <Play size={20} fill="currentColor" className="text-[#3d7e93]" />
+                  Watch
                 </button>
               </div>
             </div>
 
             {/* Bottom Bar */}
             <div ref={bottomBarRef} className="w-full px-8 pb-8 pt-20">
-              <div className="border-t border-white/20 pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-white/80">
+              <div className="border-t border-black/10 pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-text-muted">
                 {/* Copyright */}
                 <div className="order-3 xl:order-1 text-center xl:text-left w-full xl:w-auto">
                   &copy; {new Date().getFullYear()} SoterCare. | All Rights
@@ -302,7 +294,7 @@ const Footer = () => {
                 <div className="order-1 xl:order-2 flex flex-col md:flex-row gap-4 md:gap-8 items-center xl:absolute xl:left-1/2 xl:-translate-x-1/2">
                   <a
                     href="mailto:support@sotercare.com"
-                    className="hover:text-white transition-colors"
+                    className="hover:text-text transition-colors"
                   >
                     support@sotercare.com
                   </a>
@@ -313,7 +305,7 @@ const Footer = () => {
                   <div className="flex gap-4 items-center">
                     <a
                       href="tel:+94704888440"
-                      className="hover:text-white transition-colors"
+                      className="hover:text-text transition-colors"
                     >
                       +94 70 4888 440
                     </a>
@@ -322,7 +314,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="SoterCare on Instagram"
-                      className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+                      className="hover:text-text transition-colors p-2 hover:bg-black/5 rounded-full"
                     >
                       <Instagram size={20} />
                     </a>
@@ -331,7 +323,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="SoterCare on LinkedIn"
-                      className="hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+                      className="hover:text-text transition-colors p-2 hover:bg-black/5 rounded-full"
                     >
                       <Linkedin size={20} />
                     </a>
@@ -344,7 +336,7 @@ const Footer = () => {
           {/* ── Video Overlay ── */}
           <div
             ref={videoOverlayRef}
-            className="absolute inset-0 z-20 bg-gradient-to-b from-[#0a0a0a] via-[#0f0f0f] to-[#050505] origin-bottom"
+            className="absolute inset-0 z-20 bg-gradient-to-b from-white to-bg-body origin-bottom"
             style={{ transform: "scaleY(0)", opacity: 0 }}
           >
             <div
@@ -352,7 +344,7 @@ const Footer = () => {
               className="absolute inset-2 sm:inset-4 md:inset-6 lg:inset-10 xl:inset-14 flex items-center justify-center"
               style={{ opacity: 0 }}
             >
-              <div className="w-full h-full max-w-[1400px] aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.6)] border border-white/10 relative">
+              <div className="w-full h-full max-w-[1400px] aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-m border border-black/10 relative bg-black">
                 {showIframe && (
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
@@ -371,7 +363,7 @@ const Footer = () => {
           <button
             ref={backBtnRef}
             onClick={handleBackClick}
-            className="absolute top-4 left-4 md:top-8 md:left-8 z-30 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full font-semibold text-xs md:text-sm hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-1.5 md:gap-2 shadow-lg"
+            className="absolute top-4 left-4 md:top-8 md:left-8 z-30 bg-bg-card text-text px-4 py-2 md:px-5 md:py-2.5 rounded-full font-semibold text-xs md:text-sm shadow-m hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-1.5 md:gap-2"
             style={{ opacity: 0, pointerEvents: viewState === "video" ? "auto" : "none" }}
           >
             <ArrowLeft size={16} className="w-3 h-3 md:w-4 md:h-4" />

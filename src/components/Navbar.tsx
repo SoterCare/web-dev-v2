@@ -12,7 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const videoActiveRef = useRef(false); // Use ref so scroll handler sees latest state
   const navRef = useRef<HTMLElement>(null);
@@ -20,7 +19,6 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 500);
 
       // If video is active, hide nav ONLY when scrolled to the very bottom
       if (videoActiveRef.current) {
@@ -85,16 +83,13 @@ const Navbar = () => {
         }`}
     >
       <div
-        className={`rounded-[1.5rem] px-6 py-4 flex justify-between items-center transition-all duration-700 ease-in-out relative z-50 shadow-lg ${isScrolled
-          ? "bg-bg-card shadow-m border border-white/10"
-          : "bg-black/20 backdrop-blur-md border border-[rgba(255,255,255,0.15)]"
-          }`}
+        className="rounded-[1.5rem] px-6 py-4 flex justify-between items-center relative z-50 shadow-lg bg-bg-card shadow-m border border-white/10"
       >
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
           <Link href="#" className="flex items-center gap-2" scroll={false}>
             <Image
-              src={isScrolled ? "/assets/SoterCare-Primary-logo-brandblue.webp" : "/assets/SoterCare-Primary-logo-white.webp"}
+              src="/assets/SoterCare-Primary-logo-brandblue.webp"
               alt="SoterCare - Smart Elderly Care Monitoring System"
               width={0}
               height={0}
@@ -108,56 +103,18 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link
-            href="#product"
-            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
-            scroll={false}
-          >
-            Product
-          </Link>
-          <Link
-            href="#features"
-            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
-            scroll={false}
-          >
-            Features
-          </Link>
-          <Link
-            href="#pricing"
-            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
-            scroll={false}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="#team"
-            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
-            scroll={false}
-          >
-            Team
-          </Link>
-          <Link
-            href="#contact"
-            className={`transition-colors text-base font-medium ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
-            scroll={false}
-          >
-            Contact
-          </Link>
+          <Link href="#product" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Product</Link>
+          <Link href="#features" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Features</Link>
+          <Link href="#pricing" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Pricing</Link>
+          <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
+          <Link href="#contact" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Contact</Link>
         </div>
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center">
           <Link
             href="/dashboard"
-            className={`px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95 ${isScrolled
-              ? "bg-bg-card shadow-m text-foreground"
-              : "bg-white/10 text-white backdrop-blur-sm border border-white/20 hover:bg-white/20"
-              }`}
+            className="px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95 bg-bg-card shadow-m text-text"
           >
             Dashboard
           </Link>
@@ -166,8 +123,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <button
-            className={`p-2 transition-transform active:scale-95 ${isScrolled ? "text-[#797979] hover:text-[black]" : "text-white/80 hover:text-white"
-              }`}
+            className="p-2 transition-transform active:scale-95 text-[#797979] hover:text-black"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -220,7 +176,7 @@ const Navbar = () => {
         </Link>
         <Link
           href="/dashboard"
-          className="bg-bg-panel shadow-m text-foreground px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
+          className="bg-bg-panel shadow-m text-text px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
           onClick={() => setIsOpen(false)}
         >
           Dashboard
