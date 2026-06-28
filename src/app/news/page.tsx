@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navbar from '@/components/Navbar';
+import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
 
@@ -35,9 +35,9 @@ export default function NewsPage() {
       />
 
       <div className="relative z-10">
-        <Navbar />
+        <NewsTopBar backHref="/" backLabel="Back to SoterCare" />
 
-        <section className="relative z-10 pt-32 pb-8 px-4 sm:px-6 lg:px-8">
+        <section className="relative z-10 pt-28 pb-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section header */}
             <div className="text-center mb-12">

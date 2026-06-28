@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navbar from '@/components/Navbar';
+import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
 
@@ -55,9 +55,9 @@ export default async function ArticlePage({ params }: Props) {
       />
 
       <div className="relative z-10">
-        <Navbar />
+        <NewsTopBar backHref="/news" backLabel="Back to News" />
 
-        <article className="pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+        <article className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             {/* Back link */}
             <Link
