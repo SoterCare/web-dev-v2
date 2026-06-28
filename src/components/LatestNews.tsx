@@ -26,11 +26,11 @@ export default function LatestNews() {
     >
       <div className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-10 text-center">
-          <span className="bg-bg-card px-10 py-3 rounded-[2rem] inline-flex items-center justify-center mb-4 shadow-m text-base font-bold uppercase tracking-widest text-text-muted">
+        <div className="mb-8 sm:mb-10 text-center">
+          <span className="bg-bg-card px-6 sm:px-10 py-2.5 sm:py-3 rounded-[2rem] inline-flex items-center justify-center mb-4 shadow-m text-sm sm:text-base font-bold uppercase tracking-widest text-text-muted">
             Latest News
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text">
             What&apos;s Happening
           </h2>
         </div>

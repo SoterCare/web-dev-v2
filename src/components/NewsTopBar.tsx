@@ -10,7 +10,7 @@ interface Props {
 export default function NewsTopBar({ backHref, backLabel }: Props) {
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
-      <div className="rounded-[1.5rem] px-5 py-3 flex items-center justify-between bg-bg-card shadow-m border border-white/10">
+      <div className="rounded-[1.5rem] px-4 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between bg-bg-card shadow-m border border-white/10">
         {/* Back button */}
         <Link
           href={backHref}
@@ -30,8 +30,8 @@ export default function NewsTopBar({ backHref, backLabel }: Props) {
             width={0}
             height={0}
             sizes="100vw"
-            className="h-9 w-auto object-contain"
-            style={{ width: 'auto', height: '36px' }}
+            className="h-8 sm:h-9 w-auto object-contain"
+            style={{ width: 'auto' }}
           />
         </Link>
 

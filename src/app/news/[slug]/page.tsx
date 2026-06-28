@@ -57,19 +57,19 @@ export default async function ArticlePage({ params }: Props) {
       <div className="relative z-10">
         <NewsTopBar backHref="/news" backLabel="Back to News" />
 
-        <article className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <article className="pt-24 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             {/* Back link */}
             <Link
               href="/news"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-[#3d7e93] transition-colors mb-8"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-[#3d7e93] transition-colors mb-5 sm:mb-8"
             >
               ← Back to news
             </Link>
 
             {/* Cover image */}
             {article.coverImage && (
-              <div className="relative w-full h-64 md:h-80 rounded-3xl overflow-hidden mb-8 bg-[#a0cbdb]/10">
+              <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-3xl overflow-hidden mb-6 sm:mb-8 bg-[#a0cbdb]/10">
                 <Image
                   src={article.coverImage}
                   alt={article.title}
@@ -97,12 +97,12 @@ export default async function ArticlePage({ params }: Props) {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-text leading-snug mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text leading-snug mb-5 sm:mb-6">
               {article.title}
             </h1>
 
             {/* Summary */}
-            <p className="text-lg text-[#3d7e93] font-medium leading-relaxed mb-8 border-l-2 border-[#a0cbdb] pl-4">
+            <p className="text-base sm:text-lg text-[#3d7e93] font-medium leading-relaxed mb-6 sm:mb-8 border-l-2 border-[#a0cbdb] pl-4">
               {article.summary}
             </p>
 
@@ -116,7 +116,7 @@ export default async function ArticlePage({ params }: Props) {
             </div>
 
             {/* Footer nav */}
-            <div className="mt-12 pt-8 border-t border-black/[0.06]">
+            <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-black/[0.06]">
               <Link
                 href="/news"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-[#3d7e93] transition-colors"

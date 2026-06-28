@@ -221,20 +221,20 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
         {/* Top bar */}
         <header className="sticky top-0 z-40 bg-[var(--bg-body)]/90 backdrop-blur border-b border-black/[0.06]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <Newspaper size={16} className="text-[#3d7e93]" />
-              <span className="text-sm font-bold text-[var(--text)] tracking-tight">
-                SoterCare — News Editor
+            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+              <Newspaper size={16} className="text-[#3d7e93] flex-shrink-0" />
+              <span className="text-sm font-bold text-[var(--text)] tracking-tight truncate">
+                <span className="hidden sm:inline">SoterCare — </span>News Editor
               </span>
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--text-muted)] bg-[var(--bg-panel)] px-2 py-0.5 rounded-full border border-black/5 ml-1">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--text-muted)] bg-[var(--bg-panel)] px-2 py-0.5 rounded-full border border-black/5 ml-0.5 flex-shrink-0">
                 dev only
               </span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <Link
                 href="/news"
                 target="_blank"
-                className="text-xs font-semibold text-[var(--text-muted)] hover:text-[#3d7e93] transition-colors"
+                className="hidden sm:block text-xs font-semibold text-[var(--text-muted)] hover:text-[#3d7e93] transition-colors"
               >
                 View /news →
               </Link>
@@ -298,7 +298,7 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
             {articles.map((article, idx) => (
               <div
                 key={article.id}
-                className="bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] p-6"
+                className="bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] p-4 sm:p-6"
               >
                 {/* Control row */}
                 <div className="flex items-center justify-between mb-5">
@@ -323,7 +323,7 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
                     </button>
                     <span className="text-xs text-[var(--text-muted)] font-medium ml-1">#{idx + 1}</span>
                     {article.title && (
-                      <span className="text-xs text-[var(--text)] font-semibold ml-2 truncate max-w-xs">
+                      <span className="text-xs text-[var(--text)] font-semibold ml-2 truncate max-w-[130px] sm:max-w-xs">
                         {article.title}
                       </span>
                     )}

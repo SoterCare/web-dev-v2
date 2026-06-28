@@ -37,12 +37,12 @@ export default function NewsPage() {
       <div className="relative z-10">
         <NewsTopBar backHref="/" backLabel="Back to SoterCare" />
 
-        <section className="relative z-10 pt-28 pb-8 px-4 sm:px-6 lg:px-8">
+        <section className="relative z-10 pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             {/* Section header */}
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-text">Latest News</h1>
-              <p className="mt-4 text-text-muted max-w-xl mx-auto">
+            <div className="text-center mb-8 sm:mb-12">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text">Latest News</h1>
+              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-text-muted max-w-xl mx-auto">
                 Product announcements, research milestones, and team updates from SoterCare.
               </p>
             </div>
