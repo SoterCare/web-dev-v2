@@ -1,3 +1,21 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "id": "ab378095-cb4e-4904-9360-54c994d2f637",
+      "title": "Team SoterCare Selected as a Finalist in the NIA Innovation Voucher Programme 2026",
+      "slug": "team-sotercare-selected-as-a-finalist-in-the-nia-innovation-voucher-programme-2026",
+      "summary": "Team SoterCare has been selected as a finalist in the National Innovation Agency (NIA) Innovation Voucher Programme 2026 under the University Voucher category. The team successfully presented its solution during the live pitch session and looks forward to the final results while continuing its mission to innovate in healthcare technology.",
+      "body": "Team SoterCare is proud to announce its selection as a finalist in the National Innovation Agency (NIA) Innovation Voucher Programme 2026 under the University Voucher category.\n\nAs part of the final evaluation process, our team had the opportunity to present SoterCare during the live pitch session before an expert evaluation panel. The experience allowed us to showcase our vision, demonstrate our technology, receive valuable feedback from industry professionals, and represent our university on a national stage.\n\nReaching this milestone reflects the dedication, collaboration, and hard work of everyone involved in the project. We are sincerely grateful to our mentors, supporters, and everyone who has contributed to our journey.\n\nWe now look forward to the final results and remain committed to developing innovative technologies that create meaningful impact in healthcare and improve lives through accessible, intelligent solutions.",
+      "date": "2026-06-24",
+      "coverImage": "/images/news/sotercare-6.webp",
+      "tags": [
+        "Team SoterCare",
+        "National Innovation Agency",
+        "NIA",
+        "Innovation Voucher Programme 2026",
+        "Healthcare Technology",
+        "Startup"
+      ]
+    }
+  ]
 }
