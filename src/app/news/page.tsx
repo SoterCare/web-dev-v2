@@ -41,9 +41,6 @@ export default function NewsPage() {
           <div className="max-w-7xl mx-auto">
             {/* Section header */}
             <div className="text-center mb-12">
-              <span className="bg-bg-card px-10 py-3 rounded-[2rem] inline-flex items-center justify-center mb-4 shadow-m text-base font-bold uppercase tracking-widest text-text-muted">
-                SoterCare
-              </span>
               <h1 className="text-4xl md:text-5xl font-bold text-text">Latest News</h1>
               <p className="mt-4 text-text-muted max-w-xl mx-auto">
                 Product announcements, research milestones, and team updates from SoterCare.
