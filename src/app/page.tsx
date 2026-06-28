@@ -54,12 +54,12 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Mission />
+      <LatestNews />
       <Product />
       <Features />
       <Pricing />
       <FAQ />
       <Team />
-      <LatestNews />
       <Footer />
     </main>
   );
