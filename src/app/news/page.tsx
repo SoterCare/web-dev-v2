@@ -59,23 +59,25 @@ export default function NewsPage() {
                     className="group bg-bg-card rounded-3xl shadow-m overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300"
                   >
                     {/* Cover image */}
-                    <div className="relative w-full h-48 bg-[#a0cbdb]/10 overflow-hidden flex-shrink-0">
-                      {article.coverImage ? (
+                    {article.coverImage ? (
+                      <div className="w-full overflow-hidden flex-shrink-0 bg-[#a0cbdb]/10">
                         <Image
                           src={article.coverImage}
                           alt={article.title}
-                          fill
+                          width={0}
+                          height={0}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                          className="w-full group-hover:scale-[1.03] transition-transform duration-500"
+                          style={{ height: 'auto', display: 'block' }}
                         />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#a0cbdb]/30 flex items-center justify-center">
-                            <div className="w-5 h-5 rounded-full bg-[#3d7e93]/40" />
-                          </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-40 bg-[#a0cbdb]/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-[#a0cbdb]/30 flex items-center justify-center">
+                          <div className="w-5 h-5 rounded-full bg-[#3d7e93]/40" />
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {/* Card body */}
                     <div className="p-6 flex flex-col flex-1">

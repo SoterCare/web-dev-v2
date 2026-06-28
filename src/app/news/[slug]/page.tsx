@@ -69,14 +69,16 @@ export default async function ArticlePage({ params }: Props) {
 
             {/* Cover image */}
             {article.coverImage && (
-              <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-3xl overflow-hidden mb-6 sm:mb-8 bg-[#a0cbdb]/10">
+              <div className="w-full overflow-hidden rounded-3xl mb-6 sm:mb-8 bg-[#a0cbdb]/10">
                 <Image
                   src={article.coverImage}
                   alt={article.title}
-                  fill
-                  priority
+                  width={0}
+                  height={0}
                   sizes="(max-width: 768px) 100vw, 768px"
-                  className="object-cover"
+                  priority
+                  className="w-full"
+                  style={{ height: 'auto', display: 'block' }}
                 />
               </div>
             )}
