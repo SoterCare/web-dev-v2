@@ -17,6 +17,7 @@ import Features from '@/components/Features';
 import Pricing from '@/components/Pricing';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
+import LatestNews from '@/components/LatestNews';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -58,6 +59,7 @@ export default function Home() {
       <Pricing />
       <FAQ />
       <Team />
+      <LatestNews />
       <Footer />
     </main>
   );

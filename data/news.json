@@ -1,0 +1,34 @@
+{
+  "articles": [
+    {
+      "id": "1a2b3c4d-1234-5678-abcd-ef0123456789",
+      "title": "SoterCare Named First Runner-Up at SDGP 2026",
+      "slug": "sotercare-named-first-runner-up-sdgp-2026",
+      "summary": "Our team placed first runner-up at the Sri Lanka Institute of Information Technology's Software Development Group Project competition, recognising our work on AI-powered elderly care monitoring.",
+      "body": "We are thrilled to share that SoterCare placed first runner-up at the SDGP 2026 competition hosted by the Sri Lanka Institute of Information Technology.\n\nThe competition brought together student teams from across the institute, each presenting innovative software projects addressing real-world challenges. SoterCare stood out for its integration of IoT hardware, edge ML, and a full-stack monitoring platform built to protect elderly patients.\n\nOur panel presentation covered the Gait Analysis ML model, the fall detection pipeline, the Edge Gateway, and the caregiver mobile app. Judges praised the end-to-end architecture and the clinical thoughtfulness of features like discrete hygiene monitoring and the recycle bin for false alarms.\n\nThis recognition validates the months of work our team has poured into SoterCare and motivates us to keep building. Thank you to everyone who supported us along the way.",
+      "date": "2026-06-15",
+      "coverImage": "",
+      "tags": ["Award", "SDGP", "Team"]
+    },
+    {
+      "id": "2b3c4d5e-2345-6789-bcde-f01234567890",
+      "title": "New Gait Analysis Model Achieves 97.4% Accuracy",
+      "slug": "gait-analysis-model-accuracy-milestone",
+      "summary": "Our latest iteration of the fall-risk detection model has reached 97.4% accuracy on our validation set, a significant step toward deployment-ready performance.",
+      "body": "The core intelligence behind SoterCare is its Gait Analysis ML model — a system that watches movement and posture transitions to detect when a patient is attempting to stand or sit, and flags the attempt to caregivers before a fall can occur.\n\nWe are pleased to announce that our latest model iteration has hit 97.4% accuracy on our internal validation dataset, up from 94.1% in the previous version.\n\nThe improvements were driven by three changes: a larger labelled dataset collected during our prototype testing phase, additional features capturing angular velocity from the thigh-mounted sensor, and a refined decision boundary that reduces false positives while maintaining high recall on genuine fall-risk events.\n\nThe model runs entirely on the Edge Gateway — no cloud latency, no connectivity dependency. This means alerts fire in under 200ms from detection, giving caregivers a real-time window to intervene.\n\nWe will continue refining the model through our upcoming beta programme. Participants will contribute anonymised sensor data that feeds directly into the next training cycle.",
+      "date": "2026-05-28",
+      "coverImage": "",
+      "tags": ["ML", "Technology", "Research"]
+    },
+    {
+      "id": "3c4d5e6f-3456-789a-cdef-012345678901",
+      "title": "SoterCare Beta Programme Now Open for Applications",
+      "slug": "sotercare-beta-programme-open",
+      "summary": "We are opening applications for our beta testing programme. Families caring for elderly loved ones at home are invited to apply for early access to the SoterCare Kit.",
+      "body": "SoterCare is ready for its first real-world trial — and we want your family to be part of it.\n\nWe are opening applications for our closed beta programme. A limited number of households caring for elderly family members at home will receive the full SoterCare Kit — Thigh Node, Wrist Node, and Edge Gateway — at no cost, in exchange for honest feedback and anonymised usage data.\n\nBeta participants will have access to the complete SoterCare Kit hardware, the SoterCare mobile app for caregivers, direct access to our engineering team for support and feedback sessions, and early access to new features as they ship.\n\nWe are particularly interested in households where the elderly person lives alone for part of the day, where there is a history of falls or mobility difficulty, and where a caregiver wants proactive alerts rather than reactive response.\n\nApplications are open through 31 July 2026. Shortlisted applicants will be contacted in August for a brief onboarding call before the kit is shipped.\n\nIf you know someone who could benefit, please share this with them. Wellness, simplified.",
+      "date": "2026-06-01",
+      "coverImage": "",
+      "tags": ["Beta", "Community", "Announcement"]
+    }
+  ]
+}

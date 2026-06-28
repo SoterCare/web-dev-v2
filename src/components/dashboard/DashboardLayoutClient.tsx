@@ -5,12 +5,15 @@ import { usePathname } from "next/navigation";
 import Header from "./Header";
 import DashboardFooter from "./DashboardFooter";
 import { WebSocketProvider } from "./WebSocketContext";
-import { LayoutDashboard, Clock, Trash2 } from "lucide-react";
+import { LayoutDashboard, Clock, Trash2, Newspaper } from "lucide-react";
 
 const NAV = [
   { href: "/dashboard",             label: "Overview",    Icon: LayoutDashboard },
   { href: "/dashboard/timeline",    label: "Timeline",    Icon: Clock },
   { href: "/dashboard/recycle-bin", label: "Recycle Bin", Icon: Trash2 },
+  ...(process.env.NODE_ENV !== "production"
+    ? [{ href: "/dashboard/news", label: "News", Icon: Newspaper }]
+    : []),
 ];
 
 function DashboardNav() {
