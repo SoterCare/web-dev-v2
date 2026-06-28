@@ -49,7 +49,7 @@ export default function LatestNews() {
               </p>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-text leading-snug mb-2 group-hover:text-[#3d7e93] transition-colors">
+              <h3 className="text-lg font-bold text-text leading-snug mb-2 group-hover:text-[#3d7e93] transition-colors">
                 {article.title}
               </h3>
 
@@ -60,11 +60,11 @@ export default function LatestNews() {
 
               {/* Tags */}
               {article.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-3">
+                <div className="flex flex-wrap gap-1.5 mt-4">
                   {article.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] font-medium text-text-muted bg-black/[0.05] px-2 py-0.5 rounded-full"
+                      className="text-xs font-medium text-text-muted bg-black/[0.05] px-2.5 py-1 rounded-full"
                     >
                       {tag}
                     </span>
@@ -72,7 +72,7 @@ export default function LatestNews() {
                 </div>
               )}
 
-              <span className="mt-4 text-xs font-semibold text-[#3d7e93] group-hover:underline">
+              <span className="mt-4 text-sm font-semibold text-[#3d7e93] group-hover:underline">
                 Read more →
               </span>
             </Link>
