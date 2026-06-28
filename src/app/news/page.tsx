@@ -51,7 +51,7 @@ export default function NewsPage() {
             {sorted.length === 0 ? (
               <p className="text-center text-text-muted py-24">No articles yet. Check back soon.</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                 {sorted.map((article) => (
                   <Link
                     key={article.id}
@@ -80,20 +80,20 @@ export default function NewsPage() {
                     )}
 
                     {/* Card body */}
-                    <div className="p-6 flex flex-col flex-1">
+                    <div className="p-5 flex flex-col">
                       <p className="text-xs font-semibold text-[#3d7e93] uppercase tracking-widest mb-2">
                         {formatDate(article.date)}
                       </p>
-                      <h2 className="text-lg font-bold text-text leading-snug mb-2 group-hover:text-[#3d7e93] transition-colors">
+                      <h2 className="text-base font-semibold text-text leading-snug mb-2 group-hover:text-[#3d7e93] transition-colors">
                         {article.title}
                       </h2>
-                      <p className="text-sm text-text-muted leading-relaxed line-clamp-3 flex-1">
+                      <p className="text-sm text-text-muted leading-relaxed line-clamp-3">
                         {article.summary}
                       </p>
 
                       {/* Tags */}
                       {article.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mt-4">
+                        <div className="flex flex-wrap gap-1.5 mt-3">
                           {article.tags.map((tag) => (
                             <span
                               key={tag}
@@ -105,7 +105,7 @@ export default function NewsPage() {
                         </div>
                       )}
 
-                      <p className="mt-4 text-xs font-semibold text-[#3d7e93] group-hover:underline">
+                      <p className="mt-3 text-xs font-semibold text-[#3d7e93] group-hover:underline">
                         Read more →
                       </p>
                     </div>
