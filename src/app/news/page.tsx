@@ -84,7 +84,7 @@ export default function NewsPage() {
                       <p className="text-xs font-semibold text-[#3d7e93] uppercase tracking-widest mb-2">
                         {formatDate(article.date)}
                       </p>
-                      <h2 className="text-[13px] font-semibold text-text leading-tight mb-1.5 group-hover:text-[#3d7e93] transition-colors">
+                      <h2 className="text-[12px] font-semibold text-text leading-[1.3] mb-1 group-hover:text-[#3d7e93] transition-colors">
                         {article.title}
                       </h2>
                       <p className="text-sm text-text-muted leading-relaxed line-clamp-3">
