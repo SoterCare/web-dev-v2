@@ -188,3 +188,32 @@ p {
   100% { transform: translateX(0); }
 }
 
+/* News nav button — double-beat heartbeat glow */
+@keyframes news-heartbeat {
+  0%, 38%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+  10% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px #3d7e9385);
+  }
+  19% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 1px transparent);
+  }
+  29% {
+    transform: scale(1.09);
+    filter: drop-shadow(0 0 5px #3d7e9360);
+  }
+  36% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+}
+
+.news-heartbeat {
+  display: inline-block;
+  animation: news-heartbeat 2.5s ease-in-out infinite;
+}
+
