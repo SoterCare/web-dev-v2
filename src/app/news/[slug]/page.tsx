@@ -94,7 +94,7 @@ export default async function ArticlePage({ params }: Props) {
             </div>
 
             {/* Title */}
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-text leading-snug mb-5 sm:mb-6">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-text leading-tight mb-4 sm:mb-5">
               {article.title}
             </h1>
 
