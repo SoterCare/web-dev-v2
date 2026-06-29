@@ -1,0 +1,79 @@
+﻿45786bc feat: sort news by pinned-first then date on /news and homepage
+ src/app/news/page.tsx         | 3 ++-
+ src/components/LatestNews.tsx | 6 ++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+diff --git a/src/app/news/page.tsx b/src/app/news/page.tsx
+index caaa9f9..cfa1445 100644
+--- a/src/app/news/page.tsx
++++ b/src/app/news/page.tsx
+@@ -1,34 +1,35 @@
+ import type { Metadata } from 'next';
+ import Link from 'next/link';
+ import Image from 'next/image';
+ import NewsTopBar from '@/components/NewsTopBar';
+ import FooterSimple from '@/components/FooterSimple';
+ import { readNews } from '@/lib/news-store';
++import { sortArticles } from '@/lib/news-sort';
+ 
+ export const metadata: Metadata = {
+   title: 'News',
+   description: 'Latest news and updates from SoterCare — product announcements, research milestones, and team updates.',
+ };
+ 
+ function formatDate(iso: string): string {
+   const [y, m, d] = iso.split('-').map(Number);
+   return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+     day: 'numeric',
+     month: 'long',
+     year: 'numeric',
+   });
+ }
+ 
+ export default function NewsPage() {
+   const { articles } = readNews();
+-  const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
++  const sorted = sortArticles(articles);
+ 
+   return (
+     <main className="min-h-screen bg-[#fafafa] relative">
+       {/* Dotted background */}
+       <div
+         className="fixed top-0 left-0 z-0 h-full w-full pointer-events-none"
+         style={{
+           backgroundImage: 'radial-gradient(#e5e7eb 2px, transparent 1px)',
+           backgroundSize: '32px 32px',
+         }}
+diff --git a/src/components/LatestNews.tsx b/src/components/LatestNews.tsx
+index 0fad9ca..ac67d68 100644
+--- a/src/components/LatestNews.tsx
++++ b/src/components/LatestNews.tsx
+@@ -1,27 +1,25 @@
+ import Link from 'next/link';
+ import type { NewsArticle } from '@/types/news';
++import { sortArticles } from '@/lib/news-sort';
+ import newsJson from '../../data/news.json';
+ 
+ function formatDate(iso: string): string {
+   const [y, m, d] = iso.split('-').map(Number);
+   return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+     day: 'numeric',
+     month: 'short',
+     year: 'numeric',
+   });
+ }
+ 
+-const articles = (newsJson.articles as NewsArticle[])
+-  .slice()
+-  .sort((a, b) => b.date.localeCompare(a.date))
+-  .slice(0, 3);
++const articles = sortArticles(newsJson.articles as NewsArticle[]).slice(0, 3);
+ 
+ export default function LatestNews() {
+   if (articles.length === 0) return null;
+ 
+   return (
+     <section
+       id="news"
+       className="relative z-10 pt-12 md:pt-16 pb-16 md:pb-20 overflow-hidden bg-transparent"
+     >
+       <div className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

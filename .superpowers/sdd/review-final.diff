@@ -1,0 +1,621 @@
+﻿93859de feat: accordion collapse, pin toggle, date sort in NewsEditor
+45786bc feat: sort news by pinned-first then date on /news and homepage
+e9db26a feat: add pinned field to NewsArticle and shared sortArticles helper
+ src/app/editnews/NewsEditor.tsx | 316 +++++++++++++++++++++++-----------------
+ src/app/news/page.tsx           |   3 +-
+ src/components/LatestNews.tsx   |   6 +-
+ src/lib/news-sort.ts            |  10 ++
+ src/lib/news-store.ts           |   3 +
+ src/types/news.ts               |   1 +
+ 6 files changed, 203 insertions(+), 136 deletions(-)
+diff --git a/src/app/editnews/NewsEditor.tsx b/src/app/editnews/NewsEditor.tsx
+index 74f3ac3..e83bc28 100644
+--- a/src/app/editnews/NewsEditor.tsx
++++ b/src/app/editnews/NewsEditor.tsx
+@@ -1,36 +1,38 @@
+ "use client";
+ 
+ import { useState, useRef } from 'react';
+ import Image from 'next/image';
+ import Link from 'next/link';
+ import {
+-  ChevronUp, ChevronDown, Plus, Trash2, X,
+-  Save, Upload, Loader2, Newspaper,
++  ChevronDown, ChevronUp, Plus, Trash2, X,
++  Save, Upload, Loader2, Newspaper, Pin,
+ } from 'lucide-react';
+ import type { NewsArticle, NewsData } from '@/types/news';
++import { sortArticles } from '@/lib/news-sort';
+ import { saveNewsAction, uploadNewsImageAction } from '../dashboard/news-actions';
+ 
+ function slugify(str: string): string {
+   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+ }
+ 
+ function emptyArticle(): NewsArticle {
+   return {
+     id: crypto.randomUUID(),
+     title: '',
+     slug: '',
+     summary: '',
+     body: '',
+     date: new Date().toISOString().split('T')[0],
+     coverImage: '',
+     tags: [],
++    pinned: false,
+   };
+ }
+ 
+ function TagInput({
+   tags,
+   onAdd,
+   onRemove,
+ }: {
+   tags: string[];
+   onAdd: (t: string) => void;
+@@ -137,65 +139,81 @@ function CoverUpload({
+             if (f) handleFile(f);
+             e.target.value = '';
+           }}
+         />
+       </div>
+     </div>
+   );
+ }
+ 
+ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
+-  const [articles, setArticles] = useState<NewsArticle[]>(initialData.articles);
++  const [articles, setArticles] = useState<NewsArticle[]>(() =>
++    sortArticles(initialData.articles)
++  );
++  const [expandedId, setExpandedId] = useState<string | null>(null);
++  const [pinWarning, setPinWarning] = useState(false);
+   const [saving, setSaving] = useState(false);
+   const [saved, setSaved] = useState(false);
+   const [saveError, setSaveError] = useState('');
+ 
++  const pinnedCount = articles.filter((a) => a.pinned).length;
++
+   const update = (id: string, patch: Partial<NewsArticle>) =>
+-    setArticles((prev) => prev.map((a) => (a.id === id ? { ...a, ...patch } : a)));
++    setArticles((prev) =>
++      sortArticles(prev.map((a) => (a.id === id ? { ...a, ...patch } : a)))
++    );
+ 
+   const handleTitleChange = (id: string, title: string) => {
+     setArticles((prev) =>
+-      prev.map((a) => {
+-        if (a.id !== id) return a;
+-        const autoSlug = a.slug === '' || a.slug === slugify(a.title);
+-        return { ...a, title, slug: autoSlug ? slugify(title) : a.slug };
+-      }),
++      sortArticles(
++        prev.map((a) => {
++          if (a.id !== id) return a;
++          const autoSlug = a.slug === '' || a.slug === slugify(a.title);
++          return { ...a, title, slug: autoSlug ? slugify(title) : a.slug };
++        })
++      )
+     );
+   };
+ 
+-  const addArticle = () => setArticles((prev) => [emptyArticle(), ...prev]);
++  const togglePin = (id: string) => {
++    const article = articles.find((a) => a.id === id);
++    if (!article) return;
++    if (!article.pinned && pinnedCount >= 3) {
++      setPinWarning(true);
++      setTimeout(() => setPinWarning(false), 3000);
++      return;
++    }
++    update(id, { pinned: !article.pinned });
++  };
++
++  const addArticle = () => {
++    const fresh = emptyArticle();
++    setArticles((prev) => sortArticles([fresh, ...prev]));
++    setExpandedId(fresh.id);
++  };
+ 
+   const removeArticle = (id: string) => {
+     if (!confirm('Remove this article?')) return;
+     setArticles((prev) => prev.filter((a) => a.id !== id));
+-  };
+-
+-  const move = (id: string, dir: -1 | 1) => {
+-    setArticles((prev) => {
+-      const idx = prev.findIndex((a) => a.id === id);
+-      if (idx + dir < 0 || idx + dir >= prev.length) return prev;
+-      const next = [...prev];
+-      [next[idx], next[idx + dir]] = [next[idx + dir], next[idx]];
+-      return next;
+-    });
++    setExpandedId((prev) => (prev === id ? null : prev));
+   };
+ 
+   const addTag = (id: string, tag: string) =>
+     setArticles((prev) =>
+       prev.map((a) =>
+-        a.id === id && !a.tags.includes(tag) ? { ...a, tags: [...a.tags, tag] } : a,
+-      ),
++        a.id === id && !a.tags.includes(tag) ? { ...a, tags: [...a.tags, tag] } : a
++      )
+     );
+ 
+   const removeTag = (id: string, tag: string) =>
+     setArticles((prev) =>
+-      prev.map((a) => (a.id === id ? { ...a, tags: a.tags.filter((t) => t !== tag) } : a)),
++      prev.map((a) => (a.id === id ? { ...a, tags: a.tags.filter((t) => t !== tag) } : a))
+     );
+ 
+   const handleSave = async () => {
+     setSaving(true);
+     setSaveError('');
+     setSaved(false);
+     try {
+       await saveNewsAction({ articles });
+       setSaved(true);
+       setTimeout(() => setSaved(false), 3000);
+@@ -243,179 +261,215 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
+                 onClick={handleSave}
+                 disabled={saving}
+                 className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-lg bg-[#3d7e93] text-white hover:bg-[#2d6478] disabled:opacity-50 transition-colors"
+               >
+                 {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
+                 {saving ? 'Saving…' : 'Save'}
+               </button>
+             </div>
+           </div>
+           {/* Status strip */}
+-          {(saved || saveError) && (
+-            <div className={`text-center text-xs py-1 font-medium ${saveError ? 'bg-red-50 text-red-600' : 'bg-[#a0cbdb]/10 text-[#3d7e93]'}`}>
+-              {saveError || 'Saved successfully.'}
++          {(saved || saveError || pinWarning) && (
++            <div
++              className={`text-center text-xs py-1 font-medium ${
++                saveError
++                  ? 'bg-red-50 text-red-600'
++                  : pinWarning
++                  ? 'bg-amber-50 text-amber-700'
++                  : 'bg-[#a0cbdb]/10 text-[#3d7e93]'
++              }`}
++            >
++              {saveError || (pinWarning ? 'Max 3 articles can be pinned.' : 'Saved successfully.')}
+             </div>
+           )}
+         </header>
+ 
+         {/* Main content */}
+         <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 pb-16">
+           {/* Page header */}
+           <div className="flex items-center justify-between mb-6">
+             <div>
+               <h1 className="text-xl font-bold text-[var(--text)]">Articles</h1>
+               <p className="text-sm text-[var(--text-muted)] mt-0.5">
+                 {articles.length} article{articles.length !== 1 ? 's' : ''} · changes saved to{' '}
+                 <code className="font-mono text-[10px] bg-[var(--bg-panel)] px-1.5 py-0.5 rounded">
+                   data/news.json
+                 </code>
++                {pinnedCount > 0 && (
++                  <span className="ml-2 text-[#3d7e93] font-semibold">
++                    · {pinnedCount}/3 pinned
++                  </span>
++                )}
+               </p>
+             </div>
+             <button
+               type="button"
+               onClick={addArticle}
+               className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold rounded-xl bg-[var(--bg-card)] shadow-[var(--shadow-m)] text-[var(--text-muted)] hover:text-[#3d7e93] transition-colors border border-black/[0.04]"
+             >
+               <Plus size={13} />
+               Add article
+             </button>
+           </div>
+ 
+           {/* Article list */}
+-          <div className="space-y-5">
++          <div className="space-y-3">
+             {articles.length === 0 && (
+               <div className="text-center py-20 text-[var(--text-muted)]">
+                 <p className="font-medium">No articles yet.</p>
+                 <button
+                   type="button"
+                   onClick={addArticle}
+                   className="mt-3 text-[#3d7e93] text-sm font-semibold hover:underline"
+                 >
+                   Add your first article →
+                 </button>
+               </div>
+             )}
+ 
+-            {articles.map((article, idx) => (
+-              <div
+-                key={article.id}
+-                className="bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] p-4 sm:p-6"
+-              >
+-                {/* Control row */}
+-                <div className="flex items-center justify-between mb-5">
+-                  <div className="flex items-center gap-1.5">
+-                    <button
+-                      type="button"
+-                      onClick={() => move(article.id, -1)}
+-                      disabled={idx === 0}
+-                      className="p-1.5 rounded-lg hover:bg-[var(--bg-panel)] disabled:opacity-30 transition-colors"
+-                      aria-label="Move up"
+-                    >
+-                      <ChevronUp size={14} className="text-[var(--text-muted)]" />
+-                    </button>
++            {articles.map((article) => {
++              const isOpen = expandedId === article.id;
++              return (
++                <div
++                  key={article.id}
++                  className={`bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] overflow-hidden border ${
++                    article.pinned ? 'border-[#3d7e93]/20' : 'border-black/[0.03]'
++                  }`}
++                >
++                  {/* Collapsed header row — always visible */}
++                  <div
++                    className="flex items-center gap-2 px-4 sm:px-5 py-3.5 cursor-pointer select-none"
++                    onClick={() => setExpandedId(isOpen ? null : article.id)}
++                  >
++                    {/* Pin button */}
+                     <button
+                       type="button"
+-                      onClick={() => move(article.id, 1)}
+-                      disabled={idx === articles.length - 1}
+-                      className="p-1.5 rounded-lg hover:bg-[var(--bg-panel)] disabled:opacity-30 transition-colors"
+-                      aria-label="Move down"
++                      onClick={(e) => { e.stopPropagation(); togglePin(article.id); }}
++                      className={`p-1.5 rounded-lg transition-colors flex-shrink-0 ${
++                        article.pinned
++                          ? 'text-[#3d7e93] bg-[#3d7e93]/10'
++                          : 'text-[var(--text-muted)] hover:text-[#3d7e93] hover:bg-[var(--bg-panel)]'
++                      }`}
++                      aria-label={article.pinned ? 'Unpin article' : 'Pin article'}
+                     >
+-                      <ChevronDown size={14} className="text-[var(--text-muted)]" />
++                      <Pin size={13} className={article.pinned ? 'fill-[#3d7e93]' : ''} />
+                     </button>
+-                    <span className="text-xs text-[var(--text-muted)] font-medium ml-1">#{idx + 1}</span>
+-                    {article.title && (
+-                      <span className="text-xs text-[var(--text)] font-semibold ml-2 truncate max-w-[130px] sm:max-w-xs">
+-                        {article.title}
++
++                    {/* Title + date */}
++                    <div className="flex-1 min-w-0 flex items-center gap-2">
++                      <span className="text-sm font-semibold text-[var(--text)] truncate">
++                        {article.title || <span className="text-[var(--text-muted)] font-normal italic">Untitled</span>}
+                       </span>
+-                    )}
+-                  </div>
+-                  <button
+-                    type="button"
+-                    onClick={() => removeArticle(article.id)}
+-                    className="p-1.5 rounded-lg hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 transition-colors"
+-                    aria-label="Remove article"
+-                  >
+-                    <Trash2 size={14} />
+-                  </button>
+-                </div>
++                      {article.date && (
++                        <span className="text-[10px] font-semibold text-[var(--text-muted)] bg-[var(--bg-panel)] px-2 py-0.5 rounded-full flex-shrink-0">
++                          {article.date}
++                        </span>
++                      )}
++                      {article.pinned && (
++                        <span className="text-[10px] font-semibold text-[#3d7e93] bg-[#3d7e93]/10 px-2 py-0.5 rounded-full flex-shrink-0">
++                          Pinned
++                        </span>
++                      )}
++                    </div>
+ 
+-                {/* Form */}
+-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+-                  <div className="md:col-span-2">
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Title</label>
+-                    <input
+-                      type="text"
+-                      value={article.title}
+-                      onChange={(e) => handleTitleChange(article.id, e.target.value)}
+-                      placeholder="Article title"
+-                      className="w-full px-4 py-2.5 text-base font-medium rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+-                    />
++                    {/* Delete + chevron */}
++                    <div className="flex items-center gap-1 flex-shrink-0">
++                      <button
++                        type="button"
++                        onClick={(e) => { e.stopPropagation(); removeArticle(article.id); }}
++                        className="p-1.5 rounded-lg hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 transition-colors"
++                        aria-label="Remove article"
++                      >
++                        <Trash2 size={13} />
++                      </button>
++                      <span className="p-1.5 text-[var(--text-muted)]">
++                        {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
++                      </span>
++                    </div>
+                   </div>
+ 
+-                  <div>
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Slug</label>
+-                    <input
+-                      type="text"
+-                      value={article.slug}
+-                      onChange={(e) => update(article.id, { slug: e.target.value })}
+-                      placeholder="url-friendly-slug"
+-                      className="w-full px-4 py-2.5 text-sm font-mono rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+-                    />
+-                  </div>
++                  {/* Expanded form */}
++                  {isOpen && (
++                    <div className="px-4 sm:px-6 pb-6 pt-1 border-t border-black/[0.04]">
++                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
++                        <div className="md:col-span-2">
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Title</label>
++                          <input
++                            type="text"
++                            value={article.title}
++                            onChange={(e) => handleTitleChange(article.id, e.target.value)}
++                            placeholder="Article title"
++                            className="w-full px-4 py-2.5 text-base font-medium rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
++                          />
++                        </div>
+ 
+-                  <div>
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Date</label>
+-                    <input
+-                      type="date"
+-                      value={article.date}
+-                      onChange={(e) => update(article.id, { date: e.target.value })}
+-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+-                    />
+-                  </div>
++                        <div>
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Slug</label>
++                          <input
++                            type="text"
++                            value={article.slug}
++                            onChange={(e) => update(article.id, { slug: e.target.value })}
++                            placeholder="url-friendly-slug"
++                            className="w-full px-4 py-2.5 text-sm font-mono rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
++                          />
++                        </div>
+ 
+-                  <div className="md:col-span-2">
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Summary</label>
+-                    <textarea
+-                      value={article.summary}
+-                      onChange={(e) => update(article.id, { summary: e.target.value })}
+-                      rows={2}
+-                      placeholder="One or two sentence teaser shown on the card."
+-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+-                    />
+-                  </div>
++                        <div>
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Date</label>
++                          <input
++                            type="date"
++                            value={article.date}
++                            onChange={(e) => update(article.id, { date: e.target.value })}
++                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
++                          />
++                        </div>
+ 
+-                  <div className="md:col-span-2">
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Body</label>
+-                    <textarea
+-                      value={article.body}
+-                      onChange={(e) => update(article.id, { body: e.target.value })}
+-                      rows={12}
+-                      placeholder="Full article content. Separate paragraphs with a blank line."
+-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+-                    />
+-                  </div>
++                        <div className="md:col-span-2">
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Summary</label>
++                          <textarea
++                            value={article.summary}
++                            onChange={(e) => update(article.id, { summary: e.target.value })}
++                            rows={2}
++                            placeholder="One or two sentence teaser shown on the card."
++                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
++                          />
++                        </div>
+ 
+-                  <div>
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Tags</label>
+-                    <TagInput
+-                      tags={article.tags}
+-                      onAdd={(t) => addTag(article.id, t)}
+-                      onRemove={(t) => removeTag(article.id, t)}
+-                    />
+-                  </div>
++                        <div className="md:col-span-2">
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Body</label>
++                          <textarea
++                            value={article.body}
++                            onChange={(e) => update(article.id, { body: e.target.value })}
++                            rows={12}
++                            placeholder="Full article content. Separate paragraphs with a blank line."
++                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
++                          />
++                        </div>
+ 
+-                  <div>
+-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Cover Image</label>
+-                    <CoverUpload
+-                      value={article.coverImage}
+-                      onUpload={(p) => update(article.id, { coverImage: p })}
+-                    />
+-                  </div>
++                        <div>
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Tags</label>
++                          <TagInput
++                            tags={article.tags}
++                            onAdd={(t) => addTag(article.id, t)}
++                            onRemove={(t) => removeTag(article.id, t)}
++                          />
++                        </div>
++
++                        <div>
++                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Cover Image</label>
++                          <CoverUpload
++                            value={article.coverImage}
++                            onUpload={(p) => update(article.id, { coverImage: p })}
++                          />
++                        </div>
++                      </div>
++                    </div>
++                  )}
+                 </div>
+-              </div>
+-            ))}
++              );
++            })}
+           </div>
+         </main>
+       </div>
+     </div>
+   );
+ }
+diff --git a/src/app/news/page.tsx b/src/app/news/page.tsx
+index caaa9f9..cfa1445 100644
+--- a/src/app/news/page.tsx
++++ b/src/app/news/page.tsx
+@@ -1,34 +1,35 @@
+ import type { Metadata } from 'next';
+ import Link from 'next/link';
+ import Image from 'next/image';
+ import NewsTopBar from '@/components/NewsTopBar';
+ import FooterSimple from '@/components/FooterSimple';
+ import { readNews } from '@/lib/news-store';
++import { sortArticles } from '@/lib/news-sort';
+ 
+ export const metadata: Metadata = {
+   title: 'News',
+   description: 'Latest news and updates from SoterCare — product announcements, research milestones, and team updates.',
+ };
+ 
+ function formatDate(iso: string): string {
+   const [y, m, d] = iso.split('-').map(Number);
+   return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+     day: 'numeric',
+     month: 'long',
+     year: 'numeric',
+   });
+ }
+ 
+ export default function NewsPage() {
+   const { articles } = readNews();
+-  const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
++  const sorted = sortArticles(articles);
+ 
+   return (
+     <main className="min-h-screen bg-[#fafafa] relative">
+       {/* Dotted background */}
+       <div
+         className="fixed top-0 left-0 z-0 h-full w-full pointer-events-none"
+         style={{
+           backgroundImage: 'radial-gradient(#e5e7eb 2px, transparent 1px)',
+           backgroundSize: '32px 32px',
+         }}
+diff --git a/src/components/LatestNews.tsx b/src/components/LatestNews.tsx
+index 0fad9ca..ac67d68 100644
+--- a/src/components/LatestNews.tsx
++++ b/src/components/LatestNews.tsx
+@@ -1,27 +1,25 @@
+ import Link from 'next/link';
+ import type { NewsArticle } from '@/types/news';
++import { sortArticles } from '@/lib/news-sort';
+ import newsJson from '../../data/news.json';
+ 
+ function formatDate(iso: string): string {
+   const [y, m, d] = iso.split('-').map(Number);
+   return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+     day: 'numeric',
+     month: 'short',
+     year: 'numeric',
+   });
+ }
+ 
+-const articles = (newsJson.articles as NewsArticle[])
+-  .slice()
+-  .sort((a, b) => b.date.localeCompare(a.date))
+-  .slice(0, 3);
++const articles = sortArticles(newsJson.articles as NewsArticle[]).slice(0, 3);
+ 
+ export default function LatestNews() {
+   if (articles.length === 0) return null;
+ 
+   return (
+     <section
+       id="news"
+       className="relative z-10 pt-12 md:pt-16 pb-16 md:pb-20 overflow-hidden bg-transparent"
+     >
+       <div className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+diff --git a/src/lib/news-sort.ts b/src/lib/news-sort.ts
+new file mode 100644
+index 0000000..d01d925
+--- /dev/null
++++ b/src/lib/news-sort.ts
+@@ -0,0 +1,10 @@
++import type { NewsArticle } from '@/types/news';
++
++export function sortArticles(articles: NewsArticle[]): NewsArticle[] {
++  return [...articles].sort((a, b) => {
++    const aPinned = a.pinned ? 1 : 0;
++    const bPinned = b.pinned ? 1 : 0;
++    if (bPinned !== aPinned) return bPinned - aPinned;
++    return b.date.localeCompare(a.date);
++  });
++}
+diff --git a/src/lib/news-store.ts b/src/lib/news-store.ts
+index 8d409be..23112e0 100644
+--- a/src/lib/news-store.ts
++++ b/src/lib/news-store.ts
+@@ -16,20 +16,23 @@ function validateArticle(a: unknown, i: number): asserts a is NewsArticle {
+     if ((art[key] as string).trim() === '') {
+       throw new Error(`Article[${i}].${key} must not be empty`);
+     }
+   }
+   if (!DATE_RE.test(art.date as string)) {
+     throw new Error(`Article[${i}].date must match YYYY-MM-DD, got "${art.date}"`);
+   }
+   if (!Array.isArray(art.tags) || art.tags.some((t) => typeof t !== 'string')) {
+     throw new Error(`Article[${i}].tags must be an array of strings`);
+   }
++  if (art.pinned !== undefined && typeof art.pinned !== 'boolean') {
++    throw new Error(`Article[${i}].pinned must be a boolean if present`);
++  }
+ }
+ 
+ export function readNews(): NewsData {
+   const raw = fs.readFileSync(DATA_PATH, 'utf-8');
+   const data = JSON.parse(raw) as NewsData;
+   if (!Array.isArray(data.articles)) throw new Error('news.json must have an articles array');
+   data.articles.forEach((a, i) => validateArticle(a, i));
+   return data;
+ }
+ 
+diff --git a/src/types/news.ts b/src/types/news.ts
+index 0f855e6..9c73df5 100644
+--- a/src/types/news.ts
++++ b/src/types/news.ts
+@@ -1,14 +1,15 @@
+ export interface NewsArticle {
+   id: string;
+   title: string;
+   slug: string;
+   summary: string;
+   body: string;
+   date: string; // YYYY-MM-DD
+   coverImage: string;
+   tags: string[];
++  pinned?: boolean;
+ }
+ 
+ export interface NewsData {
+   articles: NewsArticle[];
+ }
