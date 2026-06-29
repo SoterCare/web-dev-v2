@@ -1,6 +1,23 @@
 {
   "articles": [
     {
+      "id": "d28aa6a9-b796-45b8-920c-416840c83cb4",
+      "title": "Team SoterCare Named a Finalist at CodeSprint 11",
+      "slug": "team-sotercare-named-a-finalist-at-codesprint-11",
+      "summary": "Team SoterCare has been named one of the finalists advancing to the CodeSprint 11 Finale, the annual inter-university coding and innovation competition organised by the IEEE Student Branch.",
+      "body": "CodeSprint 11 revealed its finalist lineup, and we're thrilled to share that SoterCare has earned its place among the 7 teams heading to the Finale. The competition has been a great platform to benchmark our solution, sharpen our thinking, and connect with some of the brightest student innovators in the country.\n\nWhat makes this milestone meaningful is not just the selection itself, but the journey that led here. Every iteration of our solution, every piece of feedback we incorporated, every late night spent refining our approach, all of it contributed to where we stand today.\n\nWe are grateful to everyone who has supported and believed in us along the way.\nMore to come. Stay tuned.",
+      "date": "2026-06-24",
+      "coverImage": "/images/news/codesprint.webp",
+      "tags": [
+        "Team SoterCare",
+        "CodeSprint 11",
+        "IEEE",
+        "Finalist",
+        "Startup"
+      ],
+      "pinned": false
+    },
+    {
       "id": "ab378095-cb4e-4904-9360-54c994d2f637",
       "title": "Team SoterCare Selected as a Finalist in the NIA Innovation Voucher Programme 2026",
       "slug": "team-sotercare-selected-as-a-finalist-in-the-nia-innovation-voucher-programme-2026",
