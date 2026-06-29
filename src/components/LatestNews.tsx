@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { NewsArticle } from '@/types/news';
+import { sortArticles } from '@/lib/news-sort';
 import newsJson from '../../data/news.json';
 
 function formatDate(iso: string): string {
@@ -11,10 +12,7 @@ function formatDate(iso: string): string {
   });
 }
 
-const articles = (newsJson.articles as NewsArticle[])
-  .slice()
-  .sort((a, b) => b.date.localeCompare(a.date))
-  .slice(0, 3);
+const articles = sortArticles(newsJson.articles as NewsArticle[]).slice(0, 3);
 
 export default function LatestNews() {
   if (articles.length === 0) return null;

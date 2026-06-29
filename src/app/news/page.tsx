@@ -4,6 +4,7 @@ import Image from 'next/image';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
+import { sortArticles } from '@/lib/news-sort';
 
 export const metadata: Metadata = {
   title: 'News',
@@ -21,7 +22,7 @@ function formatDate(iso: string): string {
 
 export default function NewsPage() {
   const { articles } = readNews();
-  const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = sortArticles(articles);
 
   return (
     <main className="min-h-screen bg-[#fafafa] relative">
