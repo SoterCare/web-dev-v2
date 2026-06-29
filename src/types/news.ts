@@ -7,6 +7,7 @@ export interface NewsArticle {
   date: string; // YYYY-MM-DD
   coverImage: string;
   tags: string[];
+  pinned?: boolean;
 }
 
 export interface NewsData {

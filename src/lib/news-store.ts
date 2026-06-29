@@ -23,6 +23,9 @@ function validateArticle(a: unknown, i: number): asserts a is NewsArticle {
   if (!Array.isArray(art.tags) || art.tags.some((t) => typeof t !== 'string')) {
     throw new Error(`Article[${i}].tags must be an array of strings`);
   }
+  if (art.pinned !== undefined && typeof art.pinned !== 'boolean') {
+    throw new Error(`Article[${i}].pinned must be a boolean if present`);
+  }
 }
 
 export function readNews(): NewsData {
