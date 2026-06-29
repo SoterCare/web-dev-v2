@@ -4,10 +4,11 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  ChevronUp, ChevronDown, Plus, Trash2, X,
-  Save, Upload, Loader2, Newspaper,
+  ChevronDown, ChevronUp, Plus, Trash2, X,
+  Save, Upload, Loader2, Newspaper, Pin,
 } from 'lucide-react';
 import type { NewsArticle, NewsData } from '@/types/news';
+import { sortArticles } from '@/lib/news-sort';
 import { saveNewsAction, uploadNewsImageAction } from '../dashboard/news-actions';
 
 function slugify(str: string): string {
@@ -24,6 +25,7 @@ function emptyArticle(): NewsArticle {
     date: new Date().toISOString().split('T')[0],
     coverImage: '',
     tags: [],
+    pinned: false,
   };
 }
 
@@ -144,51 +146,67 @@ function CoverUpload({
 }
 
 export default function NewsEditor({ initialData }: { initialData: NewsData }) {
-  const [articles, setArticles] = useState<NewsArticle[]>(initialData.articles);
+  const [articles, setArticles] = useState<NewsArticle[]>(() =>
+    sortArticles(initialData.articles)
+  );
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [pinWarning, setPinWarning] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState('');
 
+  const pinnedCount = articles.filter((a) => a.pinned).length;
+
   const update = (id: string, patch: Partial<NewsArticle>) =>
-    setArticles((prev) => prev.map((a) => (a.id === id ? { ...a, ...patch } : a)));
+    setArticles((prev) =>
+      sortArticles(prev.map((a) => (a.id === id ? { ...a, ...patch } : a)))
+    );
 
   const handleTitleChange = (id: string, title: string) => {
     setArticles((prev) =>
-      prev.map((a) => {
-        if (a.id !== id) return a;
-        const autoSlug = a.slug === '' || a.slug === slugify(a.title);
-        return { ...a, title, slug: autoSlug ? slugify(title) : a.slug };
-      }),
+      sortArticles(
+        prev.map((a) => {
+          if (a.id !== id) return a;
+          const autoSlug = a.slug === '' || a.slug === slugify(a.title);
+          return { ...a, title, slug: autoSlug ? slugify(title) : a.slug };
+        })
+      )
     );
   };
 
-  const addArticle = () => setArticles((prev) => [emptyArticle(), ...prev]);
+  const togglePin = (id: string) => {
+    const article = articles.find((a) => a.id === id);
+    if (!article) return;
+    if (!article.pinned && pinnedCount >= 3) {
+      setPinWarning(true);
+      setTimeout(() => setPinWarning(false), 3000);
+      return;
+    }
+    update(id, { pinned: !article.pinned });
+  };
+
+  const addArticle = () => {
+    const fresh = emptyArticle();
+    setArticles((prev) => sortArticles([fresh, ...prev]));
+    setExpandedId(fresh.id);
+  };
 
   const removeArticle = (id: string) => {
     if (!confirm('Remove this article?')) return;
     setArticles((prev) => prev.filter((a) => a.id !== id));
-  };
-
-  const move = (id: string, dir: -1 | 1) => {
-    setArticles((prev) => {
-      const idx = prev.findIndex((a) => a.id === id);
-      if (idx + dir < 0 || idx + dir >= prev.length) return prev;
-      const next = [...prev];
-      [next[idx], next[idx + dir]] = [next[idx + dir], next[idx]];
-      return next;
-    });
+    setExpandedId((prev) => (prev === id ? null : prev));
   };
 
   const addTag = (id: string, tag: string) =>
     setArticles((prev) =>
       prev.map((a) =>
-        a.id === id && !a.tags.includes(tag) ? { ...a, tags: [...a.tags, tag] } : a,
-      ),
+        a.id === id && !a.tags.includes(tag) ? { ...a, tags: [...a.tags, tag] } : a
+      )
     );
 
   const removeTag = (id: string, tag: string) =>
     setArticles((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, tags: a.tags.filter((t) => t !== tag) } : a)),
+      prev.map((a) => (a.id === id ? { ...a, tags: a.tags.filter((t) => t !== tag) } : a))
     );
 
   const handleSave = async () => {
@@ -250,9 +268,17 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
             </div>
           </div>
           {/* Status strip */}
-          {(saved || saveError) && (
-            <div className={`text-center text-xs py-1 font-medium ${saveError ? 'bg-red-50 text-red-600' : 'bg-[#a0cbdb]/10 text-[#3d7e93]'}`}>
-              {saveError || 'Saved successfully.'}
+          {(saved || saveError || pinWarning) && (
+            <div
+              className={`text-center text-xs py-1 font-medium ${
+                saveError
+                  ? 'bg-red-50 text-red-600'
+                  : pinWarning
+                  ? 'bg-amber-50 text-amber-700'
+                  : 'bg-[#a0cbdb]/10 text-[#3d7e93]'
+              }`}
+            >
+              {saveError || (pinWarning ? 'Max 3 articles can be pinned.' : 'Saved successfully.')}
             </div>
           )}
         </header>
@@ -268,6 +294,11 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
                 <code className="font-mono text-[10px] bg-[var(--bg-panel)] px-1.5 py-0.5 rounded">
                   data/news.json
                 </code>
+                {pinnedCount > 0 && (
+                  <span className="ml-2 text-[#3d7e93] font-semibold">
+                    · {pinnedCount}/3 pinned
+                  </span>
+                )}
               </p>
             </div>
             <button
@@ -281,7 +312,7 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
           </div>
 
           {/* Article list */}
-          <div className="space-y-5">
+          <div className="space-y-3">
             {articles.length === 0 && (
               <div className="text-center py-20 text-[var(--text-muted)]">
                 <p className="font-medium">No articles yet.</p>
@@ -295,124 +326,147 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
               </div>
             )}
 
-            {articles.map((article, idx) => (
-              <div
-                key={article.id}
-                className="bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] p-4 sm:p-6"
-              >
-                {/* Control row */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => move(article.id, -1)}
-                      disabled={idx === 0}
-                      className="p-1.5 rounded-lg hover:bg-[var(--bg-panel)] disabled:opacity-30 transition-colors"
-                      aria-label="Move up"
-                    >
-                      <ChevronUp size={14} className="text-[var(--text-muted)]" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => move(article.id, 1)}
-                      disabled={idx === articles.length - 1}
-                      className="p-1.5 rounded-lg hover:bg-[var(--bg-panel)] disabled:opacity-30 transition-colors"
-                      aria-label="Move down"
-                    >
-                      <ChevronDown size={14} className="text-[var(--text-muted)]" />
-                    </button>
-                    <span className="text-xs text-[var(--text-muted)] font-medium ml-1">#{idx + 1}</span>
-                    {article.title && (
-                      <span className="text-xs text-[var(--text)] font-semibold ml-2 truncate max-w-[130px] sm:max-w-xs">
-                        {article.title}
-                      </span>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeArticle(article.id)}
-                    className="p-1.5 rounded-lg hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 transition-colors"
-                    aria-label="Remove article"
+            {articles.map((article) => {
+              const isOpen = expandedId === article.id;
+              return (
+                <div
+                  key={article.id}
+                  className={`bg-[var(--bg-card)] rounded-3xl shadow-[var(--shadow-m)] overflow-hidden border ${
+                    article.pinned ? 'border-[#3d7e93]/20' : 'border-black/[0.03]'
+                  }`}
+                >
+                  {/* Collapsed header row — always visible */}
+                  <div
+                    className="flex items-center gap-2 px-4 sm:px-5 py-3.5 cursor-pointer select-none"
+                    onClick={() => setExpandedId(isOpen ? null : article.id)}
                   >
-                    <Trash2 size={14} />
-                  </button>
+                    {/* Pin button */}
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); togglePin(article.id); }}
+                      className={`p-1.5 rounded-lg transition-colors flex-shrink-0 ${
+                        article.pinned
+                          ? 'text-[#3d7e93] bg-[#3d7e93]/10'
+                          : 'text-[var(--text-muted)] hover:text-[#3d7e93] hover:bg-[var(--bg-panel)]'
+                      }`}
+                      aria-label={article.pinned ? 'Unpin article' : 'Pin article'}
+                    >
+                      <Pin size={13} className={article.pinned ? 'fill-[#3d7e93]' : ''} />
+                    </button>
+
+                    {/* Title + date */}
+                    <div className="flex-1 min-w-0 flex items-center gap-2">
+                      <span className="text-sm font-semibold text-[var(--text)] truncate">
+                        {article.title || <span className="text-[var(--text-muted)] font-normal italic">Untitled</span>}
+                      </span>
+                      {article.date && (
+                        <span className="text-[10px] font-semibold text-[var(--text-muted)] bg-[var(--bg-panel)] px-2 py-0.5 rounded-full flex-shrink-0">
+                          {article.date}
+                        </span>
+                      )}
+                      {article.pinned && (
+                        <span className="text-[10px] font-semibold text-[#3d7e93] bg-[#3d7e93]/10 px-2 py-0.5 rounded-full flex-shrink-0">
+                          Pinned
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Delete + chevron */}
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); removeArticle(article.id); }}
+                        className="p-1.5 rounded-lg hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 transition-colors"
+                        aria-label="Remove article"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                      <span className="p-1.5 text-[var(--text-muted)]">
+                        {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Expanded form */}
+                  {isOpen && (
+                    <div className="px-4 sm:px-6 pb-6 pt-1 border-t border-black/[0.04]">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Title</label>
+                          <input
+                            type="text"
+                            value={article.title}
+                            onChange={(e) => handleTitleChange(article.id, e.target.value)}
+                            placeholder="Article title"
+                            className="w-full px-4 py-2.5 text-base font-medium rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Slug</label>
+                          <input
+                            type="text"
+                            value={article.slug}
+                            onChange={(e) => update(article.id, { slug: e.target.value })}
+                            placeholder="url-friendly-slug"
+                            className="w-full px-4 py-2.5 text-sm font-mono rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Date</label>
+                          <input
+                            type="date"
+                            value={article.date}
+                            onChange={(e) => update(article.id, { date: e.target.value })}
+                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Summary</label>
+                          <textarea
+                            value={article.summary}
+                            onChange={(e) => update(article.id, { summary: e.target.value })}
+                            rows={2}
+                            placeholder="One or two sentence teaser shown on the card."
+                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          />
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Body</label>
+                          <textarea
+                            value={article.body}
+                            onChange={(e) => update(article.id, { body: e.target.value })}
+                            rows={12}
+                            placeholder="Full article content. Separate paragraphs with a blank line."
+                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Tags</label>
+                          <TagInput
+                            tags={article.tags}
+                            onAdd={(t) => addTag(article.id, t)}
+                            onRemove={(t) => removeTag(article.id, t)}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Cover Image</label>
+                          <CoverUpload
+                            value={article.coverImage}
+                            onUpload={(p) => update(article.id, { coverImage: p })}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                {/* Form */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Title</label>
-                    <input
-                      type="text"
-                      value={article.title}
-                      onChange={(e) => handleTitleChange(article.id, e.target.value)}
-                      placeholder="Article title"
-                      className="w-full px-4 py-2.5 text-base font-medium rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Slug</label>
-                    <input
-                      type="text"
-                      value={article.slug}
-                      onChange={(e) => update(article.id, { slug: e.target.value })}
-                      placeholder="url-friendly-slug"
-                      className="w-full px-4 py-2.5 text-sm font-mono rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Date</label>
-                    <input
-                      type="date"
-                      value={article.date}
-                      onChange={(e) => update(article.id, { date: e.target.value })}
-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Summary</label>
-                    <textarea
-                      value={article.summary}
-                      onChange={(e) => update(article.id, { summary: e.target.value })}
-                      rows={2}
-                      placeholder="One or two sentence teaser shown on the card."
-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-none focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Body</label>
-                    <textarea
-                      value={article.body}
-                      onChange={(e) => update(article.id, { body: e.target.value })}
-                      rows={12}
-                      placeholder="Full article content. Separate paragraphs with a blank line."
-                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Tags</label>
-                    <TagInput
-                      tags={article.tags}
-                      onAdd={(t) => addTag(article.id, t)}
-                      onRemove={(t) => removeTag(article.id, t)}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Cover Image</label>
-                    <CoverUpload
-                      value={article.coverImage}
-                      onUpload={(p) => update(article.id, { coverImage: p })}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </main>
       </div>
