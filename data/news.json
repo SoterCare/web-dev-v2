@@ -35,6 +35,24 @@
       "pinned": false
     },
     {
+      "id": "1330c8b7-1b39-4ea7-82a8-cd6fcc9750cb",
+      "title": "Acing Our CW2 Viva",
+      "slug": "acing-our-cw2-viva",
+      "summary": "Team SoterCare completed the final CW2 viva with Mr. Banu Athuraliya and landed among the highest marks. We also walked away with some great challenges to push our project further.",
+      "body": "After months of building, testing, and refining SoterCare, the sensors, the dashboards, the gait model, the pitches, the project finally faced its toughest challenge yet, the CW2 viva. This wasn't a pitch to investors or a panel of competition judges, it was a direct examination of the work itself in front of someone who knows exactly where the gaps are likely to be.\n\nWe sat down with Mr. Banu Athuraliya for our final CW2 viva and came out with the highest marks on the SDGP module. More importantly the session didn't just confirm what's working, it surfaced some genuinely great challenges that we now need to think through as we push SoterCare further. Every milestone in this project so far has worked the same way, progress shows up as much in the feedback as it does in the win.\n\nChallenge accepted. Team SoterCare is ready to ace the next phase!",
+      "date": "2026-03-30",
+      "coverImage": "/images/news/cw2.webp",
+      "tags": [
+        "Team SoterCare",
+        "CW2 Viva",
+        "SDGP",
+        "Computer Science",
+        "Highest Marks",
+        "Milestone"
+      ],
+      "pinned": false
+    },
+    {
       "id": "4cdbb396-005b-49e1-9954-f910c3d85b57",
       "title": "Team Completes The First Data Recording Session for Risky Movement Detection",
       "slug": "team-completes-the-first-data-recording-session-for-risky-movement-detection",
