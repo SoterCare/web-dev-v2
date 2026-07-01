@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ChevronDown, ChevronUp, Plus, Trash2, X,
-  Save, Upload, Loader2, Newspaper, Pin,
+  Save, Upload, Loader2, Newspaper, Pin, ImagePlus,
 } from 'lucide-react';
-import type { NewsArticle, NewsData } from '@/types/news';
+import type { NewsArticle, NewsData, ContentBlock } from '@/types/news';
 import { sortArticles } from '@/lib/news-sort';
 import { saveNewsAction, uploadNewsImageAction } from '../dashboard/news-actions';
 
@@ -22,6 +22,7 @@ function emptyArticle(): NewsArticle {
     slug: '',
     summary: '',
     body: '',
+    bodyBlocks: [{ type: 'text', content: '' }],
     date: new Date().toISOString().split('T')[0],
     coverImage: '',
     tags: [],
@@ -145,9 +146,232 @@ function CoverUpload({
   );
 }
 
+function InlineImageBlock({
+  src,
+  caption,
+  onSrcChange,
+  onCaptionChange,
+}: {
+  src: string;
+  caption: string;
+  onSrcChange: (s: string) => void;
+  onCaptionChange: (c: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = async (file: File) => {
+    setUploading(true);
+    setUploadError('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const result = await uploadNewsImageAction(fd);
+      onSrcChange(result.path);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-start gap-4">
+        {src ? (
+          <div className="relative w-40 h-28 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5">
+            <Image src={src} alt={caption || 'Inline image'} fill className="object-cover" sizes="160px" />
+          </div>
+        ) : (
+          <div className="w-40 h-28 rounded-xl bg-[var(--bg-panel)] border border-dashed border-black/10 flex items-center justify-center flex-shrink-0">
+            <ImagePlus size={18} className="text-[var(--text-muted)]" />
+          </div>
+        )}
+        <div className="flex flex-col gap-2 flex-1">
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors disabled:opacity-50 w-fit"
+          >
+            {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+            {uploading ? 'Uploading…' : src ? 'Replace image' : 'Upload image'}
+          </button>
+          {src && (
+            <p className="text-xs text-[var(--text-muted)] font-mono truncate max-w-[200px]">{src}</p>
+          )}
+          {uploadError && <p className="text-xs text-red-500">{uploadError}</p>}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) handleFile(f);
+              e.target.value = '';
+            }}
+          />
+        </div>
+      </div>
+      <input
+        type="text"
+        value={caption}
+        onChange={(e) => onCaptionChange(e.target.value)}
+        placeholder="Caption (optional)"
+        className="w-full px-3 py-2 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+      />
+    </div>
+  );
+}
+
+function InsertBar({
+  onAddText,
+  onAddImage,
+}: {
+  onAddText: () => void;
+  onAddImage: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2 py-1.5">
+      <div className="flex-1 h-px bg-black/[0.05]" />
+      <button
+        type="button"
+        onClick={onAddText}
+        className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text)] px-2 py-1 rounded-lg hover:bg-[var(--bg-panel)] transition-colors"
+      >
+        <Plus size={10} /> Text
+      </button>
+      <button
+        type="button"
+        onClick={onAddImage}
+        className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] hover:text-[#3d7e93] px-2 py-1 rounded-lg hover:bg-[#a0cbdb]/10 transition-colors"
+      >
+        <ImagePlus size={10} /> Image
+      </button>
+      <div className="flex-1 h-px bg-black/[0.05]" />
+    </div>
+  );
+}
+
+function BodyBlockEditor({
+  blocks,
+  onChange,
+}: {
+  blocks: ContentBlock[];
+  onChange: (blocks: ContentBlock[]) => void;
+}) {
+  const updateBlock = (idx: number, patch: object) =>
+    onChange(blocks.map((b, i) => (i === idx ? { ...b, ...patch } as ContentBlock : b)));
+
+  const deleteBlock = (idx: number) =>
+    onChange(blocks.filter((_, i) => i !== idx));
+
+  const moveBlock = (idx: number, dir: -1 | 1) => {
+    const next = [...blocks];
+    const target = idx + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[idx], next[target]] = [next[target], next[idx]];
+    onChange(next);
+  };
+
+  const insertAfter = (idx: number, block: ContentBlock) => {
+    const next = [...blocks];
+    next.splice(idx + 1, 0, block);
+    onChange(next);
+  };
+
+  const newText = (): ContentBlock => ({ type: 'text', content: '' });
+  const newImage = (): ContentBlock => ({ type: 'image', src: '', caption: '' });
+
+  return (
+    <div>
+      {blocks.length === 0 && (
+        <InsertBar
+          onAddText={() => onChange([newText()])}
+          onAddImage={() => onChange([newImage()])}
+        />
+      )}
+      {blocks.map((block, idx) => (
+        <div key={idx}>
+          {/* Block card */}
+          <div className="rounded-2xl border border-black/[0.06] overflow-hidden">
+            {/* Block header */}
+            <div className="flex items-center justify-between px-3 py-1.5 bg-[var(--bg-panel)] border-b border-black/[0.04]">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                {block.type === 'text' ? 'Text block' : 'Image block'}
+              </span>
+              <div className="flex items-center gap-0.5">
+                <button
+                  type="button"
+                  onClick={() => moveBlock(idx, -1)}
+                  disabled={idx === 0}
+                  className="p-1 rounded hover:bg-black/5 text-[var(--text-muted)] disabled:opacity-30 transition-colors"
+                  aria-label="Move block up"
+                >
+                  <ChevronUp size={12} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveBlock(idx, 1)}
+                  disabled={idx === blocks.length - 1}
+                  className="p-1 rounded hover:bg-black/5 text-[var(--text-muted)] disabled:opacity-30 transition-colors"
+                  aria-label="Move block down"
+                >
+                  <ChevronDown size={12} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteBlock(idx)}
+                  className="p-1 rounded hover:bg-red-50 text-[var(--text-muted)] hover:text-red-500 transition-colors ml-0.5"
+                  aria-label="Delete block"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
+            </div>
+
+            {/* Block content */}
+            <div className="p-3">
+              {block.type === 'text' ? (
+                <textarea
+                  value={block.content}
+                  onChange={(e) => updateBlock(idx, { content: e.target.value })}
+                  rows={8}
+                  placeholder="Write your text here. Separate paragraphs with a blank line."
+                  className="w-full px-3 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                />
+              ) : (
+                <InlineImageBlock
+                  src={block.src}
+                  caption={block.caption}
+                  onSrcChange={(src) => updateBlock(idx, { src })}
+                  onCaptionChange={(caption) => updateBlock(idx, { caption })}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Insert bar after each block */}
+          <InsertBar
+            onAddText={() => insertAfter(idx, newText())}
+            onAddImage={() => insertAfter(idx, newImage())}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function NewsEditor({ initialData }: { initialData: NewsData }) {
   const [articles, setArticles] = useState<NewsArticle[]>(() =>
-    sortArticles(initialData.articles)
+    sortArticles(
+      initialData.articles.map((a) => ({
+        ...a,
+        bodyBlocks: a.bodyBlocks ?? [{ type: 'text' as const, content: a.body }],
+      }))
+    )
   );
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [pinWarning, setPinWarning] = useState(false);
@@ -335,7 +559,7 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
                     article.pinned ? 'border-[#3d7e93]/20' : 'border-black/[0.03]'
                   }`}
                 >
-                  {/* Collapsed header row — always visible */}
+                  {/* Collapsed header row */}
                   <div
                     className="flex items-center gap-2 px-4 sm:px-5 py-3.5 cursor-pointer select-none"
                     onClick={() => setExpandedId(isOpen ? null : article.id)}
@@ -435,13 +659,10 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
                         </div>
 
                         <div className="md:col-span-2">
-                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-1.5">Body</label>
-                          <textarea
-                            value={article.body}
-                            onChange={(e) => update(article.id, { body: e.target.value })}
-                            rows={12}
-                            placeholder="Full article content. Separate paragraphs with a blank line."
-                            className="w-full px-4 py-2.5 text-sm rounded-xl bg-[var(--bg-panel)] border border-black/5 text-[var(--text)] placeholder:text-[var(--text-muted)] resize-y focus:outline-none focus:ring-1 focus:ring-[#a0cbdb]"
+                          <label className="block text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">Body</label>
+                          <BodyBlockEditor
+                            blocks={article.bodyBlocks ?? [{ type: 'text', content: article.body }]}
+                            onChange={(blocks) => update(article.id, { bodyBlocks: blocks })}
                           />
                         </div>
 

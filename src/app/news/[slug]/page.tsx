@@ -4,6 +4,7 @@ import Image from 'next/image';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
+import type { ContentBlock } from '@/types/news';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,6 +42,8 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound();
 
   const paragraphs = article.body.split(/\n\n+/).filter(Boolean);
+  const blocks: ContentBlock[] | undefined =
+    article.bodyBlocks && article.bodyBlocks.length > 0 ? article.bodyBlocks : undefined;
 
   return (
     <main className="min-h-screen bg-[#fafafa] relative">
@@ -104,13 +107,56 @@ export default async function ArticlePage({ params }: Props) {
             </p>
 
             {/* Body */}
-            <div className="space-y-5">
-              {paragraphs.map((para, i) => (
-                <p key={i} className="text-base text-text-muted leading-relaxed">
-                  {para}
-                </p>
-              ))}
-            </div>
+            {blocks ? (
+              <div className="space-y-5">
+                {blocks.map((block, i) => {
+                  if (block.type === 'text') {
+                    const paras = block.content.split(/\n\n+/).filter(Boolean);
+                    if (paras.length === 0) return null;
+                    return (
+                      <div key={i} className="space-y-5">
+                        {paras.map((para, j) => (
+                          <p key={j} className="text-base text-text-muted leading-relaxed">
+                            {para}
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  }
+                  if (block.type === 'image' && block.src) {
+                    return (
+                      <figure key={i}>
+                        <div className="w-full overflow-hidden rounded-2xl bg-[#a0cbdb]/10">
+                          <Image
+                            src={block.src}
+                            alt={block.caption || ''}
+                            width={0}
+                            height={0}
+                            sizes="(max-width: 768px) 100vw, 768px"
+                            className="w-full"
+                            style={{ height: 'auto', display: 'block' }}
+                          />
+                        </div>
+                        {block.caption && (
+                          <figcaption className="mt-2.5 text-center text-sm text-[var(--text-muted)] italic">
+                            {block.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            ) : (
+              <div className="space-y-5">
+                {paragraphs.map((para, i) => (
+                  <p key={i} className="text-base text-text-muted leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* Footer spacer */}
             <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-black/[0.06]" />
