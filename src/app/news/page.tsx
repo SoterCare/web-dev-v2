@@ -52,12 +52,12 @@ export default function NewsPage() {
             {sorted.length === 0 ? (
               <p className="text-center text-text-muted py-24">No articles yet. Check back soon.</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+              <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
                 {sorted.map((article) => (
                   <Link
                     key={article.id}
                     href={`/news/${article.slug}`}
-                    className="group bg-bg-card rounded-3xl shadow-m overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300"
+                    className="group bg-bg-card rounded-3xl shadow-m overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 break-inside-avoid mb-6 block"
                   >
                     {/* Cover image */}
                     {article.coverImage ? (
