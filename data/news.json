@@ -7,7 +7,7 @@
       "summary": "Team SoterCare had the opportunity to showcase their project at the CuttingEdge '26 PROJEXPO and secured 3rd place in the Best SDGP Project category. This recognition reflects the dedication, teamwork, and countless hours invested in developing our project.",
       "body": "We are proud to share that Team SoterCare had the opportunity to showcase our project at CuttingEdge '26 PROJEXPO, the largest annual project exhibition at the Informatics Institute of Technology. The event brings together student teams from across the university to present their innovative projects to industry professionals, academics, and fellow students, creating a platform to exchange ideas and gain valuable insights.\n\nPresenting SoterCare at CuttingEdge was an incredible experience. It allowed us to demonstrate the impact of our solution, engage in meaningful discussions with industry experts and academics, receive valuable feedback, and connect with fellow innovators.\n\nWe are incredibly proud and grateful to have been awarded 3rd Place in the Best SDGP Project category. For us, the SDGP was more than just a university module, it became the foundation on which SoterCare was built. Behind this achievement are countless late nights, continuous iterations, challenging discussions that led to better decisions, and an unwavering commitment from every team member to create something meaningful. \nThis achievement inspires us to continue improving SoterCare, aim even higher and keep building better with every step.\n\nNone of this would have been possible without our amazing team. Every contribution, every challenge overcome, and every hour of hard work played a part in reaching this milestone. This achievement belongs to all of us, and we couldn't be prouder of what we have accomplished together.\n\nWe extend our sincere gratitude to everyone who supported and encouraged us throughout this journey. This achievement marks an important milestone for Team SoterCare, and we look forward to embracing new opportunities, overcoming future challenges, and continuing to innovate.",
       "date": "2026-06-30",
-      "coverImage": "/images/news/cuttingedge.webp",
+      "coverImage": "/images/news/20260630-181306.webp",
       "tags": [
         "Team SoterCare",
         "CuttingEdge 2026",
@@ -16,7 +16,13 @@
         "Innovation",
         "Teamwork"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "We are proud to share that Team SoterCare had the opportunity to showcase our project at CuttingEdge '26 PROJEXPO, the largest annual project exhibition at the Informatics Institute of Technology. The event brings together student teams from across the university to present their innovative projects to industry professionals, academics, and fellow students, creating a platform to exchange ideas and gain valuable insights.\n\nPresenting SoterCare at CuttingEdge was an incredible experience. It allowed us to demonstrate the impact of our solution, engage in meaningful discussions with industry experts and academics, receive valuable feedback, and connect with fellow innovators.\n\nWe are incredibly proud and grateful to have been awarded 3rd Place in the Best SDGP Project category. For us, the SDGP was more than just a university module, it became the foundation on which SoterCare was built. Behind this achievement are countless late nights, continuous iterations, challenging discussions that led to better decisions, and an unwavering commitment from every team member to create something meaningful. \nThis achievement inspires us to continue improving SoterCare, aim even higher and keep building better with every step.\n\nNone of this would have been possible without our amazing team. Every contribution, every challenge overcome, and every hour of hard work played a part in reaching this milestone. This achievement belongs to all of us, and we couldn't be prouder of what we have accomplished together.\n\nWe extend our sincere gratitude to everyone who supported and encouraged us throughout this journey. This achievement marks an important milestone for Team SoterCare, and we look forward to embracing new opportunities, overcoming future challenges, and continuing to innovate."
+        }
+      ]
     },
     {
       "id": "ab378095-cb4e-4904-9360-54c994d2f637",
@@ -33,6 +39,12 @@
         "Innovation Voucher Programme 2026",
         "Healthcare Technology",
         "Startup"
+      ],
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "Team SoterCare is proud to announce its selection as a finalist in the National Innovation Agency (NIA) Innovation Voucher Programme 2026 under the University Voucher category.\n\nAs part of the final evaluation process, our team had the opportunity to present SoterCare during the live pitch session before an expert evaluation panel. The experience allowed us to showcase our vision, demonstrate our technology, receive valuable feedback from industry professionals, and represent our university on a national stage.\n\nReaching this milestone reflects the dedication, collaboration, and hard work of everyone involved in the project. We are sincerely grateful to our mentors, supporters, and everyone who has contributed to our journey.\n\nWe now look forward to the final results and remain committed to developing innovative technologies that create meaningful impact in healthcare and improve lives through accessible, intelligent solutions."
+        }
       ]
     },
     {
@@ -50,7 +62,13 @@
         "Finalist",
         "Startup"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "CodeSprint 11 revealed its finalist lineup, and we're thrilled to share that SoterCare has earned its place among the 7 teams heading to the Finale. The competition has been a great platform to benchmark our solution, sharpen our thinking, and connect with some of the brightest student innovators in the country.\n\nWhat makes this milestone meaningful is not just the selection itself, but the journey that led here. Every iteration of our solution, every piece of feedback we incorporated, every late night spent refining our approach, all of it contributed to where we stand today.\n\nWe are grateful to everyone who has supported and believed in us along the way.\nMore to come. Stay tuned."
+        }
+      ]
     },
     {
       "id": "1330c8b7-1b39-4ea7-82a8-cd6fcc9750cb",
@@ -68,7 +86,13 @@
         "Highest Marks",
         "Milestone"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "After months of building, testing, and refining SoterCare, the sensors, the dashboards, the gait model, the pitches, the project finally faced its toughest challenge yet, the CW2 viva. This wasn't a pitch to investors or a panel of competition judges, it was a direct examination of the work itself in front of someone who knows exactly where the gaps are likely to be.\n\nWe sat down with Mr. Banu Athuraliya for our final CW2 viva and came out with the highest marks on the SDGP module. More importantly the session didn't just confirm what's working, it surfaced some genuinely great challenges that we now need to think through as we push SoterCare further. \n\nEvery milestone in this project so far has worked the same way, progress shows up as much in the feedback as it does in the win. \nChallenge accepted. Team SoterCare is ready to ace the next phase!"
+        }
+      ]
     },
     {
       "id": "4cdbb396-005b-49e1-9954-f910c3d85b57",
@@ -85,7 +109,13 @@
         "Data Collection",
         "IIT Volunteers"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "We put out a call for volunteers to help us build something we believe elderly care has been missing, a way to act before a fall happens, not just react after one. Most alarm systems only ring once someone has already hit the ground. Our goal with SoterCare has always been prevention and prevention starts with data.\n\nThat call became a full recording session. Using SoterCare Studio, our custom built data capture tool, volunteers were fitted with thigh-worn IMU sensors recording at 50Hz while they moved through a guided sequence of everyday actions. Each session was logged, labelled, and reviewed in real time so we could catch noisy or incomplete recordings before they ever reached the dataset.\n\nVolunteers were guided through five core movement states that make up the backbone of our gait model: walking, standing idle, sitting idle, standing up, and sitting down. What stood out most was how willing our fellow students were to give up their time for this. Every recording, every repeated \"stand up, sit down, walk a few steps and back\" was a small but real contribution to a dataset that will eventually train a model meant to protect someone's grandparent. We're genuinely grateful for that.\n\nThis dataset now feeds directly into our Proactive Gait Analysis Model, the on-device classifier that pairs a risky transition prediction with a silent haptic warning. The more varied and well labelled our data, the sharper that model gets at telling a normal wobble apart from a genuinely risky one.\n\nWe're now moving into the next phase cleaning, labelling, and feeding this new batch of recordings into training. We'll be sharing results as the model improves. As always, this milestone belongs to everyone who showed up, sensor strapped to their thigh, and walked back and forth across a room for data collection.\n\nWith thanks to every volunteer who contributed. "
+        }
+      ]
     },
     {
       "id": "8307d31d-ff24-49d9-9010-aa8861a56b22",
@@ -102,7 +132,13 @@
         "Top 12",
         "Grand Finale"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "The journey began with the Qualifier Round, where we got the chance to present our idea, showcase our vision, and compete alongside inspiring teams. Following the qualifiers, SoterCare had officially qualified for the Hult Prize IIT Finals, one of 12 finalists selected from the on-campus competition heading into the Grand Finale.\n\nThe experience gave us valuable feedback and clear direction to improve. Every question from the judges, every moment on that stage, added something to how we think about SoterCare and where we need to take it next. \n\nA heartfelt thank you to everyone who supported us and believed in our idea, your motivation meant a lot to us along the way. This is only the beginning, we are moving on to the next challenge, stronger and better!"
+        }
+      ]
     },
     {
       "id": "30981bb9-95dd-4566-a7e0-a37ddfe197e0",
@@ -119,7 +155,13 @@
         "Elevator Pitch",
         "SDGP"
       ],
-      "pinned": false
+      "pinned": false,
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "We had the privilege of participating in the U.S. Delegation Visit from the University of Oklahoma, where we presented an elevator pitch to Heather Johnston and engaged in a meaningful discussion followed by valuable feedback.\n\nAs part of the showcase, our team presented SoterCare directly to the visiting delegation, outlining the problem we are solving in healthcare accessibility, the technology behind our solution, and the impact we hope to create. The session was followed by a focused discussion in which the delegation shared feedback drawn from their experience with entrepreneurship programmes, perspective that was both practical and encouraging.\n\nFor us, the most valuable part of the visit was not the pitch itself but the conversation that followed. Hearing how practitioners and educators at the University of Oklahoma think about early stage ventures gave us a clearer lens through which to reflect on our own assumptions, our go-to-market thinking, and what it truly means to build something that scales with purpose.\n\nThis experience provided global exposure, practical insights, and a deeper understanding of innovation and impact. We left the day with renewed clarity, stronger connections, and a deeper appreciation for what global exposure can do for a student team still in the process of shaping its identity. Moments like these remind us why we started."
+        }
+      ]
     }
   ]
 }
