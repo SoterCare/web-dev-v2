@@ -5,8 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ChevronDown, ChevronUp, Plus, Trash2, X,
-  Save, Upload, Loader2, Newspaper, Pin, ImagePlus,
+  Save, Upload, Loader2, Newspaper, Pin, ImagePlus, Pencil,
 } from 'lucide-react';
+import ImageEditModal from './ImageEditModal';
 import type { NewsArticle, NewsData, ContentBlock } from '@/types/news';
 import { sortArticles } from '@/lib/news-sort';
 import { saveNewsAction, uploadNewsImageAction } from '../dashboard/news-actions';
@@ -88,6 +89,7 @@ function CoverUpload({
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (file: File) => {
@@ -106,10 +108,26 @@ function CoverUpload({
   };
 
   return (
-    <div className="flex items-start gap-4">
+    <>
+      {editing && (
+        <ImageEditModal
+          src={value}
+          onClose={() => setEditing(false)}
+          onSave={(newPath) => { onUpload(newPath); setEditing(false); }}
+        />
+      )}
+      <div className="flex items-start gap-4">
       {value ? (
-        <div className="relative w-32 h-20 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5">
+        <div className="relative w-32 h-20 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5 group">
           <Image src={value} alt="Cover preview" fill className="object-cover" sizes="128px" />
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Edit cover image"
+          >
+            <Pencil size={14} className="text-white" />
+          </button>
         </div>
       ) : (
         <div className="w-32 h-20 rounded-xl bg-[var(--bg-panel)] border border-dashed border-black/10 flex items-center justify-center flex-shrink-0">
@@ -143,6 +161,7 @@ function CoverUpload({
         />
       </div>
     </div>
+    </>
   );
 }
 
@@ -159,6 +178,7 @@ function InlineImageBlock({
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = async (file: File) => {
@@ -178,10 +198,25 @@ function InlineImageBlock({
 
   return (
     <div className="space-y-3">
+      {editing && (
+        <ImageEditModal
+          src={src}
+          onClose={() => setEditing(false)}
+          onSave={(newPath) => { onSrcChange(newPath); setEditing(false); }}
+        />
+      )}
       <div className="flex items-start gap-4">
         {src ? (
-          <div className="w-40 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5">
+          <div className="relative w-40 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5 group">
             <Image src={src} alt={caption || 'Inline image'} width={0} height={0} sizes="160px" className="w-full h-auto block" />
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label="Edit image"
+            >
+              <Pencil size={14} className="text-white" />
+            </button>
           </div>
         ) : (
           <div className="w-40 h-28 rounded-xl bg-[var(--bg-panel)] border border-dashed border-black/10 flex items-center justify-center flex-shrink-0">
