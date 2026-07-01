@@ -180,8 +180,8 @@ function InlineImageBlock({
     <div className="space-y-3">
       <div className="flex items-start gap-4">
         {src ? (
-          <div className="relative w-40 h-28 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5">
-            <Image src={src} alt={caption || 'Inline image'} fill className="object-cover" sizes="160px" />
+          <div className="w-40 rounded-xl overflow-hidden bg-[var(--bg-panel)] flex-shrink-0 border border-black/5">
+            <Image src={src} alt={caption || 'Inline image'} width={0} height={0} sizes="160px" className="w-full h-auto block" />
           </div>
         ) : (
           <div className="w-40 h-28 rounded-xl bg-[var(--bg-panel)] border border-dashed border-black/10 flex items-center justify-center flex-shrink-0">
