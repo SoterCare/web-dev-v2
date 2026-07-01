@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "97caba83-e4b7-48c3-a84f-fecc6f53f652",
+      "title": "Team SoterCare Secures 3rd Place at CuttingEdge '26 ",
+      "slug": "team-sotercare-secures-3rd-place-at-cuttingedge-26",
+      "summary": "Team SoterCare had the opportunity to showcase their project at the CuttingEdge '26 PROJEXPO and secured 3rd place in the Best SDGP Project category. This recognition reflects the dedication, teamwork, and countless hours invested in developing our project.",
+      "body": "We are proud to share that Team SoterCare had the opportunity to showcase our project at CuttingEdge '26 PROJEXPO, largest annual project exhibitions at the Informatics Institute of Technology. The event brings together student teams from across the university to present their innovative projects to industry professionals, academics, and fellow students, creating a platform to exchange ideas and gain valuable insights.\n\nPresenting SoterCare at CuttingEdge was an incredible experience. It allowed us to demonstrate the impact of our solution, engage in meaningful discussions with industry experts and academics, receive valuable feedback, and connect with fellow innovators.\n\nWe are incredibly proud and grateful to have been awarded 3rd Place in the Best SDGP Project category. For us, the SDGP was more than just a university module, it became the foundation on which SoterCare was built. Behind this achievement are countless late nights, continuous iterations, challenging discussions that led to better decisions, and an unwavering commitment from every team member to create something meaningful. \nThis achievement inspires us to continue improving SoterCare, aim even higher and keep building better with every step.\n\nNone of this would have been possible without our amazing team. Every contribution, every challenge overcome, and every hour of hard work played a part in reaching this milestone. This achievement belongs to all of us, and we couldn't be prouder of what we have accomplished together.\n\nWe extend our sincere gratitude to everyone who supported and encouraged us throughout this journey. This achievement marks an important milestone for Team SoterCare, and we look forward to embracing new opportunities, overcoming future challenges, and continuing to innovate.",
+      "date": "2026-06-30",
+      "coverImage": "/images/news/cuttingedge.webp",
+      "tags": [
+        "Team SoterCare",
+        "CuttingEdge 2026",
+        "PROJEXPO",
+        "SDGP",
+        "Innovation",
+        "Teamwork"
+      ],
+      "pinned": false
+    },
+    {
       "id": "ab378095-cb4e-4904-9360-54c994d2f637",
       "title": "Team SoterCare Selected as a Finalist in the NIA Innovation Voucher Programme 2026",
       "slug": "team-sotercare-selected-as-a-finalist-in-the-nia-innovation-voucher-programme-2026",
