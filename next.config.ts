@@ -3,6 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Enable React strict mode for better development warnings
   reactStrictMode: true,
+
+  // Allow large image uploads via server actions (default is 1 MB)
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '20mb',
+    },
+  },
   
   // Trailing slash consistency (prevents duplicate content)
   trailingSlash: false,
