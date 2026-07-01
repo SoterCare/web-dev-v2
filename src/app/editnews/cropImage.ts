@@ -1,4 +1,4 @@
-type CropArea = { x: number; y: number; width: number; height: number };
+import type { PixelCrop } from 'react-image-crop';
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -10,41 +10,59 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-export async function getCroppedImg(
-  imageSrc: string,
-  pixelCrop: CropArea,
-  rotation: number,
+/** Draws src rotated by degrees onto a canvas and returns a WebP data URL. */
+export async function rotateImageSrc(src: string, degrees: number): Promise<string> {
+  const image = await loadImage(src);
+  const rotRad = (degrees * Math.PI) / 180;
+  const bw =
+    Math.abs(Math.cos(rotRad) * image.naturalWidth) +
+    Math.abs(Math.sin(rotRad) * image.naturalHeight);
+  const bh =
+    Math.abs(Math.sin(rotRad) * image.naturalWidth) +
+    Math.abs(Math.cos(rotRad) * image.naturalHeight);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bw);
+  canvas.height = Math.round(bh);
+  const ctx = canvas.getContext('2d')!;
+  ctx.translate(bw / 2, bh / 2);
+  ctx.rotate(rotRad);
+  ctx.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2);
+
+  return canvas.toDataURL('image/webp', 0.9);
+}
+
+/**
+ * Crops imgEl at pixelCrop (in displayed-pixel coordinates) and returns a
+ * WebP blob at the image's natural resolution.
+ */
+export async function getCroppedBlob(
+  imgEl: HTMLImageElement,
+  pixelCrop: PixelCrop,
 ): Promise<Blob> {
-  const image = await loadImage(imageSrc);
-  const rotRad = (rotation * Math.PI) / 180;
+  const scaleX = imgEl.naturalWidth / imgEl.width;
+  const scaleY = imgEl.naturalHeight / imgEl.height;
 
-  const bBoxWidth =
-    Math.abs(Math.cos(rotRad) * image.width) + Math.abs(Math.sin(rotRad) * image.height);
-  const bBoxHeight =
-    Math.abs(Math.sin(rotRad) * image.width) + Math.abs(Math.cos(rotRad) * image.height);
+  const outputW = Math.round(pixelCrop.width * scaleX);
+  const outputH = Math.round(pixelCrop.height * scaleY);
 
-  const rotCanvas = document.createElement('canvas');
-  rotCanvas.width = bBoxWidth;
-  rotCanvas.height = bBoxHeight;
-  const rotCtx = rotCanvas.getContext('2d')!;
-  rotCtx.translate(bBoxWidth / 2, bBoxHeight / 2);
-  rotCtx.rotate(rotRad);
-  rotCtx.drawImage(image, -image.width / 2, -image.height / 2);
+  const canvas = document.createElement('canvas');
+  canvas.width = outputW;
+  canvas.height = outputH;
+  const ctx = canvas.getContext('2d')!;
 
-  const cropCanvas = document.createElement('canvas');
-  cropCanvas.width = pixelCrop.width;
-  cropCanvas.height = pixelCrop.height;
-  const cropCtx = cropCanvas.getContext('2d')!;
-  cropCtx.drawImage(
-    rotCanvas,
-    pixelCrop.x, pixelCrop.y,
-    pixelCrop.width, pixelCrop.height,
+  ctx.drawImage(
+    imgEl,
+    pixelCrop.x * scaleX,
+    pixelCrop.y * scaleY,
+    pixelCrop.width * scaleX,
+    pixelCrop.height * scaleY,
     0, 0,
-    pixelCrop.width, pixelCrop.height,
+    outputW, outputH,
   );
 
   return new Promise((resolve, reject) => {
-    cropCanvas.toBlob(
+    canvas.toBlob(
       (blob) => (blob ? resolve(blob) : reject(new Error('Canvas is empty'))),
       'image/webp',
       0.9,

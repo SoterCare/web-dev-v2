@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useCallback } from 'react';
-import Cropper from 'react-easy-crop';
-import type { Area, MediaSize } from 'react-easy-crop';
+import { useState, useRef, useCallback } from 'react';
+import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
+import type { Crop, PixelCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import { X, RotateCcw, RotateCw, Loader2, Check, Pencil } from 'lucide-react';
 import { uploadNewsImageAction } from '../dashboard/news-actions';
-import { getCroppedImg } from './cropImage';
+import { rotateImageSrc, getCroppedBlob } from './cropImage';
 
 type RatioKey = 'free' | '16:9' | '4:3' | '1:1' | '3:4' | '9:16';
 
@@ -26,32 +27,69 @@ interface Props {
 }
 
 export default function ImageEditModal({ src, onClose, onSave }: Props) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [rotation, setRotation] = useState(0);
+  const [displaySrc, setDisplaySrc] = useState(src);
+  const [crop, setCrop] = useState<Crop>();
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [activeRatio, setActiveRatio] = useState<RatioKey>('free');
-  const [naturalAspect, setNaturalAspect] = useState(4 / 3);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [rotating, setRotating] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  const aspect: number =
-    activeRatio === 'free' ? naturalAspect : RATIO_VALUES[activeRatio];
+  const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+    if (activeRatio === 'free') {
+      setCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
+    } else {
+      setCrop(centerCrop(
+        makeAspectCrop({ unit: '%', width: 90 }, RATIO_VALUES[activeRatio], w, h),
+        w, h,
+      ));
+    }
+  }, [activeRatio]);
 
-  const onCropComplete = useCallback((_: Area, pixels: Area) => {
-    setCroppedAreaPixels(pixels);
-  }, []);
+  const handleRatioChange = (key: RatioKey) => {
+    setActiveRatio(key);
+    if (!imgRef.current) return;
+    const { naturalWidth: w, naturalHeight: h } = imgRef.current;
+    if (key === 'free') {
+      setCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
+    } else {
+      setCrop(centerCrop(
+        makeAspectCrop({ unit: '%', width: 90 }, RATIO_VALUES[key], w, h),
+        w, h,
+      ));
+    }
+  };
 
-  const onMediaLoaded = useCallback((mediaSize: MediaSize) => {
-    setNaturalAspect(mediaSize.naturalWidth / mediaSize.naturalHeight);
-  }, []);
+  const handleRotate = async (deg: number) => {
+    setRotating(true);
+    setError('');
+    try {
+      const rotated = await rotateImageSrc(displaySrc, deg);
+      setDisplaySrc(rotated);
+      setCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
+      setCompletedCrop(undefined);
+    } catch {
+      setError('Rotation failed');
+    } finally {
+      setRotating(false);
+    }
+  };
+
+  const handleReset = () => {
+    setDisplaySrc(src);
+    setActiveRatio('free');
+    setCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
+    setCompletedCrop(undefined);
+  };
 
   const handleApply = async () => {
-    if (!croppedAreaPixels) return;
+    if (!completedCrop || !imgRef.current) return;
     setSaving(true);
     setError('');
     try {
-      const blob = await getCroppedImg(src, croppedAreaPixels, rotation);
+      const blob = await getCroppedBlob(imgRef.current, completedCrop);
       const file = new File([blob], 'edited-image.webp', { type: 'image/webp' });
       const fd = new FormData();
       fd.append('file', file);
@@ -63,6 +101,8 @@ export default function ImageEditModal({ src, onClose, onSave }: Props) {
       setSaving(false);
     }
   };
+
+  const hasEdited = displaySrc !== src;
 
   return (
     <div
@@ -88,55 +128,38 @@ export default function ImageEditModal({ src, onClose, onSave }: Props) {
         </div>
 
         {/* Crop canvas */}
-        <div className="relative flex-shrink-0" style={{ height: 340 }}>
-          <div className="absolute inset-0 bg-[#0d0d0d]">
-            <Cropper
-              image={src}
-              crop={crop}
-              zoom={zoom}
-              rotation={rotation}
-              aspect={aspect}
-              onCropChange={setCrop}
-              onZoomChange={setZoom}
-              onCropComplete={onCropComplete}
-              onMediaLoaded={onMediaLoaded}
-              style={{
-                containerStyle: { borderRadius: 0 },
-                cropAreaStyle: {
-                  border: '2px solid rgba(163,203,219,0.9)',
-                  boxShadow: '0 0 0 9999px rgba(0,0,0,0.55)',
-                },
-              }}
+        <div className="flex-1 min-h-0 bg-[#0d0d0d] flex items-center justify-center p-6 overflow-auto">
+          <ReactCrop
+            crop={crop}
+            onChange={(px) => setCrop(px)}
+            onComplete={(px) => setCompletedCrop(px)}
+            aspect={activeRatio === 'free' ? undefined : RATIO_VALUES[activeRatio]}
+            keepSelection
+          >
+            <img
+              ref={imgRef}
+              src={displaySrc}
+              onLoad={onImageLoad}
+              alt="Edit"
+              crossOrigin="anonymous"
+              style={{ maxHeight: '52vh', maxWidth: '100%', display: 'block' }}
             />
-          </div>
-        </div>
-
-        {/* Zoom slider */}
-        <div className="px-5 pt-3 pb-1 flex-shrink-0 flex items-center gap-3">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] w-10 flex-shrink-0">Zoom</span>
-          <input
-            type="range"
-            min={1}
-            max={3}
-            step={0.01}
-            value={zoom}
-            onChange={(e) => setZoom(Number(e.target.value))}
-            className="w-full accent-[#3d7e93] h-1 cursor-pointer"
-            aria-label="Zoom"
-          />
+          </ReactCrop>
         </div>
 
         {/* Controls */}
-        <div className="px-5 py-3 space-y-3 flex-shrink-0">
-          {/* Aspect ratio */}
+        <div className="px-5 py-3 space-y-3 border-t border-black/[0.06] flex-shrink-0">
+          {/* Ratio */}
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] w-10 flex-shrink-0">Ratio</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] w-10 flex-shrink-0">
+              Ratio
+            </span>
             <div className="flex gap-1.5 flex-wrap">
               {RATIO_KEYS.map((key) => (
                 <button
                   key={key}
                   type="button"
-                  onClick={() => setActiveRatio(key)}
+                  onClick={() => handleRatioChange(key)}
                   className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-colors ${
                     activeRatio === key
                       ? 'bg-[#3d7e93] text-white'
@@ -151,27 +174,32 @@ export default function ImageEditModal({ src, onClose, onSave }: Props) {
 
           {/* Rotation */}
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] w-10 flex-shrink-0">Rotate</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] w-10 flex-shrink-0">
+              Rotate
+            </span>
             <div className="flex gap-1.5">
               <button
                 type="button"
-                onClick={() => setRotation((r) => r - 90)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                onClick={() => handleRotate(-90)}
+                disabled={rotating}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-[var(--text)] disabled:opacity-50 transition-colors"
               >
-                <RotateCcw size={11} /> 90°
+                {rotating ? <Loader2 size={11} className="animate-spin" /> : <RotateCcw size={11} />} 90°
               </button>
               <button
                 type="button"
-                onClick={() => setRotation((r) => r + 90)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+                onClick={() => handleRotate(90)}
+                disabled={rotating}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-[var(--text)] disabled:opacity-50 transition-colors"
               >
-                <RotateCw size={11} /> 90°
+                {rotating ? <Loader2 size={11} className="animate-spin" /> : <RotateCw size={11} />} 90°
               </button>
-              {rotation !== 0 && (
+              {hasEdited && (
                 <button
                   type="button"
-                  onClick={() => setRotation(0)}
-                  className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-red-500 transition-colors"
+                  onClick={handleReset}
+                  disabled={rotating || saving}
+                  className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[var(--bg-panel)] border border-black/5 text-[var(--text-muted)] hover:text-red-500 disabled:opacity-50 transition-colors"
                 >
                   Reset
                 </button>
@@ -197,7 +225,7 @@ export default function ImageEditModal({ src, onClose, onSave }: Props) {
             <button
               type="button"
               onClick={handleApply}
-              disabled={saving || !croppedAreaPixels}
+              disabled={saving || !completedCrop}
               className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-lg bg-[#3d7e93] text-white hover:bg-[#2d6478] disabled:opacity-50 transition-colors"
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
