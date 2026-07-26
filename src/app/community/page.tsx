@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import {
@@ -15,6 +16,13 @@ import {
   GitPullRequest,
   FolderGit2,
   Rocket,
+  BrainCircuit,
+  Cloud,
+  Radio,
+  Link2,
+  Code2,
+  Heart,
+  Building2,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -55,11 +63,54 @@ function SectionHeading({
   );
 }
 
-function StatCard({ value, label }: { value: string; label: string }) {
+function StatCard({ value, label, sub }: { value: string; label: string; sub?: string }) {
   return (
     <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 p-6 md:p-8 text-center">
       <div className="text-3xl md:text-4xl font-bold text-[#3d7e93] mb-2">{value}</div>
-      <div className="text-sm md:text-base text-text-muted leading-snug">{label}</div>
+      <div className="text-sm md:text-base text-text font-semibold leading-snug">{label}</div>
+      {sub && <div className="text-xs text-text-muted mt-1">{sub}</div>}
+    </div>
+  );
+}
+
+function GalleryPhoto({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+  return (
+    <div className="group relative rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-black/5 aspect-[4/3]">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 50vw, 25vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+        <span className="text-white text-xs sm:text-sm font-semibold">{caption}</span>
+      </div>
+    </div>
+  );
+}
+
+function PartnerCard({
+  name,
+  logo,
+  Icon,
+}: {
+  name: string;
+  logo?: string;
+  Icon?: React.ElementType;
+}) {
+  return (
+    <div className="bg-bg-card rounded-2xl shadow-sm border border-black/5 p-5 flex flex-col items-center gap-3 w-40 sm:w-44">
+      <div className="h-12 w-12 rounded-xl overflow-hidden flex items-center justify-center bg-black/[0.03]">
+        {logo ? (
+          <Image src={logo} alt={`${name} logo`} width={48} height={48} className="object-cover h-full w-full" />
+        ) : Icon ? (
+          <Icon size={22} className="text-[#3d7e93]" />
+        ) : (
+          <Handshake size={22} className="text-[#3d7e93]" />
+        )}
+      </div>
+      <span className="text-xs sm:text-sm font-semibold text-text text-center leading-snug">{name}</span>
     </div>
   );
 }
@@ -196,6 +247,35 @@ export default function CommunityPage() {
           </div>
         </section>
 
+        {/* ── LEARNING AREAS ── */}
+        <section id="learning-areas" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+          <div className="max-w-5xl mx-auto">
+            <SectionHeading
+              badge="Learning Areas"
+              title="What members explore"
+              subtitle="Through workshops, hackathons, and real contributions — not just lectures."
+            />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {[
+                { Icon: BrainCircuit, label: 'Artificial Intelligence & Machine Learning' },
+                { Icon: Cloud, label: 'Cloud Computing' },
+                { Icon: Radio, label: 'Internet of Things (IoT)' },
+                { Icon: Link2, label: 'Blockchain & Web3' },
+                { Icon: Code2, label: 'Software Engineering & Full-Stack' },
+                { Icon: Heart, label: 'Open Source Collaboration' },
+              ].map(({ Icon, label }) => (
+                <div
+                  key={label}
+                  className="bg-bg-card p-5 md:p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col items-center text-center gap-3"
+                >
+                  <Icon size={26} className="text-[#3d7e93]" />
+                  <span className="text-sm md:text-base font-semibold text-text leading-snug">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── MISSION ── */}
         <section id="mission" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <div className="max-w-4xl mx-auto text-center">
@@ -231,10 +311,10 @@ export default function CommunityPage() {
           <div className="max-w-6xl mx-auto">
             <SectionHeading badge="Community Impact" title="Real numbers, verified as we go" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
-              <StatCard value="3000+" label="students reached across all community activities" />
-              <StatCard value="100+" label="students trained — Algorand Blockchain Workshop" />
-              <StatCard value="500+" label="students from 40+ schools — VisioNEX Hackathon" />
-              <StatCard value="2" label="hackathons hosted (VisioNEX 1 & 2)" />
+              <StatCard value="3000+" label="Students Reached" sub="across all community activities" />
+              <StatCard value="100+" label="Students Trained" sub="Algorand Blockchain Workshop" />
+              <StatCard value="500+" label="School Students Engaged" sub="40+ schools · VisioNEX Hackathon" />
+              <StatCard value="2" label="Hackathons Hosted" sub="VisioNEX 1 & 2" />
             </div>
             <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 p-6 md:p-8 text-center">
               <p className="text-sm font-semibold text-text-muted uppercase tracking-widest mb-3">
@@ -249,6 +329,41 @@ export default function CommunityPage() {
                 These competition wins recognize Team SoterCare&apos;s product work, not the community
                 directly — the same people build both.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── COMMUNITY IN ACTION ── */}
+        <section id="community-in-action" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading
+              badge="Community in Action"
+              title="Real students, real events"
+              subtitle="Every photo links to the full event write-up — see the people behind the numbers."
+            />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {[
+                { src: '/assets/community/visionex-hackathon.jpg', alt: 'VisioNEX Hackathon 2', caption: 'VisioNEX Hackathon' },
+                { src: '/assets/community/algorand-workshop.jpg', alt: 'Algorand Foundation Workshop', caption: 'Algorand Workshop' },
+                { src: '/assets/community/cuttingedge-projexpo.jpg', alt: 'CuttingEdge 2026 PROJEXPO', caption: 'CuttingEdge PROJEXPO' },
+                { src: '/assets/community/nsoc-collab.jpg', alt: 'Nexus Spring of Code collaboration', caption: 'Nexus Spring of Code' },
+                { src: '/assets/community/gssoc.jpg', alt: 'GirlScript Summer of Code 2026', caption: 'GirlScript Summer of Code' },
+                { src: '/assets/community/solana-event.jpg', alt: 'Solana Community Event', caption: 'Solana Community Event' },
+                { src: '/assets/community/us-delegation.jpg', alt: 'U.S. Delegation Visit', caption: 'U.S. Delegation Visit' },
+                { src: '/assets/community/codesprint-11.jpg', alt: 'CodeSprint 11', caption: 'CodeSprint 11' },
+              ].map((photo) => (
+                <GalleryPhoto key={photo.src} {...photo} />
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <a
+                href={`${COMMUNITY_URL}/blob/main/events/media-coverage.md`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-[#3d7e93] hover:underline"
+              >
+                See the full photo archive →
+              </a>
             </div>
           </div>
         </section>
@@ -437,25 +552,19 @@ export default function CommunityPage() {
         {/* ── PARTNERS ── */}
         <section id="partners" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <div className="max-w-5xl mx-auto">
-            <SectionHeading badge="Partners" title="Communities we build alongside" />
-            <div className="flex flex-wrap justify-center gap-3">
-              {[
-                'Nexus Spring of Code (NSoC)',
-                'Algorand Foundation',
-                'Solana Community',
-                'GirlScript Summer of Code',
-                'IEEE',
-                'AWS Cloud Club',
-                'Informatics Institute of Technology (IIT)',
-              ].map((partner) => (
-                <span
-                  key={partner}
-                  className="bg-bg-card px-5 py-2.5 rounded-full shadow-sm border border-black/5 text-sm font-semibold text-text flex items-center gap-2"
-                >
-                  <Handshake size={14} className="text-[#3d7e93]" />
-                  {partner}
-                </span>
-              ))}
+            <SectionHeading
+              badge="Partners"
+              title="Communities we build alongside"
+              subtitle="We collaborate with foundations, student organizations, and technology communities to deliver workshops, hackathons, and open-source initiatives."
+            />
+            <div className="flex flex-wrap justify-center gap-4 md:gap-5">
+              <PartnerCard name="Nexus Spring of Code" logo="/assets/partners/nsoc-logo.png" />
+              <PartnerCard name="Algorand Foundation" Icon={Link2} />
+              <PartnerCard name="Solana Community" Icon={Radio} />
+              <PartnerCard name="GirlScript Summer of Code" Icon={Heart} />
+              <PartnerCard name="IEEE" Icon={Building2} />
+              <PartnerCard name="AWS Cloud Club" Icon={Cloud} />
+              <PartnerCard name="Informatics Institute of Technology" Icon={GraduationCap} />
             </div>
           </div>
         </section>
