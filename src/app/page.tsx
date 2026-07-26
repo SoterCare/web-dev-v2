@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar';
 import SplashScreen from '@/components/SplashScreen';
 import Hero from '@/components/Hero';
 import Mission from '@/components/Mission';
+import CommunityIntro from '@/components/CommunityIntro';
 import Product from '@/components/Product';
 import Features from '@/components/Features';
 import Pricing from '@/components/Pricing';
@@ -54,6 +55,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Mission />
+      <CommunityIntro />
       <LatestNews />
       <Product />
       <Features />
