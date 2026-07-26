@@ -94,16 +94,28 @@ function PartnerCard({
   name,
   logo,
   Icon,
+  dark,
 }: {
   name: string;
   logo?: string;
   Icon?: React.ElementType;
+  dark?: boolean;
 }) {
   return (
     <div className="bg-bg-card rounded-2xl shadow-sm border border-black/5 p-5 flex flex-col items-center gap-3 w-40 sm:w-44">
-      <div className="h-12 w-12 rounded-xl overflow-hidden flex items-center justify-center bg-black/[0.03]">
+      <div
+        className={`h-14 w-full rounded-xl overflow-hidden flex items-center justify-center p-2 ${
+          dark ? 'bg-[#111]' : 'bg-black/[0.03]'
+        }`}
+      >
         {logo ? (
-          <Image src={logo} alt={`${name} logo`} width={48} height={48} className="object-cover h-full w-full" />
+          <Image
+            src={logo}
+            alt={`${name} logo`}
+            width={112}
+            height={56}
+            className="object-contain h-full w-full"
+          />
         ) : Icon ? (
           <Icon size={22} className="text-[#3d7e93]" />
         ) : (
@@ -559,12 +571,12 @@ export default function CommunityPage() {
             />
             <div className="flex flex-wrap justify-center gap-4 md:gap-5">
               <PartnerCard name="Nexus Spring of Code" logo="/assets/partners/nsoc-logo.png" />
-              <PartnerCard name="Algorand Foundation" Icon={Link2} />
-              <PartnerCard name="Solana Community" Icon={Radio} />
-              <PartnerCard name="GirlScript Summer of Code" Icon={Heart} />
+              <PartnerCard name="Algorand Foundation" logo="/assets/partners/algorand-logo.png" />
+              <PartnerCard name="Solana Community" logo="/assets/partners/solana-logo.png" dark />
+              <PartnerCard name="GirlScript Summer of Code" logo="/assets/partners/gssoc-logo.png" />
               <PartnerCard name="IEEE" Icon={Building2} />
               <PartnerCard name="AWS Cloud Club" Icon={Cloud} />
-              <PartnerCard name="Informatics Institute of Technology" Icon={GraduationCap} />
+              <PartnerCard name="Informatics Institute of Technology" logo="/assets/partners/iit-logo.png" />
             </div>
           </div>
         </section>
