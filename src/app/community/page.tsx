@@ -22,7 +22,6 @@ import {
   Link2,
   Code2,
   Heart,
-  Building2,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -73,9 +72,24 @@ function StatCard({ value, label, sub }: { value: string; label: string; sub?: s
   );
 }
 
-function GalleryPhoto({ src, alt, caption }: { src: string; alt: string; caption: string }) {
+function GalleryPhoto({
+  src,
+  alt,
+  caption,
+  fill: fillHeight,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  fill?: boolean;
+}) {
   return (
-    <div className="group relative rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-black/5 aspect-[4/3]">
+    <div
+      className={`group relative rounded-2xl md:rounded-3xl overflow-hidden shadow-sm border border-black/5 ${
+        fillHeight ? 'h-full min-h-[16rem] md:min-h-full' : 'aspect-[4/3]'
+      }`}
+    >
+
       <Image
         src={src}
         alt={alt}
@@ -108,7 +122,10 @@ function PartnerCard({
           dark ? 'bg-[#111]' : 'bg-black/[0.03]'
         }`}
       >
-        {logo ? (
+        {logo?.endsWith('.svg') ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logo} alt={`${name} logo`} className="object-contain h-full w-full" />
+        ) : logo ? (
           <Image
             src={logo}
             alt={`${name} logo`}
@@ -199,8 +216,34 @@ export default function CommunityPage() {
         <NewsTopBar backHref="/" backLabel="Back to SoterCare" />
 
         {/* ── HERO ── */}
-        <section className="pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6 md:gap-8">
+        <section className="relative pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+          {/* Marquee band — the same signature device from the homepage Hero/Footer, retuned to this page's own words */}
+          <div className="absolute inset-0 z-0 flex flex-col justify-center gap-4 md:gap-6 overflow-hidden select-none pointer-events-none opacity-[0.05]">
+            {[
+              { text: 'OPEN SOURCE', dir: 'left', duration: '32s' },
+              { text: 'SOTERCARE DEVELOPERS', dir: 'right', duration: '40s' },
+              { text: 'LEARN TOGETHER · SHIP TOGETHER', dir: 'left', duration: '46s' },
+            ].map((row, i) => {
+              const repeated = Array(6).fill(`${row.text} · `).join('');
+              return (
+                <div key={i} className="overflow-hidden py-1 sm:py-2">
+                  <div
+                    className="flex whitespace-nowrap will-change-transform"
+                    style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
+                  >
+                    <span className="text-[9rem] md:text-[13rem] font-black tracking-tighter leading-[0.8] text-black">
+                      {repeated}
+                    </span>
+                    <span className="text-[9rem] md:text-[13rem] font-black tracking-tighter leading-[0.8] text-black" aria-hidden="true">
+                      {repeated}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 md:gap-8">
             <Badge>SoterCare Developers</Badge>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text leading-[1.1] tracking-tight">
               The Student Developer Community <span className="text-[#3d7e93]">of SoterCare</span>
@@ -260,7 +303,7 @@ export default function CommunityPage() {
         </section>
 
         {/* ── LEARNING AREAS ── */}
-        <section id="learning-areas" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <section id="learning-areas" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20 bg-[#3d7e93]/[0.04]">
           <div className="max-w-5xl mx-auto">
             <SectionHeading
               badge="Learning Areas"
@@ -318,67 +361,82 @@ export default function CommunityPage() {
           </div>
         </section>
 
-        {/* ── COMMUNITY IMPACT ── */}
-        <section id="impact" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          <div className="max-w-6xl mx-auto">
-            <SectionHeading badge="Community Impact" title="Real numbers, verified as we go" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
-              <StatCard value="3000+" label="Students Reached" sub="across all community activities" />
-              <StatCard value="100+" label="Students Trained" sub="Algorand Blockchain Workshop" />
-              <StatCard value="500+" label="School Students Engaged" sub="40+ schools · VisioNEX Hackathon" />
-              <StatCard value="2" label="Hackathons Hosted" sub="VisioNEX 1 & 2" />
+        {/* ── THE PROOF: COMMUNITY IMPACT + COMMUNITY IN ACTION ── */}
+        <div className="bg-white/70">
+          {/* ── COMMUNITY IMPACT ── */}
+          <section id="impact" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 pt-12 md:pt-20 pb-8 md:pb-10">
+            <div className="max-w-6xl mx-auto">
+              <SectionHeading badge="Community Impact" title="Real numbers, verified as we go" />
+              <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 overflow-hidden mb-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-black/[0.06]">
+                  {[
+                    { value: '3000+', label: 'Students Reached', sub: 'across all community activities' },
+                    { value: '100+', label: 'Students Trained', sub: 'Algorand Blockchain Workshop' },
+                    { value: '500+', label: 'School Students Engaged', sub: '40+ schools · VisioNEX Hackathon' },
+                    { value: '2', label: 'Hackathons Hosted', sub: 'VisioNEX 1 & 2' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="p-6 md:p-8 text-center">
+                      <div className="text-3xl md:text-4xl font-bold text-[#3d7e93] mb-2">{stat.value}</div>
+                      <div className="text-sm md:text-base text-text font-semibold leading-snug">{stat.label}</div>
+                      <div className="text-xs text-text-muted mt-1">{stat.sub}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 p-6 md:p-8 text-center">
+                <p className="text-sm font-semibold text-text-muted uppercase tracking-widest mb-3">
+                  Community members have also competed in
+                </p>
+                <p className="text-sm md:text-base text-text leading-relaxed">
+                  🏆 Hult Prize (Finalist) · 🥈 CuttingEdge 2026 (2nd Runner-Up, Best SDGP Community &amp;
+                  Project) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🥉 CodeSprint 11 (3rd
+                  Place)
+                </p>
+                <p className="mt-3 text-xs text-text-muted max-w-xl mx-auto">
+                  These competition wins recognize Team SoterCare&apos;s product work, not the community
+                  directly — the same people build both.
+                </p>
+              </div>
             </div>
-            <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 p-6 md:p-8 text-center">
-              <p className="text-sm font-semibold text-text-muted uppercase tracking-widest mb-3">
-                Community members have also competed in
-              </p>
-              <p className="text-sm md:text-base text-text leading-relaxed">
-                🏆 Hult Prize (Finalist) · 🥈 CuttingEdge 2026 (2nd Runner-Up, Best SDGP Community &amp;
-                Project) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🥉 CodeSprint 11 (3rd
-                Place)
-              </p>
-              <p className="mt-3 text-xs text-text-muted max-w-xl mx-auto">
-                These competition wins recognize Team SoterCare&apos;s product work, not the community
-                directly — the same people build both.
-              </p>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── COMMUNITY IN ACTION ── */}
-        <section id="community-in-action" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          <div className="max-w-6xl mx-auto">
-            <SectionHeading
-              badge="Community in Action"
-              title="Real students, real events"
-              subtitle="Every photo links to the full event write-up — see the people behind the numbers."
-            />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {[
-                { src: '/assets/community/visionex-hackathon.jpg', alt: 'VisioNEX Hackathon 2', caption: 'VisioNEX Hackathon' },
-                { src: '/assets/community/algorand-workshop.jpg', alt: 'Algorand Foundation Workshop', caption: 'Algorand Workshop' },
-                { src: '/assets/community/cuttingedge-projexpo.jpg', alt: 'CuttingEdge 2026 PROJEXPO', caption: 'CuttingEdge PROJEXPO' },
-                { src: '/assets/community/nsoc-collab.jpg', alt: 'Nexus Spring of Code collaboration', caption: 'Nexus Spring of Code' },
-                { src: '/assets/community/gssoc.jpg', alt: 'GirlScript Summer of Code 2026', caption: 'GirlScript Summer of Code' },
-                { src: '/assets/community/solana-event.jpg', alt: 'Solana Community Event', caption: 'Solana Community Event' },
-                { src: '/assets/community/us-delegation.jpg', alt: 'U.S. Delegation Visit', caption: 'U.S. Delegation Visit' },
-                { src: '/assets/community/codesprint-11.jpg', alt: 'CodeSprint 11', caption: 'CodeSprint 11' },
-              ].map((photo) => (
-                <GalleryPhoto key={photo.src} {...photo} />
-              ))}
+          {/* ── COMMUNITY IN ACTION ── */}
+          <section id="community-in-action" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 pt-8 md:pt-10 pb-12 md:pb-20">
+            <div className="max-w-6xl mx-auto">
+              <SectionHeading
+                badge="Community in Action"
+                title="Real students, real events"
+                subtitle="Every photo links to the full event write-up — see the people behind the numbers."
+              />
+              <div className="grid grid-cols-2 md:grid-cols-4 md:grid-flow-dense gap-4 md:gap-6">
+                {[
+                  { src: '/assets/community/visionex-hackathon.jpg', alt: 'VisioNEX Hackathon 2', caption: 'VisioNEX Hackathon', feature: true },
+                  { src: '/assets/community/algorand-workshop.jpg', alt: 'Algorand Foundation Workshop', caption: 'Algorand Workshop' },
+                  { src: '/assets/community/cuttingedge-projexpo.jpg', alt: 'CuttingEdge 2026 PROJEXPO', caption: 'CuttingEdge PROJEXPO' },
+                  { src: '/assets/community/nsoc-collab.jpg', alt: 'Nexus Spring of Code collaboration', caption: 'Nexus Spring of Code' },
+                  { src: '/assets/community/gssoc.jpg', alt: 'GirlScript Summer of Code 2026', caption: 'GirlScript Summer of Code' },
+                  { src: '/assets/community/solana-event.jpg', alt: 'Solana Community Event', caption: 'Solana Community Event' },
+                  { src: '/assets/community/us-delegation.jpg', alt: 'U.S. Delegation Visit', caption: 'U.S. Delegation Visit' },
+                  { src: '/assets/community/codesprint-11.jpg', alt: 'CodeSprint 11', caption: 'CodeSprint 11' },
+                ].map(({ feature, ...photo }) => (
+                  <div key={photo.src} className={feature ? 'md:col-span-2 md:row-span-2 md:h-full' : undefined}>
+                    <GalleryPhoto {...photo} fill={feature} />
+                  </div>
+                ))}
+              </div>
+              <div className="text-center mt-8">
+                <a
+                  href={`${COMMUNITY_URL}/blob/main/events/media-coverage.md`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-[#3d7e93] hover:underline"
+                >
+                  See the full photo archive →
+                </a>
+              </div>
             </div>
-            <div className="text-center mt-8">
-              <a
-                href={`${COMMUNITY_URL}/blob/main/events/media-coverage.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-semibold text-[#3d7e93] hover:underline"
-              >
-                See the full photo archive →
-              </a>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         {/* ── WORKSHOPS ── */}
         <section id="workshops" className="scroll-mt-24 px-4 sm:px-6 lg:px-8 py-12 md:py-20">
@@ -574,8 +632,8 @@ export default function CommunityPage() {
               <PartnerCard name="Algorand Foundation" logo="/assets/partners/algorand-logo.png" />
               <PartnerCard name="Solana Community" logo="/assets/partners/solana-logo.png" dark />
               <PartnerCard name="GirlScript Summer of Code" logo="/assets/partners/gssoc-logo.png" />
-              <PartnerCard name="IEEE" Icon={Building2} />
-              <PartnerCard name="AWS Cloud Club" Icon={Cloud} />
+              <PartnerCard name="IEEE" logo="/assets/partners/ieee-logo.svg" />
+              <PartnerCard name="AWS Cloud Club" logo="/assets/partners/aws-logo.svg" />
               <PartnerCard name="Informatics Institute of Technology" logo="/assets/partners/iit-logo.png" />
             </div>
           </div>
