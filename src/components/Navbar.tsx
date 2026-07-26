@@ -109,6 +109,7 @@ const Navbar = () => {
           <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
           <Link href="#contact" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Contact</Link>
           <Link href="/news" className="transition-colors text-base font-medium text-[#3d7e93] hover:text-black"><span className="news-heartbeat">News</span></Link>
+          <a href="https://github.com/SoterCare/community" target="_blank" rel="noopener noreferrer" className="transition-colors text-base font-medium text-[#797979] hover:text-black">Community</a>
         </div>
 
         {/* CTA Button */}
@@ -182,6 +183,15 @@ const Navbar = () => {
         >
           <span className="news-heartbeat">News</span>
         </Link>
+        <a
+          href="https://github.com/SoterCare/community"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+        >
+          Community
+        </a>
         <Link
           href="/dashboard"
           className="bg-bg-panel shadow-m text-text px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
