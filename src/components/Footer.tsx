@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -302,14 +303,12 @@ const Footer = () => {
 
                 {/* Socials & Links */}
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 order-2 xl:order-3 items-center">
-                  <a
-                    href="https://github.com/SoterCare/community"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/community"
                     className="hover:text-text transition-colors font-medium"
                   >
                     Join our developer community →
-                  </a>
+                  </Link>
                   <div className="flex gap-4 items-center">
                     <a
                       href="tel:+94704888440"
