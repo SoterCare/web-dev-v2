@@ -370,10 +370,10 @@ export default function CommunityPage() {
               <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 overflow-hidden mb-10">
                 <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-black/[0.06]">
                   {[
-                    { value: '3000+', label: 'Students Reached', sub: 'across all community activities' },
-                    { value: '100+', label: 'Students Trained', sub: 'Algorand Blockchain Workshop' },
-                    { value: '500+', label: 'School Students Engaged', sub: '40+ schools · VisioNEX Hackathon' },
-                    { value: '2', label: 'Hackathons Hosted', sub: 'VisioNEX 1 & 2' },
+                    { value: '900+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
+                    { value: '500+', label: 'VisioNEX Hackathon', sub: 'school students · 40+ schools' },
+                    { value: '300+', label: 'Sandbox @ IIT', sub: 'university students' },
+                    { value: '100+', label: 'Algorand Workshop', sub: 'trained on AlgoKit 3.0' },
                   ].map((stat) => (
                     <div key={stat.label} className="p-6 md:p-8 text-center">
                       <div className="text-3xl md:text-4xl font-bold text-[#3d7e93] mb-2">{stat.value}</div>
