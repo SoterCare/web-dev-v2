@@ -389,8 +389,8 @@ export default function CommunityPage() {
                 </p>
                 <p className="text-sm md:text-base text-text leading-relaxed">
                   🏆 Hult Prize (Finalist) · 🥈 CuttingEdge 2026 (2nd Runner-Up, Best SDGP Community &amp;
-                  Project) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🥉 CodeSprint 11 (3rd
-                  Place)
+                  Project) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🎯 CodeSprint 11
+                  (Finalist)
                 </p>
                 <p className="mt-3 text-xs text-text-muted max-w-xl mx-auto">
                   These competition wins recognize Team SoterCare&apos;s product work, not the community
@@ -504,7 +504,7 @@ export default function CommunityPage() {
               />
               <EventCard
                 title="CodeSprint 11"
-                result="3rd Place"
+                result="Finalist"
                 href={`${COMMUNITY_URL}/blob/main/events/codesprint-11.md`}
                 newsHref="/news/team-sotercare-named-a-finalist-at-codesprint-11"
               />
