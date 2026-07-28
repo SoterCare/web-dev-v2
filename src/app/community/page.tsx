@@ -372,7 +372,7 @@ export default function CommunityPage() {
                   {[
                     { value: '700+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
                     { value: '500+', label: 'VisioNEX Hackathon', sub: 'school students · 40+ schools' },
-                    { value: '100+', label: 'Sandbox @ IIT', sub: 'university students, session series' },
+                    { value: '100+', label: 'Sandbox @ IIT', sub: 'with the AWS Student Community' },
                     { value: '100+', label: 'Algorand Workshop', sub: 'trained on AlgoKit 3.0' },
                   ].map((stat) => (
                     <div key={stat.label} className="p-6 md:p-8 text-center">
@@ -625,7 +625,7 @@ export default function CommunityPage() {
             <SectionHeading
               badge="Partners"
               title="Communities we build alongside"
-              subtitle="We collaborate with foundations, student organizations, and technology communities to deliver workshops, hackathons, and open-source initiatives."
+              subtitle="We collaborate with foundations, student organizations, and technology communities to deliver workshops, hackathons, and open-source initiatives. These are community collaborations — not corporate sponsorships or official endorsements."
             />
             <div className="flex flex-wrap justify-center gap-4 md:gap-5">
               <PartnerCard name="Nexus Spring of Code" logo="/assets/partners/nsoc-logo.png" />
@@ -633,7 +633,7 @@ export default function CommunityPage() {
               <PartnerCard name="Solana Community" logo="/assets/partners/solana-logo.png" dark />
               <PartnerCard name="GirlScript Summer of Code" logo="/assets/partners/gssoc-logo.png" />
               <PartnerCard name="IEEE" logo="/assets/partners/ieee-logo.svg" />
-              <PartnerCard name="AWS Cloud Club" logo="/assets/partners/aws-logo.svg" />
+              <PartnerCard name="AWS Student Community" logo="/assets/partners/aws-logo.svg" />
               <PartnerCard name="Informatics Institute of Technology" logo="/assets/partners/iit-logo.png" />
             </div>
           </div>
