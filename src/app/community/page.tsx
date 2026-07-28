@@ -370,9 +370,9 @@ export default function CommunityPage() {
               <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 overflow-hidden mb-10">
                 <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-black/[0.06]">
                   {[
-                    { value: '900+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
+                    { value: '700+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
                     { value: '500+', label: 'VisioNEX Hackathon', sub: 'school students · 40+ schools' },
-                    { value: '300+', label: 'Sandbox @ IIT', sub: 'university students' },
+                    { value: '100+', label: 'Sandbox @ IIT', sub: 'university students, session series' },
                     { value: '100+', label: 'Algorand Workshop', sub: 'trained on AlgoKit 3.0' },
                   ].map((stat) => (
                     <div key={stat.label} className="p-6 md:p-8 text-center">
