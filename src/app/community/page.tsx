@@ -372,7 +372,7 @@ export default function CommunityPage() {
                   {[
                     { value: '700+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
                     { value: '500+', label: 'VisioNEX Hackathon', sub: 'school students · 40+ schools' },
-                    { value: '100+', label: 'Sandbox @ IIT', sub: 'across all sessions · Jul 2026' },
+                    { value: '100+', label: 'Sandbox @ IIT', sub: 'across all sessions · Jul 25, 2026' },
                     { value: '100+', label: 'Algorand Workshop', sub: 'trained on AlgoKit 3.0' },
                   ].map((stat) => (
                     <div key={stat.label} className="p-6 md:p-8 text-center">
@@ -633,7 +633,7 @@ export default function CommunityPage() {
               <PartnerCard name="Solana Community" logo="/assets/partners/solana-logo.png" dark />
               <PartnerCard name="GirlScript Summer of Code" logo="/assets/partners/gssoc-logo.png" />
               <PartnerCard name="IEEE" logo="/assets/partners/ieee-logo.svg" />
-              <PartnerCard name="AWS Student Community" logo="/assets/partners/aws-logo.svg" />
+              <PartnerCard name="AWS Student Community at IIT" logo="/assets/partners/aws-logo.svg" />
               <PartnerCard name="Informatics Institute of Technology" logo="/assets/partners/iit-logo.png" />
             </div>
           </div>
