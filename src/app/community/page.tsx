@@ -372,7 +372,7 @@ export default function CommunityPage() {
                   {[
                     { value: '700+', label: 'Students Directly Engaged', sub: 'the three events below, summed' },
                     { value: '500+', label: 'VisioNEX Hackathon', sub: 'school students · 40+ schools' },
-                    { value: '100+', label: 'Sandbox @ IIT', sub: 'across a multi-session series' },
+                    { value: '100+', label: 'Sandbox @ IIT', sub: 'across all sessions · Jul 2026' },
                     { value: '100+', label: 'Algorand Workshop', sub: 'trained on AlgoKit 3.0' },
                   ].map((stat) => (
                     <div key={stat.label} className="p-6 md:p-8 text-center">
