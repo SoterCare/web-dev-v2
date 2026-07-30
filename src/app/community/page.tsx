@@ -388,8 +388,8 @@ export default function CommunityPage() {
                   Community members have also competed in
                 </p>
                 <p className="text-sm md:text-base text-text leading-relaxed">
-                  🏆 Hult Prize (Finalist) · 🥈 CuttingEdge 2026 (2nd Runner-Up, Best SDGP Community &amp;
-                  Project) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🎯 CodeSprint 11
+                  🏆 Hult Prize (Finalist) · 🥉 CuttingEdge 2026 (3rd Place, Best SDGP Project
+                  category) · 🚀 NIA Innovation Voucher Programme 2026 (Selected) · 🎯 CodeSprint 11
                   (Finalist)
                 </p>
                 <p className="mt-3 text-xs text-text-muted max-w-xl mx-auto">
@@ -482,7 +482,7 @@ export default function CommunityPage() {
               />
               <EventCard
                 title="CuttingEdge 2026 PROJEXPO IIT"
-                result="Best SDGP Community & Project"
+                result="3rd Place — Best SDGP Project category"
                 href={`${COMMUNITY_URL}/blob/main/events/cuttingedge-2026.md`}
               />
               <EventCard
