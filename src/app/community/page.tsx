@@ -632,7 +632,7 @@ export default function CommunityPage() {
               <PartnerCard name="Algorand Foundation" logo="/assets/partners/algorand-logo.png" />
               <PartnerCard name="Solana Community" logo="/assets/partners/solana-logo.png" dark />
               <PartnerCard name="GirlScript Summer of Code" logo="/assets/partners/gssoc-logo.png" />
-              <PartnerCard name="IEEE" logo="/assets/partners/ieee-logo.svg" />
+              <PartnerCard name="IEEE" Icon={Users} />
               <PartnerCard name="AWS Student Community at IIT" Icon={Cloud} />
               <PartnerCard name="Informatics Institute of Technology" logo="/assets/partners/iit-logo.png" />
             </div>

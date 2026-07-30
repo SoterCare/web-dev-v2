@@ -20,17 +20,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/community`,
+      lastModified: new Date("2026-07-29"),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/news`,
       lastModified: new Date("2026-06-29"),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     ...articleEntries,
-    {
-      url: `${baseUrl}/dashboard`,
-      lastModified: new Date("2026-06-29"),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
   ];
 }

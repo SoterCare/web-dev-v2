@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { Instagram, Linkedin, Play, Mail, ArrowLeft } from "lucide-react";
+import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -333,6 +333,15 @@ const Footer = () => {
                       className="hover:text-text transition-colors p-2 hover:bg-black/5 rounded-full"
                     >
                       <Linkedin size={20} />
+                    </a>
+                    <a
+                      href="https://github.com/SoterCare"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="SoterCare on GitHub"
+                      className="hover:text-text transition-colors p-2 hover:bg-black/5 rounded-full"
+                    >
+                      <Github size={20} />
                     </a>
                   </div>
                 </div>
