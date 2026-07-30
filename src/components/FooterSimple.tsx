@@ -1,6 +1,16 @@
 import { Instagram, Linkedin, Mail, Phone } from 'lucide-react';
 
-const FooterSimple = () => {
+type FooterSimpleProps = {
+  /** Displayed phone number. Defaults to the general contact number. */
+  phone?: string;
+  /** Value used in the `tel:` link. Defaults to the general contact number. */
+  phoneTel?: string;
+};
+
+const FooterSimple = ({
+  phone = '+94 70 4888 440',
+  phoneTel = '+94704888440',
+}: FooterSimpleProps = {}) => {
   return (
     <footer className="relative z-10 mt-16">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -27,10 +37,10 @@ const FooterSimple = () => {
             <div className="flex items-center gap-2">
               <Phone size={16} className="text-foreground/50" />
               <a
-                href="tel:+94769169052"
+                href={`tel:${phoneTel}`}
                 className="transition-colors hover:text-foreground"
               >
-                +94 76 916 9052
+                {phone}
               </a>
             </div>
             <div className="flex items-center gap-2">

@@ -722,7 +722,7 @@ export default function CommunityPage() {
           </div>
         </section>
 
-        <FooterSimple />
+        <FooterSimple phone="+94 76 916 9052" phoneTel="+94769169052" />
       </div>
     </main>
   );
