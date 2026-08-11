@@ -63,7 +63,7 @@ const Navbar = () => {
       },
       {
         width: "95%", // Mobile default basically, or constrained desktop
-        maxWidth: "900px", // Shorter state (current max-w-5xl)
+        maxWidth: "1080px", // Shorter state, wide enough for the full link set
         duration: 0.5,
         ease: "power1.inOut",
         scrollTrigger: {
@@ -108,8 +108,8 @@ const Navbar = () => {
           <Link href="#pricing" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Pricing</Link>
           <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
           <Link href="#contact" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Contact</Link>
-          <Link href="/news" className="transition-colors text-base font-medium text-[#3d7e93] hover:text-black"><span className="news-heartbeat">News</span></Link>
           <Link href="/community" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Community</Link>
+          <Link href="/news" className="transition-colors text-base font-medium text-[#3d7e93] hover:text-black"><span className="news-heartbeat">News</span></Link>
         </div>
 
         {/* CTA Button */}
@@ -177,18 +177,18 @@ const Navbar = () => {
           Contact
         </Link>
         <Link
-          href="/news"
-          className="text-[#3d7e93] hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-        >
-          <span className="news-heartbeat">News</span>
-        </Link>
-        <Link
           href="/community"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
         >
           Community
+        </Link>
+        <Link
+          href="/news"
+          className="text-[#3d7e93] hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+        >
+          <span className="news-heartbeat">News</span>
         </Link>
         <Link
           href="/dashboard"
