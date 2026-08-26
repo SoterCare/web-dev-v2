@@ -55,11 +55,11 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Mission />
-      <CommunityIntro />
       <LatestNews />
       <Product />
       <Features />
       <Pricing />
+      <CommunityIntro />
       <FAQ />
       <Team />
       <Footer />
