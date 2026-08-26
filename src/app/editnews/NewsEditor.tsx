@@ -16,6 +16,15 @@ function slugify(str: string): string {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+function blocksToBody(blocks: ContentBlock[] | undefined): string {
+  if (!blocks) return '';
+  return blocks
+    .filter((b): b is { type: 'text'; content: string } => b.type === 'text')
+    .map((b) => b.content.trim())
+    .filter(Boolean)
+    .join('\n\n');
+}
+
 function emptyArticle(): NewsArticle {
   return {
     id: crypto.randomUUID(),
@@ -473,7 +482,8 @@ export default function NewsEditor({ initialData }: { initialData: NewsData }) {
     setSaveError('');
     setSaved(false);
     try {
-      await saveNewsAction({ articles });
+      const toSave = articles.map((a) => ({ ...a, body: blocksToBody(a.bodyBlocks) }));
+      await saveNewsAction({ articles: toSave });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
