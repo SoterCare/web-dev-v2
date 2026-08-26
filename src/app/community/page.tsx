@@ -218,7 +218,7 @@ export default function CommunityPage() {
         {/* ── HERO ── */}
         <section className="relative pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Marquee band — the same signature device from the homepage Hero/Footer, retuned to this page's own words */}
-          <div className="absolute inset-0 z-0 flex flex-col justify-center gap-4 md:gap-6 overflow-hidden select-none pointer-events-none opacity-[0.05]">
+          <div className="absolute inset-x-0 top-24 sm:top-28 md:top-36 z-0 flex flex-col gap-4 md:gap-6 overflow-hidden select-none pointer-events-none opacity-[0.05]">
             {[
               { text: 'OPEN SOURCE', dir: 'left', duration: '32s' },
               { text: 'SOTERCARE DEVELOPERS', dir: 'right', duration: '40s' },

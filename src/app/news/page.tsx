@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
@@ -11,6 +12,14 @@ export const metadata: Metadata = {
   title: 'News',
   description: 'Latest news and updates from SoterCare — product announcements, research milestones, and team updates.',
 };
+
+function Badge({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold uppercase tracking-widest text-text-muted w-fit">
+      {children}
+    </span>
+  );
+}
 
 function formatDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
@@ -100,15 +109,63 @@ export default function NewsPage() {
       <div className="relative z-10">
         <NewsTopBar backHref="/" backLabel="Back to SoterCare" />
 
-        <section className="relative z-10 pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8 sm:mb-12">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text">Latest News</h1>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base text-text-muted max-w-xl mx-auto">
-                Product announcements, research milestones, and team updates from SoterCare.
-              </p>
-            </div>
+        {/* ── HERO ── */}
+        <section className="relative pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+          {/* Marquee band — the same signature device from the homepage Hero/Footer, retuned to this page's own words */}
+          <div className="absolute inset-x-0 top-24 sm:top-28 md:top-36 z-0 flex flex-col gap-4 md:gap-6 overflow-hidden select-none pointer-events-none opacity-[0.05]">
+            {[
+              { text: 'ANNOUNCEMENTS', dir: 'left', duration: '32s' },
+              { text: 'SOTERCARE NEWSROOM', dir: 'right', duration: '40s' },
+              { text: 'MILESTONES · UPDATES · STORIES', dir: 'left', duration: '46s' },
+            ].map((row, i) => {
+              const repeated = Array(6).fill(`${row.text} · `).join('');
+              return (
+                <div key={i} className="overflow-hidden py-1 sm:py-2">
+                  <div
+                    className="flex whitespace-nowrap will-change-transform"
+                    style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
+                  >
+                    <span className="text-[9rem] md:text-[13rem] font-black tracking-tighter leading-[0.8] text-black">
+                      {repeated}
+                    </span>
+                    <span className="text-[9rem] md:text-[13rem] font-black tracking-tighter leading-[0.8] text-black" aria-hidden="true">
+                      {repeated}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
+          <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 md:gap-8">
+            <Badge>SoterCare News</Badge>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text leading-[1.1] tracking-tight">
+              The Newsroom <span className="text-[#3d7e93]">of SoterCare</span>
+            </h1>
+            <p className="max-w-2xl text-base md:text-xl text-text-muted leading-relaxed">
+              Product announcements, research milestones, competition wins, and team updates —
+              everything happening at SoterCare, written as it happens.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
+              <Link
+                href="#latest"
+                className="group bg-text text-bg-card px-7 py-3.5 rounded-full font-bold text-base hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg"
+              >
+                Read the Latest
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/community"
+                className="bg-bg-card text-text px-7 py-3.5 rounded-full font-bold text-base shadow-m hover:scale-105 active:scale-95 transition-all duration-300"
+              >
+                Visit Community
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="latest" className="scroll-mt-24 relative z-10 pb-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
             {sorted.length === 0 ? (
               <p className="text-center text-text-muted py-24">No articles yet. Check back soon.</p>
             ) : (
