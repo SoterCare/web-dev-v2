@@ -1,6 +1,28 @@
 {
   "articles": [
     {
+      "id": "33bf4236-bd62-440f-9d40-b485ae1b13bb",
+      "title": "SoterCare getting into NEO Ventures",
+      "slug": "sotercare-getting-into-neo-ventures",
+      "summary": "SoterCare has joined NEO Ventures as an incubated startup, marking an exciting new step in our journey to grow, learn, and create meaningful impact in elderly care.",
+      "body": "We are happy to share that SoterCare has been selected to join NEO Ventures as an incubated startup. We recently presented our initial pitch to the NEO Ventures team, sharing our vision, technology, and the problem we are working to solve in elderly care.\n\nJoining NEO Ventures gives us an opportunity to gain valuable guidance, industry exposure, and hands-on experience as we continue developing SoterCare. We look forward to learning from experienced mentors, strengthening our business and product, and taking SoterCare to the next stage.\n\nThis is an exciting milestone for our team, and we are happy to see where this journey with NEO Ventures takes us.",
+      "bodyBlocks": [
+        {
+          "type": "text",
+          "content": "We are happy to share that SoterCare has been selected to join NEO Ventures as an incubated startup. We recently presented our initial pitch to the NEO Ventures team, sharing our vision, technology, and the problem we are working to solve in elderly care.\n\nJoining NEO Ventures gives us an opportunity to gain valuable guidance, industry exposure, and hands-on experience as we continue developing SoterCare. We look forward to learning from experienced mentors, strengthening our business and product, and taking SoterCare to the next stage.\n\nThis is an exciting milestone for our team, and we are happy to see where this journey with NEO Ventures takes us."
+        }
+      ],
+      "date": "2026-09-14",
+      "coverImage": "/images/news/80ffc844-4518-4efb-b6db-818bf125b42a.webp",
+      "tags": [
+        "Neo Ventures",
+        "Trace City Expert",
+        "Startup",
+        "Incubator"
+      ],
+      "pinned": false
+    },
+    {
       "id": "6fb1840f-ee69-431b-9191-024134b8c10a",
       "title": "Team SoterCare Secures the University Voucher under the NIA Innovation Voucher Programme 2026.",
       "slug": "team-sotercare-secures-the-university-voucher-under-the-nia-innovation-voucher-programme-2026",
