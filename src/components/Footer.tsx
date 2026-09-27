@@ -1,5 +1,8 @@
-import React, { useRef, useState, useCallback } from "react";
+"use client";
+
+import React, { Suspense, useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +12,25 @@ import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github } from "lucide-react
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 type ViewState = "footer" | "transitioning-in" | "video" | "transitioning-out";
+
+const MiniPitchQueryHandler = ({ onOpen }: { onOpen: () => void }) => {
+  const searchParams = useSearchParams();
+  const hasHandledMiniPitchParam = useRef(false);
+
+  useEffect(() => {
+    if (searchParams.get("miniPitch") !== "open") {
+      hasHandledMiniPitchParam.current = false;
+      return;
+    }
+
+    if (hasHandledMiniPitchParam.current) return;
+
+    hasHandledMiniPitchParam.current = true;
+    onOpen();
+  }, [searchParams, onOpen]);
+
+  return null;
+};
 
 const Footer = () => {
   const containerRef = useRef<HTMLElement>(null);
@@ -200,6 +222,9 @@ const Footer = () => {
 
   return (
     <footer id="contact" ref={containerRef} className="h-screen w-full bg-bg-body relative z-10">
+      <Suspense fallback={null}>
+        <MiniPitchQueryHandler onOpen={handleWatchClick} />
+      </Suspense>
       <div className="px-2 pt-2 md:px-4 md:pt-4 h-full w-full pb-0">
         <div className="w-full h-full mx-auto text-text rounded-t-[1.5rem] md:rounded-t-[2.5rem] rounded-b-none relative overflow-hidden flex flex-col justify-between bg-gradient-to-t from-white to-bg-body shadow-m">
           {/* Dotted grid — continues the page texture through the footer surface */}
