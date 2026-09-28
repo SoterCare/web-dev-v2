@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { subscribeAction } from "@/app/actions"
 import { X, Mail, CheckCircle, ArrowRight, Loader2 } from "lucide-react"
 
@@ -8,10 +8,12 @@ export default function NewsletterPopup() {
     const [isOpen, setIsOpen] = useState(false)
     const [status, setStatus] = useState<"idle" | "loading" | "success">("idle")
     const [mounted, setMounted] = useState(false)
+    const isVideoViewActive = useRef(false)
 
     useEffect(() => {
         setMounted(true)
-        if (localStorage.getItem("subscribed") || sessionStorage.getItem("newsletter_dismissed")) {
+        const isMiniPitchLink = new URLSearchParams(window.location.search).get("miniPitch") === "open"
+        if (isMiniPitchLink || localStorage.getItem("subscribed") || sessionStorage.getItem("newsletter_dismissed")) {
             return
         }
 
@@ -28,6 +30,7 @@ export default function NewsletterPopup() {
             // Trigger when the element leaves the viewport (scrolled past it)
             // boundingClientRect.top < 0 means it's above the viewport
             if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+                if (isVideoViewActive.current) return
                 setIsOpen(true)
                 observer.disconnect()
             }
@@ -38,6 +41,24 @@ export default function NewsletterPopup() {
         observer.observe(pricingSection)
 
         return () => observer.disconnect()
+    }, [])
+
+    useEffect(() => {
+        const handleVideoStart = () => {
+            isVideoViewActive.current = true
+            setIsOpen(false)
+        }
+        const handleVideoEnd = () => {
+            isVideoViewActive.current = false
+        }
+
+        window.addEventListener("video-view-start", handleVideoStart)
+        window.addEventListener("video-view-end", handleVideoEnd)
+
+        return () => {
+            window.removeEventListener("video-view-start", handleVideoStart)
+            window.removeEventListener("video-view-end", handleVideoEnd)
+        }
     }, [])
 
     const handleClose = () => {

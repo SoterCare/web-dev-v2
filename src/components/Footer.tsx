@@ -44,6 +44,7 @@ const Footer = () => {
 
   const [viewState, setViewState] = useState<ViewState>("footer");
   const [showIframe, setShowIframe] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
   const activeTimeline = useRef<gsap.core.Timeline | null>(null);
 
   // Scroll-triggered entrance animation (unchanged)
@@ -157,6 +158,16 @@ const Footer = () => {
     );
   }, [viewState]);
 
+  const handleMiniPitchButtonClick = useCallback(() => {
+    setIsVideoMuted(false);
+    handleWatchClick();
+  }, [handleWatchClick]);
+
+  const handleMiniPitchLinkOpen = useCallback(() => {
+    setIsVideoMuted(true);
+    handleWatchClick();
+  }, [handleWatchClick]);
+
   const handleBackClick = useCallback(() => {
     if (viewState !== "video") return;
 
@@ -223,7 +234,7 @@ const Footer = () => {
   return (
     <footer id="contact" ref={containerRef} className="h-screen w-full bg-bg-body relative z-10">
       <Suspense fallback={null}>
-        <MiniPitchQueryHandler onOpen={handleWatchClick} />
+        <MiniPitchQueryHandler onOpen={handleMiniPitchLinkOpen} />
       </Suspense>
       <div className="px-2 pt-2 md:px-4 md:pt-4 h-full w-full pb-0">
         <div className="w-full h-full mx-auto text-text rounded-t-[1.5rem] md:rounded-t-[2.5rem] rounded-b-none relative overflow-hidden flex flex-col justify-between bg-gradient-to-t from-white to-bg-body shadow-m">
@@ -298,7 +309,7 @@ const Footer = () => {
                 </button>
 
                 <button
-                  onClick={handleWatchClick}
+                  onClick={handleMiniPitchButtonClick}
                   className="bg-bg-card text-text px-8 py-4 rounded-full font-semibold text-lg shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
                 >
                   <Play size={20} fill="currentColor" className="text-[#3d7e93]" />
@@ -389,7 +400,7 @@ const Footer = () => {
                 {showIframe && (
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/DvCljGW_eBc?autoplay=1&rel=0"
+                    src={`https://www.youtube.com/embed/DvCljGW_eBc?autoplay=1&mute=${isVideoMuted ? 1 : 0}&playsinline=1&rel=0`}
                     title="SoterCare Demo Video"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
