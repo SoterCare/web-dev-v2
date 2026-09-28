@@ -420,12 +420,12 @@ const Footer = () => {
                         type="button"
                         onClick={handlePlayMiniPitch}
                         className="group flex items-center gap-3 rounded-full bg-white px-7 py-4 text-base font-bold text-text shadow-xl transition-transform duration-300 hover:scale-105 active:scale-95 sm:px-9 sm:text-lg"
-                        aria-label="Play the SoterCare Mini Pitch with sound"
+                        aria-label="Watch the SoterCare Mini Pitch"
                       >
                         <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#3d7e93] text-white transition-transform duration-300 group-hover:scale-110">
                           <Play size={20} fill="currentColor" />
                         </span>
-                        Play with sound
+                        Watch Mini Pitch
                       </button>
                     </div>
                   </div>
