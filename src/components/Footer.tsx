@@ -44,7 +44,7 @@ const Footer = () => {
 
   const [viewState, setViewState] = useState<ViewState>("footer");
   const [showIframe, setShowIframe] = useState(false);
-  const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const [showPlayGate, setShowPlayGate] = useState(false);
   const activeTimeline = useRef<gsap.core.Timeline | null>(null);
 
   // Scroll-triggered entrance animation (unchanged)
@@ -92,7 +92,6 @@ const Footer = () => {
     }
 
     setViewState("transitioning-in");
-    setShowIframe(true);
 
     const tl = gsap.timeline({
       onComplete: () => setViewState("video"),
@@ -159,14 +158,21 @@ const Footer = () => {
   }, [viewState]);
 
   const handleMiniPitchButtonClick = useCallback(() => {
-    setIsVideoMuted(false);
+    setShowPlayGate(false);
+    setShowIframe(true);
     handleWatchClick();
   }, [handleWatchClick]);
 
   const handleMiniPitchLinkOpen = useCallback(() => {
-    setIsVideoMuted(true);
+    setShowPlayGate(true);
+    setShowIframe(false);
     handleWatchClick();
   }, [handleWatchClick]);
+
+  const handlePlayMiniPitch = useCallback(() => {
+    setShowPlayGate(false);
+    setShowIframe(true);
+  }, []);
 
   const handleBackClick = useCallback(() => {
     if (viewState !== "video") return;
@@ -183,6 +189,7 @@ const Footer = () => {
       onComplete: () => {
         setViewState("footer");
         setShowIframe(false);
+        setShowPlayGate(false);
       },
     });
     activeTimeline.current = tl;
@@ -397,10 +404,36 @@ const Footer = () => {
               style={{ opacity: 0 }}
             >
               <div className="w-full h-full max-w-[1400px] aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-m border border-black/10 relative bg-black">
+                {showPlayGate && (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center bg-cover bg-center px-6 text-center"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(8, 20, 25, 0.38), rgba(8, 20, 25, 0.72)), url('https://i.ytimg.com/vi/DvCljGW_eBc/maxresdefault.jpg')",
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <span className="mb-5 text-sm font-semibold uppercase tracking-[0.22em] text-white/80">
+                        SoterCare Mini Pitch
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handlePlayMiniPitch}
+                        className="group flex items-center gap-3 rounded-full bg-white px-7 py-4 text-base font-bold text-text shadow-xl transition-transform duration-300 hover:scale-105 active:scale-95 sm:px-9 sm:text-lg"
+                        aria-label="Play the SoterCare Mini Pitch with sound"
+                      >
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#3d7e93] text-white transition-transform duration-300 group-hover:scale-110">
+                          <Play size={20} fill="currentColor" />
+                        </span>
+                        Play with sound
+                      </button>
+                    </div>
+                  </div>
+                )}
                 {showIframe && (
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/DvCljGW_eBc?autoplay=1&mute=${isVideoMuted ? 1 : 0}&playsinline=1&rel=0`}
+                    src="https://www.youtube.com/embed/DvCljGW_eBc?autoplay=1&playsinline=1&rel=0"
                     title="SoterCare Demo Video"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
