@@ -286,6 +286,12 @@ stand.add(front);
 
 scene.add(device);
 
+
+// let the host page (Lenis) handle wheel scrolling instead of the iframe swallowing it
+addEventListener('wheel', e => {
+  e.preventDefault();
+  parent.postMessage({ sotercareWheel: true, deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode }, '*');
+}, { passive: false });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();

@@ -347,6 +347,12 @@ function resize(){
   const hf=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect);homeDist=Math.max(49,8.6/Math.tan(hf));
 }
 function resetView(){controls.target.set(0,-2,0);camera.position.copy(HOME_DIR).multiplyScalar(homeDist).add(controls.target);controls.autoRotate=false;controls.update();}
+
+// let the host page (Lenis) handle wheel scrolling instead of the iframe swallowing it
+addEventListener('wheel', e => {
+  e.preventDefault();
+  parent.postMessage({ sotercareWheel: true, deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode }, '*');
+}, { passive: false });
 window.addEventListener('resize',resize);
 resize();resetView();
 

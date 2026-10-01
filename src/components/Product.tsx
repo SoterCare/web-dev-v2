@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -22,6 +22,24 @@ const Product = () => {
       setActiveIndex(newIndex);
     }
   };
+
+  // Forward wheel events from the 3D model iframes so Lenis keeps smooth-scrolling
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (!e.data?.sotercareWheel) return;
+      window.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: e.data.deltaX,
+          deltaY: e.data.deltaY,
+          deltaMode: e.data.deltaMode,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
 
   // GSAP Animation
   useGSAP(
