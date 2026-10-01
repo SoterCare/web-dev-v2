@@ -105,7 +105,6 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-8">
           <Link href="#product" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Product</Link>
           <Link href="#features" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Features</Link>
-          <Link href="#pricing" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Pricing</Link>
           <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
           <Link href="#contact" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Contact</Link>
           <Link href="/community" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Community</Link>
@@ -151,14 +150,6 @@ const Navbar = () => {
           scroll={false}
         >
           Features
-        </Link>
-        <Link
-          href="#pricing"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Pricing
         </Link>
         <Link
           href="#team"

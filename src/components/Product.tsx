@@ -56,8 +56,8 @@ const Product = () => {
 
       <div ref={contentRef} className="relative z-10 flex flex-col w-full">
         {/* --- Section 1: IoT Devices --- */}
-        <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-8 pt-24 md:pt-32">
-          <div className="w-full max-w-7xl mx-auto flex flex-col gap-12 justify-center">
+        <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 pt-16 md:pt-20 pb-0">
+          <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 md:gap-2 justify-center">
             {/* Header */}
             <div className="flex flex-col gap-2 w-full">
               <span className="bg-bg-card px-8 md:px-10 py-2 md:py-3 rounded-[2rem] flex items-center justify-center mb-2 md:mb-4 shadow-m border-none text-sm md:text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
@@ -69,48 +69,42 @@ const Product = () => {
             </div>
 
             {/* IoT Grid */}
-            <div className="flex flex-col gap-8 md:gap-12 pl-0 md:pl-10">
+            <div className="flex flex-col gap-0 md:-mt-2">
               {/* Item 1 */}
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-                <div className="md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
-                  <h3 className="text-3xl font-bold mb-4">The Thigh Node</h3>
-                  <p className="text-text-muted text-lg max-w-md">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8">
+                <div className="order-2 md:order-none md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
+                  <h3 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5">The Thigh Node</h3>
+                  <p className="text-text-muted text-xl md:text-2xl leading-snug max-w-xl">
                     A discreet, upper-thigh wearable that monitors body motion
                     and hygiene, acting as the primary guardian for detecting
                     falls and incontinence.
                   </p>
                 </div>
-                <div className="md:w-1/2 flex justify-center md:justify-start">
-                  <Image
-                    src="/assets/features/thigh-node.webp"
-                    alt="SoterCare Thigh Node wearable - fall detection and incontinence sensor"
-                    width={270}
-                    height={180}
-                    priority
-                    style={{ width: "auto", height: "auto" }}
-                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
+                <div className="order-1 md:order-none w-full md:w-1/2 flex justify-center md:justify-start">
+                  <iframe
+                    src="/models/thigh-node.html"
+                    title="Interactive 3D model of the SoterCare Thigh Node wearable"
+                    loading="lazy"
+                    className="w-full max-w-[640px] h-[400px] md:h-[560px] md:-my-10 border-0 bg-transparent [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]"
                   />
                 </div>
               </div>
 
               {/* Item 2 */}
-              <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-8 md:gap-16">
-                <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-                  <h3 className="text-3xl font-bold mb-4">The Edge Gateway</h3>
-                  <p className="text-text-muted text-lg max-w-md">
+              <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-2 md:gap-8 md:-mt-16">
+                <div className="order-2 md:order-none md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
+                  <h3 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5">The Edge Gateway</h3>
+                  <p className="text-text-muted text-xl md:text-2xl leading-snug max-w-xl">
                     The intelligent central hub with a dashboard that processes machine learning
                     models locally, ensuring instant alerts and offline safety.
                   </p>
                 </div>
-                <div className="md:w-1/2 flex justify-center md:justify-end">
-                  <Image
-                    src="/assets/features/edge-gatewaynew.webp"
-                    alt="SoterCare Edge Gateway - local AI hub for offline fall detection and alerts"
-                    width={300}
-                    height={220}
-                    priority
-                    style={{ width: "auto", height: "auto" }}
-                    className="object-contain hover:scale-105 transition-transform duration-500 will-change-transform"
+                <div className="order-1 md:order-none w-full md:w-1/2 flex justify-center md:justify-end">
+                  <iframe
+                    src="/models/edge-gateway.html"
+                    title="Interactive 3D model of the SoterCare Edge Gateway"
+                    loading="lazy"
+                    className="w-full max-w-[640px] h-[400px] md:h-[560px] md:-my-10 border-0 bg-transparent [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]"
                   />
                 </div>
               </div>

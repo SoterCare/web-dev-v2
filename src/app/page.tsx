@@ -15,7 +15,6 @@ import Mission from '@/components/Mission';
 import CommunityIntro from '@/components/CommunityIntro';
 import Product from '@/components/Product';
 import Features from '@/components/Features';
-import Pricing from '@/components/Pricing';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
 import LatestNews from '@/components/LatestNews';
@@ -58,7 +57,6 @@ export default function Home() {
       <LatestNews />
       <Product />
       <Features />
-      <Pricing />
       <CommunityIntro />
       <FAQ />
       <Team />
