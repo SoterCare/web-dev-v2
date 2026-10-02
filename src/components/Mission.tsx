@@ -7,6 +7,8 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile browsers resize the viewport as the address bar shows/hides; don't re-measure the pin on that.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const technologies = [
   { name: "Next.js", src: "/assets/tech-logos/nextjs.webp" },
@@ -47,29 +49,25 @@ const Mission = () => {
       if (textRef.current && sectionRef.current) {
         const textElements = textRef.current.querySelectorAll(".word");
 
-        // Trigger 1: Fade Animation (Starts earlier)
-        gsap.fromTo(
+        // One pinned, scrubbed timeline: the section only unpins once every word is revealed,
+        // with a short hold at the end so the full text is readable before scrolling on.
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=200%",
+            pin: true,
+            anticipatePin: 1,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.fromTo(
           textElements,
           { opacity: 0.1 },
-          {
-            opacity: 1,
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 70%",
-              end: "+=300%",
-              scrub: 1,
-            },
-          },
+          { opacity: 1, stagger: 0.1, ease: "none" },
         );
-
-        // Trigger 2: Pinning (Starts at top)
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=200%",
-          pin: true,
-        });
+        tl.to({}, { duration: 1.2 });
       }
     },
     { scope: containerRef },
@@ -78,7 +76,7 @@ const Mission = () => {
   return (
     <section
       ref={sectionRef}
-      className="pt-24 md:pt-32 pb-6 md:pb-12 bg-bg-body overflow-hidden relative z-10 min-h-screen flex flex-col justify-between"
+      className="pt-24 md:pt-32 pb-6 md:pb-12 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-between"
     >
       <div
         className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10 flex-1 flex flex-col justify-center"
