@@ -2,9 +2,9 @@ import { PALETTES, RESIDENTS, SCENARIOS } from "@/components/features/scenarios"
 
 // Three earlier alerts already sit collapsed under the first new one, so the feed never starts empty.
 const PREVIOUS = [
-  { kind: "moisture", resident: 8, type: "Moisture", ago: "18 min ago" },
-  { kind: "standup", resident: 2, type: "Stand-up", ago: "26 min ago" },
-  { kind: "checkup", resident: 5, type: "High temperature", ago: "41 min ago" },
+  { kind: "moisture", resident: 8, type: "Moisture", ago: "55 min ago" },
+  { kind: "standup", resident: 2, type: "Stand-up", ago: "1 hr ago" },
+  { kind: "checkup", resident: 5, type: "High temperature", ago: "1 hr ago" },
 ] as const;
 
 // Collapsed alert: the resident, the alert type and how long ago. No buttons.
@@ -36,12 +36,22 @@ const Capsule = ({
 const PhoneAlertMock = () => (
   <div
     aria-hidden="true"
-    className="mx-auto w-[220px] rounded-[2rem] border-[6px] border-[#dfe6e9] bg-bg-body shadow-xl"
+    className="mx-auto flex h-full w-[220px] flex-col overflow-hidden rounded-[2rem] border-[6px] border-[#dfe6e9] bg-bg-body shadow-xl"
   >
-    <div className="h-[340px] overflow-hidden px-3 pb-4 pt-4">
-      <div className="mb-3 text-[10px] font-bold text-text-muted">Alerts</div>
+    {/* At least 340px tall, and taller when the card around it has room. */}
+    <div className="flex min-h-[340px] flex-1 flex-col pb-5 pt-4">
+      <div className="mb-3 px-3 text-[10px] font-bold text-text-muted">Alerts</div>
 
-      <div data-feed>
+      {/* The feed clips above the bottom padding and fades out, so older alerts never run into the frame's rounded corners. */}
+      <div
+        className="relative min-h-0 flex-1 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 80%, transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent)",
+        }}
+      >
+      {/* Taken out of the flow, so the growing feed never makes the phone taller. */}
+      <div data-feed className="absolute inset-x-3 top-0">
         {/* Newest first, so a new alert grows in above the older ones. */}
         {SCENARIOS.map((sc, i) => ({ sc, i }))
           .reverse()
@@ -116,6 +126,7 @@ const PhoneAlertMock = () => (
             />
           </div>
         ))}
+      </div>
       </div>
     </div>
   </div>

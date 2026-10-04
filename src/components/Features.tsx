@@ -4,11 +4,10 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Check, HandHeart, Users } from 'lucide-react';
+import { Check, Clock, FileDown, HandHeart, History, ScanEye, Users } from 'lucide-react';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
 import DoctorRecordMock from '@/components/features/DoctorRecordMock';
-import WatchdogDots from '@/components/features/WatchdogDots';
 import { buildCareCircleTimeline } from '@/components/features/scenarios';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -40,6 +39,12 @@ const FAMILY_POINTS = [
   'Trends and patterns over weeks',
   'Every record, any time',
   'Notified only when something concerning happens',
+];
+
+const RECORD_POINTS = [
+  { Icon: Clock, text: 'Every event logged with its exact time' },
+  { Icon: History, text: "Each resident's full history in one place" },
+  { Icon: FileDown, text: 'PDF or CSV export in one tap' },
 ];
 
 const Points = ({ items, tone = 'dark' }: { items: string[]; tone?: 'dark' | 'light' }) => (
@@ -75,8 +80,9 @@ const Features = () => {
 
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const tl = buildCareCircleTimeline(root);
-        if (!tl) return;
+        const anim = buildCareCircleTimeline(root);
+        if (!anim) return;
+        const tl = anim.timeline;
 
         ScrollTrigger.create({
           trigger: root,
@@ -84,6 +90,8 @@ const Features = () => {
           end: 'bottom 15%',
           onToggle: (self) => (self.isActive ? tl.play() : tl.pause()),
         });
+
+        return anim.dispose;
       });
 
       return () => mm.revert();
@@ -104,15 +112,30 @@ const Features = () => {
         </div>
 
           <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
-            {/* Care homes: the buyer, so the largest card */}
-            <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-10 lg:col-span-8">
-              <div className="relative grid gap-8 md:grid-cols-2 md:items-stretch">
-                <div>
+            {/* Care homes: the buyer, so the largest card. The ward overview carries the AI that watches every resident. */}
+            <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-10 lg:col-span-12">
+              <div className="relative grid gap-8 md:grid-cols-2 md:items-stretch lg:gap-12">
+                <div className="flex flex-col">
                   <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
                   <p className="mt-3 mb-6 text-lg text-text-muted leading-relaxed">
                     Everything you need to run safer care, and the records to show for it.
                   </p>
                   <Points items={HOME_POINTS} />
+
+                  <div className="mt-8 rounded-3xl bg-[#3d7e93]/[0.07] p-5 sm:p-6">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-bg-card text-[#3d7e93] shadow-m">
+                        <ScanEye size={20} strokeWidth={2.25} aria-hidden="true" />
+                      </span>
+                      <h4 className="text-xl md:text-2xl font-bold tracking-tight">
+                        AI that never looks away
+                      </h4>
+                    </div>
+                    <p className="mt-3 text-text-muted leading-relaxed">
+                      AI monitors every resident around the clock and alerts your caregivers the
+                      moment something goes wrong.
+                    </p>
+                  </div>
                 </div>
                 {/* On desktop the overview fills the height of the text column, so it never stretches the card. */}
                 <div className="relative">
@@ -123,34 +146,23 @@ const Features = () => {
               </div>
             </article>
 
-            {/* AI watchdog */}
-            <article className="rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
-              <WatchdogDots />
-              <div>
-                <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
-                  AI that never looks away
-                </h3>
-                <p className="mt-3 text-text-muted leading-relaxed">
-                  AI monitors every resident around the clock and alerts your caregivers the
-                  moment something goes wrong.
-                </p>
-              </div>
-            </article>
-
             {/* Caregivers */}
-            <article className="rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-5">
+            <article className="flex flex-col rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-5">
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight">Caregivers</h3>
               <p className="mt-2 mb-6 text-lg text-text-muted leading-relaxed">
                 The right alert, to the right caregiver, in seconds.
               </p>
-              <div className="grid gap-8 sm:grid-cols-2 sm:items-center lg:grid-cols-1 xl:grid-cols-2">
-                <Points items={CAREGIVER_POINTS} />
+              {/* The phone grows to the card's height, so this card ends level with the records card beside it. */}
+              <div className="grid flex-1 gap-8 sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-[auto_1fr] xl:grid-cols-2 xl:grid-rows-none">
+                <div className="self-center">
+                  <Points items={CAREGIVER_POINTS} />
+                </div>
                 <PhoneAlertMock />
               </div>
             </article>
 
             {/* Records for doctors */}
-            <article className="rounded-[1.75rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-7">
+            <article className="flex flex-col rounded-[1.75rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-7">
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Records your doctor can use
               </h3>
@@ -159,12 +171,25 @@ const Features = () => {
                 logged with its time. Export a clear report as PDF or CSV for the doctor&apos;s
                 visit.
               </p>
-              <div className="grid gap-6 md:grid-cols-2 md:items-center">
+              {/* The records panel stretches to the card's height, so the card has no empty band. */}
+              <div className="grid flex-1 gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-8 lg:grid-cols-1 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
                 <DoctorRecordMock />
-                <p className="text-text-muted leading-relaxed">
-                  A record to support the conversation with the doctor, not a diagnosis. The
-                  history is always there, so nobody has to rely on memory at handover.
-                </p>
+                <div className="flex flex-col justify-center gap-5">
+                  <ul className="space-y-4">
+                    {RECORD_POINTS.map(({ Icon, text }) => (
+                      <li key={text} className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-[#3d7e93]/[0.08] text-[#3d7e93]">
+                          <Icon size={18} strokeWidth={2.25} aria-hidden="true" />
+                        </span>
+                        <span className="font-semibold leading-snug text-text">{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="border-t border-black/5 pt-5 text-text-muted leading-relaxed">
+                    A record to support the conversation with the doctor, not a diagnosis. The
+                    history is always there, so nobody has to rely on memory at handover.
+                  </p>
+                </div>
               </div>
             </article>
 

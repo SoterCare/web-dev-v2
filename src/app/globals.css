@@ -218,9 +218,16 @@ p {
 }
 
 
-/* Features: AI watching the residents. Each circle gives off a soft light-blue wave. */
+/* Features: the AI frame on the ward overview gives off a soft wave around the resident it is watching. */
 @keyframes watch-ripple {
-  0% { transform: scale(1); opacity: 0.55; }
-  70%, 100% { transform: scale(1.75); opacity: 0; }
+  0% { transform: scale(1); opacity: 0.5; }
+  70%, 100% { transform: scale(1.18, 1.14); opacity: 0; }
 }
-.animate-watch-ripple { animation: watch-ripple 3.2s ease-out infinite; }
+.animate-watch-ripple { animation: watch-ripple 2.4s ease-out infinite; }
+
+/* Small live dot next to "AI watching". */
+@keyframes watch-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.animate-watch-live { animation: watch-live 1.6s ease-in-out infinite; }
