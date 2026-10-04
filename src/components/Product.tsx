@@ -1,27 +1,16 @@
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+"use client";
 
-gsap.registerPlugin(ScrollTrigger);
+import React, { useEffect, useRef } from "react";
+import SectionHeader from "@/components/SectionHeader";
+import { useSectionReveal } from "@/lib/useSectionReveal";
+
+const iframeClass =
+  "w-full max-w-[640px] h-[400px] md:h-[560px] md:-my-10 border-0 bg-transparent [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]";
 
 const Product = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const scrollLeft = scrollRef.current.scrollLeft;
-    // itemWidth = width of one card + gap (gap-4 = 16px)
-    const itemWidth = scrollRef.current.children[0].clientWidth + 16;
-    const newIndex = Math.round(scrollLeft / itemWidth);
-    if (newIndex !== activeIndex) {
-      setActiveIndex(newIndex);
-    }
-  };
+  useSectionReveal(sectionRef, contentRef);
 
   // Forward wheel events from the 3D model iframes so Lenis keeps smooth-scrolling
   useEffect(() => {
@@ -41,61 +30,30 @@ const Product = () => {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  // GSAP Animation
-  useGSAP(
-    () => {
-      // Main content animation
-      gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-    },
-    { scope: sectionRef },
-  );
-
   return (
     <section
       id="product"
       ref={sectionRef}
-      className="bg-transparent relative z-20 -mt-1 w-full overflow-hidden"
+      className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-20 w-full overflow-hidden"
     >
-      {/* Dotted Background removed (global) */}
-
       <div ref={contentRef} className="relative z-10 flex flex-col w-full">
-        {/* --- Section 1: IoT Devices --- */}
         <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 pt-16 md:pt-20 pb-0">
           <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 md:gap-2 justify-center">
-            {/* Header */}
-            <div className="flex flex-col gap-2 w-full">
-              <span className="bg-bg-card px-8 md:px-10 py-2 md:py-3 rounded-[2rem] flex items-center justify-center mb-2 md:mb-4 shadow-m border-none text-sm md:text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
-                Product
-              </span>
-              <h2 className="text-4xl md:text-5xl lg:text-8xl font-bold text-center leading-none tracking-tight">
-                IoT Devices
-              </h2>
-            </div>
+            <SectionHeader
+              chip="Product"
+              title="The Hardware"
+              subtitle="One band per resident. One ward gateway per home."
+            />
 
-            {/* IoT Grid */}
             <div className="flex flex-col gap-0 md:-mt-2">
-              {/* Item 1 */}
+              {/* Thigh node */}
               <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8">
                 <div className="order-2 md:order-none md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5">The Thigh Node</h3>
                   <p className="text-text-muted text-xl md:text-2xl leading-snug max-w-xl">
-                    A discreet, upper-thigh wearable that monitors body motion
-                    and hygiene, acting as the primary guardian for detecting
-                    falls and incontinence.
+                    A soft thigh band worn under clothing, one per resident. Motion, moisture and
+                    skin temperature sensors stream readings to the gateway over the home&apos;s
+                    network. It charges over USB-C, and we are targeting a 7-day battery.
                   </p>
                 </div>
                 <div className="order-1 md:order-none w-full md:w-1/2 flex justify-center md:justify-start">
@@ -103,168 +61,41 @@ const Product = () => {
                     src="/models/thigh-node.html"
                     title="Interactive 3D model of the SoterCare Thigh Node wearable"
                     loading="lazy"
-                    className="w-full max-w-[640px] h-[400px] md:h-[560px] md:-my-10 border-0 bg-transparent [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]"
+                    className={iframeClass}
                   />
                 </div>
               </div>
 
-              {/* Item 2 */}
+              {/* Ward gateway */}
               <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-2 md:gap-8 md:-mt-16">
                 <div className="order-2 md:order-none md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-                  <h3 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5">The Edge Gateway</h3>
+                  <h3 className="text-4xl md:text-5xl font-bold mb-4 md:mb-5">The Ward Gateway</h3>
                   <p className="text-text-muted text-xl md:text-2xl leading-snug max-w-xl">
-                    The intelligent central hub with a dashboard that processes machine learning
-                    models locally, ensuring instant alerts and offline safety.
+                    A 15.6-inch touch screen for the whole home. It runs the gait model and the
+                    alerts for every bed, works offline, and charges the nodes over USB-C. Its
+                    overview screen shows every resident&apos;s status at once, so a carer sees who
+                    is moving, resting, wet or needs help at a glance.
                   </p>
                 </div>
                 <div className="order-1 md:order-none w-full md:w-1/2 flex justify-center md:justify-end">
                   <iframe
                     src="/models/edge-gateway.html"
-                    title="Interactive 3D model of the SoterCare Edge Gateway"
+                    title="Interactive 3D model of the SoterCare Ward Gateway"
                     loading="lazy"
-                    className="w-full max-w-[640px] h-[400px] md:h-[560px] md:-my-10 border-0 bg-transparent [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]"
+                    className={iframeClass}
                   />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* --- Section 2: Mobile App --- */}
-        <div className="w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-8 pt-20">
-          <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-10 md:mb-16 text-center">
-              Mobile App
-            </h2>
-
-            <div className="relative w-full max-w-7xl mx-auto min-h-auto md:min-h-[700px] flex flex-col md:block items-center justify-center">
-              {/* Central Image */}
-              <div className="relative z-10 max-w-3xl md:w-[115%] md:max-w-none w-full mx-auto md:absolute md:top-[48%] md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
-                <Image
-                  src="/assets/Mobile Mockup latest.png"
-                  alt="SoterCare mobile app showing real-time vitals, fall alerts, and health summaries for elderly care"
-                  width={1200}
-                  height={1000}
-                  className="w-full h-auto object-contain drop-shadow-2xl"
-                />
-              </div>
-
-              {/* Mobile List View (Horizontal Slider) */}
-              <div
-                ref={scrollRef}
-                onScroll={handleScroll}
-                className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-4 w-full mt-8 z-20 pb-6 slim-scroll"
-              >
-                {[
-                  {
-                    text: "Recycle Bin",
-                    description:
-                      'A unique "Human-in-the-Loop" feature that allows caregivers to flag false alarms—such as a heavy sit-down mistaken for a fall—moving them to a recycle bin to retrain the AI model.',
-                  },
-                  {
-                    text: "AI-Powered Summaries",
-                    description:
-                      "Integrates a Large Language Model (LLM) to instantly convert complex sensor data into clear, natural language reports.",
-                  },
-                  {
-                    text: "Real-Time Vitals",
-                    description:
-                      "Provides an immediate, high-visibility snapshot of the user's current status by displaying live Heart Rate, Blood Oxygen (SpO2), and Body Temperature.",
-                  },
-                  {
-                    text: "Password-less Auth",
-                    description:
-                      "Lowers the technical barrier for elderly or non-tech-savvy caregivers by replacing complex passwords with simple One-Time Passwords (OTP) and Google Sign-In.",
-                  },
-                  {
-                    text: "Data Export",
-                    description:
-                      "Empowers caregivers to share accurate, data-driven insights with healthcare professionals by generating downloadable PDF or CSV reports.",
-                  },
-                  {
-                    text: "System Timeline",
-                    description:
-                      'Offers complete transparency by logging not just health incidents but also system reliability events like "Gateway Disconnected".',
-                  },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-bg-card p-6 rounded-2xl shadow-sm border border-black/5 flex-shrink-0 w-[85vw] snap-center min-h-[160px]"
-                  >
-                    <h3 className="text-xl font-bold mb-2">{item.text}</h3>
-                    <p className="text-text-muted text-sm leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Mobile Pagination Dots */}
-              <div className="flex md:hidden justify-center items-center gap-2 mt-2 pb-8">
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${i === activeIndex ? "w-5 bg-[#a0cbdb]" : "w-1.5 bg-text-muted/30"
-                      }`}
-                  />
-                ))}
-              </div>
-
-              {/* Desktop Floating Labels */}
-              {[
-                {
-                  text: "Recycle Bin",
-                  description:
-                    'A unique "Human-in-the-Loop" feature that allows caregivers to flag false alarms—such as a heavy sit-down mistaken for a fall—moving them to a recycle bin to retrain the AI model, thereby constantly improving system accuracy and reducing alert fatigue.',
-                  pos: "top-10 left-[5%] md:left-[15%]",
-                },
-                {
-                  text: "AI-Powered Health Summaries",
-                  description:
-                    'Integrates a Large Language Model (LLM) to instantly convert complex sensor data into clear, natural language reports, acting as a personal "medical interpreter" that summarizes daily health trends, risks, and events in plain English for non-technical users.',
-                  pos: "top-[40%] left-[0%] md:left-[5%]",
-                },
-                {
-                  text: "Real-Time Vitals Dashboard",
-                  description:
-                    "Provides an immediate, high-visibility snapshot of the user's current status by displaying live Heart Rate, Blood Oxygen (SpO2), and Body Temperature, ensuring caregivers can verify critical health metrics at a single glance.",
-                  pos: "bottom-20 left-[5%] md:left-[15%]",
-                },
-                {
-                  text: "Password-less Authentication",
-                  description:
-                    "Lowers the technical barrier for elderly or non-tech-savvy caregivers by replacing complex passwords with simple One-Time Passwords (OTP) and Google Sign-In, ensuring secure and frustration-free access to the system.",
-                  pos: "top-10 right-[5%] md:right-[15%]",
-                },
-                {
-                  text: "Medical-Grade Data Export",
-                  description:
-                    "Empowers caregivers to share accurate, data-driven insights with healthcare professionals by generating downloadable PDF or CSV reports of falls, vitals, and activity history with a single tap, facilitating better medical consultations.",
-                  pos: "top-[40%] right-[0%] md:right-[5%]",
-                },
-                {
-                  text: "Comprehensive System Timeline",
-                  description:
-                    'Offers complete transparency by logging not just health incidents (like falls or hygiene alerts) but also system reliability events (like "Gateway Disconnected"), giving a holistic, chronological view of both patient safety and device performance.',
-                  pos: "bottom-20 right-[5%] md:right-[15%]",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className={`absolute ${item.pos} z-20 hidden md:block group hover:z-50`}
-                >
-                  <div className="bg-bg-card/90 backdrop-blur-md shadow-m border border-white/20 py-3 px-6 rounded-2xl cursor-default transition-all duration-300 ease-out w-fit">
-                    <div className="flex flex-col items-start">
-                      <span className="text-xl font-semibold text-text whitespace-nowrap group-hover:mb-2 transition-all block">
-                        {item.text}
-                      </span>
-                      <p className="text-sm text-text-muted leading-relaxed max-h-0 opacity-0 w-0 group-hover:max-h-80 group-hover:opacity-100 group-hover:w-72 transition-all duration-300 ease-in-out overflow-hidden whitespace-normal">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {/* Backend and apps */}
+            <div className="mt-6 md:mt-10 bg-bg-card rounded-3xl shadow-m p-8 md:p-10 max-w-4xl mx-auto text-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Backend and apps</h3>
+              <p className="text-text-muted text-lg leading-relaxed">
+                The backend stores every reading and finds trends in gait, night stand-ups and
+                moisture over weeks. Carers get alerts on their phones, families get the full
+                picture in their own app, and AI writes the shift handover.
+              </p>
             </div>
           </div>
         </div>
