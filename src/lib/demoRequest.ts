@@ -36,6 +36,6 @@ export function parseDemoRequest(formData: FormData): DemoRequest {
 
 export function buildSubject(req: DemoRequest): string {
   return req.home
-    ? `New care-home enquiry from ${req.name} (${req.home}) — SoterCare`
-    : `New message from ${req.name} — SoterCare`;
+    ? `SoterCare: new care-home enquiry from ${req.name} (${req.home})`
+    : `SoterCare: new message from ${req.name}`;
 }

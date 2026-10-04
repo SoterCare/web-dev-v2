@@ -45,7 +45,7 @@ export const ContactNotification = ({
 
                     {/* Alert Banner */}
                     <Section style={alertBanner}>
-                        <Text style={alertText}>📬 New enquiry from the website</Text>
+                        <Text style={alertText}>New enquiry from the website</Text>
                     </Section>
 
                     {/* Sender Details */}

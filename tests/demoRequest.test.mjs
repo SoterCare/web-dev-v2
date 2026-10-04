@@ -41,6 +41,6 @@ test("invalid email throws", () => {
 
 test("subject flags care-home enquiries", () => {
   const base = { name: "Nimal", email: "n@h.lk", message: "m", beds: "", role: "" };
-  assert.equal(buildSubject({ ...base, home: "Sunrise Care" }), "New care-home enquiry from Nimal (Sunrise Care) — SoterCare");
-  assert.equal(buildSubject({ ...base, home: "" }), "New message from Nimal — SoterCare");
+  assert.equal(buildSubject({ ...base, home: "Sunrise Care" }), "SoterCare: new care-home enquiry from Nimal (Sunrise Care)");
+  assert.equal(buildSubject({ ...base, home: "" }), "SoterCare: new message from Nimal");
 });

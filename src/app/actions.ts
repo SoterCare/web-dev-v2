@@ -135,7 +135,7 @@ export async function contactAction(formData: FormData) {
     const { error: replyError } = await resend.emails.send({
       from: "SoterCare <info@sotercare.com>",
       to: req.email,
-      subject: "We got your message — SoterCare",
+      subject: "SoterCare: we got your message",
       react: ContactAutoReply({ senderName: req.name }),
     });
 
