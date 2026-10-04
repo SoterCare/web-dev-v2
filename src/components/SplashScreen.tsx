@@ -63,6 +63,7 @@ const SplashScreen = () => {
   return (
     <div
       ref={containerRef}
+      data-splash
       className="fixed inset-0 z-[100] bg-white flex items-center justify-center h-screen w-screen overflow-hidden"
     >
       <div className="relative w-28 h-28 md:w-40 md:h-40">

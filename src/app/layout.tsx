@@ -174,6 +174,15 @@ export default function RootLayout({
         <link rel="preconnect" href="https://va.vercel-scripts.com" />
         {/* DNS prefetch for faster resolution */}
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
+        {/* Runs before the first paint: a visitor who has already seen the splash this session
+            has it hidden straight away (see globals.css), instead of waiting for the page's
+            script to load, which can take seconds on a phone. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(sessionStorage.getItem('hasViewedSplash'))document.documentElement.classList.add('splash-seen')}catch(e){}",
+          }}
+        />
       </head>
       <body suppressHydrationWarning className="antialiased">
         {/* JSON-LD Structured Data - injected client-side to avoid hydration mismatch */}

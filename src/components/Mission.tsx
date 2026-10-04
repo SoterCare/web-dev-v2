@@ -18,6 +18,8 @@ interface MissionProps {
 }
 
 // The promise and the latest news share one section so together they fill the screen.
+// The section slides up over the sticky hero. transform-gpu gives it its own layer, because
+// iPhone Safari can otherwise draw the sticky hero over it during momentum scrolling.
 const Mission = ({ children }: MissionProps) => {
   const textRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -31,6 +33,8 @@ const Mission = ({ children }: MissionProps) => {
 
       // No pin: the words start lighting up as soon as the section is a fifth of the way
       // into view, and take their time, finishing only once it has passed the top of the screen.
+      // The words are fully visible in the server HTML and only dimmed here, once this runs, so a
+      // visitor who scrolls down before the page's script has loaded still sees the promise.
       gsap.fromTo(
         textElements,
         { opacity: 0.1 },
@@ -54,7 +58,7 @@ const Mission = ({ children }: MissionProps) => {
     <section
       id="promise"
       ref={sectionRef}
-      className="pt-24 pb-16 md:pt-32 md:pb-24 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-center gap-12 md:gap-16"
+      className="pt-24 pb-16 md:pt-32 md:pb-24 bg-bg-body overflow-hidden relative z-10 transform-gpu min-h-[100svh] flex flex-col justify-center gap-12 md:gap-16"
     >
       <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
       <div ref={textRef} className="container mx-auto px-4 text-center max-w-5xl relative z-10">
@@ -65,7 +69,7 @@ const Mission = ({ children }: MissionProps) => {
             return (
               <span
                 key={i}
-                className={`word inline-block mr-[0.2em] opacity-10 ${isHighlighted ? "text-[#3d7e93] font-bold" : ""}`}
+                className={`word inline-block mr-[0.2em] ${isHighlighted ? "text-[#3d7e93] font-bold" : ""}`}
               >
                 {word}
               </span>
