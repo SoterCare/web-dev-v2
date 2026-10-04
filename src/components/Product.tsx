@@ -64,15 +64,6 @@ const Product = () => {
         </div>
       </div>
 
-      {/* Backend and apps: Analyse and Record */}
-      <div className="mt-6 md:mt-10 bg-bg-card rounded-3xl shadow-m p-8 md:p-10 max-w-4xl mx-auto text-center">
-        <h3 className="text-2xl md:text-3xl font-bold mb-3">Backend and apps</h3>
-        <p className="text-text-muted text-lg leading-relaxed">
-          The backend stores every reading and finds trends in gait, night stand-ups and
-          moisture over weeks. Carers get alerts on their phones, families get the full
-          picture in their own app, and AI writes the shift handover.
-        </p>
-      </div>
     </div>
   );
 };
