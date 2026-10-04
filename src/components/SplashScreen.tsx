@@ -15,15 +15,23 @@ const SplashScreen = () => {
       // Check session storage to see if we've already shown the splash screen
       const hasViewed = sessionStorage.getItem("hasViewedSplash");
 
+      // The head script locks scrolling while the splash is up (see layout.tsx).
+      const unlock = () => document.documentElement.classList.remove("splash-lock");
+
       if (hasViewed) {
+        unlock();
         setIsVisible(false);
         return;
       }
 
-      if (!containerRef.current || !logoRef.current) return;
+      if (!containerRef.current || !logoRef.current) {
+        unlock();
+        return;
+      }
 
       const tl = gsap.timeline({
         onComplete: () => {
+          unlock();
           setIsVisible(false);
           sessionStorage.setItem("hasViewedSplash", "true");
         },
@@ -54,6 +62,9 @@ const SplashScreen = () => {
           ease: "power4.inOut", // Smooth dramatic exit
           delay: 0.2,
         });
+
+      // Leaving the page mid-splash must not leave scrolling locked.
+      return unlock;
     },
     { scope: containerRef },
   );

@@ -56,13 +56,12 @@ const Hero = () => {
         scrub: 1.5,
         animation: gsap
           .timeline()
+          // Only scale and opacity: the GPU handles those without repainting. Animating the
+          // corner radius here repainted the whole hero on every scroll frame, which iPhone
+          // Safari could not keep up with.
           .to(contentRef.current, {
             scale: 0.8,
             opacity: 0.8,
-            borderBottomLeftRadius: "2.5rem",
-            borderBottomRightRadius: "2.5rem",
-            borderTopLeftRadius: "0px",
-            borderTopRightRadius: "0px",
             ease: "none",
           })
           // autoAlpha also hides it once faded. The hero is sticky and stays behind the whole
@@ -89,7 +88,8 @@ const Hero = () => {
 
           {/* Soft powder-blue ambient glow (matches Pricing's blur blobs) */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-[#a0cbdb]/20 blur-[120px]" />
+            {/* A gradient, not blur(): a large blur filter is very slow to repaint in iPhone Safari. */}
+            <div className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(160,203,219,0.2)_0%,rgba(160,203,219,0.1)_40%,transparent_70%)]" />
           </div>
 
           {/* ── Marquee Bands — faint dark texture watermark ── */}

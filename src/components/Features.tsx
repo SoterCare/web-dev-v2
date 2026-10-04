@@ -185,10 +185,11 @@ const Features = () => {
                       </li>
                     ))}
                   </ul>
-                  <p className="border-t border-black/5 pt-5 text-text-muted leading-relaxed">
+                  {/* A div, not a p: the global p style would make it larger than the card points. */}
+                  <div className="border-t border-black/5 pt-5 text-base text-text-muted leading-relaxed">
                     A record to support the conversation with the doctor, not a diagnosis. The
                     history is always there, so nobody has to rely on memory at handover.
-                  </p>
+                  </div>
                 </div>
               </div>
             </article>

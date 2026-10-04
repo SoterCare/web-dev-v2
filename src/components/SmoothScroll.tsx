@@ -13,7 +13,7 @@ export default function SmoothScroll() {
             smoothWheel: true,
             // Ignore the wheel while the splash is up, so the page stays on the hero behind it
             // (globals.css locks native scrolling for the same time).
-            virtualScroll: () => !document.querySelector('[data-splash]') || document.documentElement.classList.contains('splash-seen'),
+            virtualScroll: () => !document.documentElement.classList.contains('splash-lock'),
         });
 
         function raf(time: number) {

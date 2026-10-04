@@ -253,7 +253,8 @@ const Footer = () => {
 
           {/* Soft powder-blue ambient glow (matches Pricing's blur blobs) */}
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <div className="absolute -bottom-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-[#a0cbdb]/20 blur-[120px]" />
+            {/* A gradient, not blur(): a large blur filter is very slow to repaint in iPhone Safari. */}
+            <div className="absolute -bottom-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-[radial-gradient(circle,rgba(160,203,219,0.2)_0%,rgba(160,203,219,0.1)_40%,transparent_70%)]" />
           </div>
 
           {/* ── Marquee Bands — faint dark texture watermark ── */}

@@ -183,13 +183,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://va.vercel-scripts.com" />
         {/* DNS prefetch for faster resolution */}
         <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
-        {/* Runs before the first paint: a visitor who has already seen the splash this session
-            has it hidden straight away (see globals.css), instead of waiting for the page's
-            script to load, which can take seconds on a phone. */}
+        {/* Runs before the first paint (see globals.css). A visitor who has already seen the
+            splash this session has it hidden straight away, instead of waiting for the page's
+            script to load. Otherwise scrolling is locked until the splash has finished; the
+            splash only exists on the home page, so other pages never get the lock. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(sessionStorage.getItem('hasViewedSplash'))document.documentElement.classList.add('splash-seen')}catch(e){}",
+              "try{var c=document.documentElement.classList;if(sessionStorage.getItem('hasViewedSplash'))c.add('splash-seen');else if(location.pathname==='/')c.add('splash-lock')}catch(e){}",
           }}
         />
       </head>

@@ -15,6 +15,8 @@ const CHAR_PX = 118;
 const TUNED_PX = 720;
 
 // Faint sliding words behind the hero and the footer.
+// On phones the text is half size: each row is a GPU layer, and iPhone Safari reserves memory for
+// a sliding layer's whole path, so full-size rows left it short of memory to draw the page.
 // Each row is its own GPU layer. At 18rem the text is very wide, so a row holds only enough
 // copies to cover the widest screen; more copies made each layer tens of thousands of pixels
 // wide and left phones unable to draw the page while scrolling. The rows also stop sliding
@@ -51,10 +53,10 @@ export default function WatermarkMarquee() {
               className="flex w-max whitespace-nowrap will-change-transform group-data-[paused=true]:[animation-play-state:paused]"
               style={{ animation: `marquee-${row.dir} ${seconds}s linear infinite` }}
             >
-              <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
+              <span className="text-[9rem] md:text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
                 {repeated}
               </span>
-              <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
+              <span className="text-[9rem] md:text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
                 {repeated}
               </span>
             </div>
