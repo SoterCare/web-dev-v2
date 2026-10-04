@@ -161,10 +161,10 @@ const Hero = () => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted z-20 pb-4 md:pb-0 px-2 sm:px-4">
+          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold text-text-muted z-20 pb-4 md:pb-0 px-2 sm:px-4">
             <div className="w-20 sm:w-32 hidden md:block">#healthtech</div>
             <div className="flex flex-col items-center gap-1.5">
-              <span className="text-text-muted font-bold text-xs sm:text-sm whitespace-nowrap tracking-widest uppercase">
+              <span className="text-text-muted font-bold text-xs sm:text-sm whitespace-nowrap ">
                 Scroll to Explore
               </span>
               <ArrowDown size={16} className="text-[#3d7e93] animate-jump" />

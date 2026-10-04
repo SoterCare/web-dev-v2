@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Activity, BellRing, TrendingUp, ClipboardList } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import Product from "@/components/Product";
 import { useSectionReveal } from "@/lib/useSectionReveal";
 
 const STEPS = [
@@ -43,7 +44,7 @@ const HowItWorks = () => {
         <SectionHeader
           chip="How it works"
           title="Monitor. Alert. Analyse. Record."
-          subtitle="SoterCare connects elders, carers and families, so a care home gives safer care without hiring more staff."
+          subtitle="SoterCare connects elders, carers and families in one system. Here is how each step works, and the hardware behind it."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {STEPS.map(({ verb, Icon, body }, i) => (
@@ -60,6 +61,9 @@ const HowItWorks = () => {
         <p className="mt-10 text-center text-lg font-semibold text-text">
           No cameras. Works without internet.
         </p>
+        <div className="mt-12 md:mt-16">
+          <Product />
+        </div>
       </div>
     </section>
   );

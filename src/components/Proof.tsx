@@ -41,7 +41,7 @@ const Proof = () => {
               key={t.level}
               className={`rounded-3xl p-6 ${t.current ? "bg-text text-bg-card shadow-lg" : "bg-bg-card shadow-m"}`}
             >
-              <p className="text-sm font-bold uppercase tracking-widest opacity-70">{t.state}</p>
+              <p className="text-sm font-bold opacity-70">{t.state}</p>
               <h3 className="text-3xl font-bold my-2">{t.level}</h3>
               <p className={t.current ? "opacity-80" : "text-text-muted"}>{t.body}</p>
             </div>

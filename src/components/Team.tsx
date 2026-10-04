@@ -118,7 +118,7 @@ const Team = () => {
       >
         {/* Header */}
         <div className="mb-12 text-center">
-          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m text-base font-bold uppercase tracking-widest text-text-muted mx-auto w-fit">
+          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m text-base font-bold text-text-muted mx-auto w-fit">
             Our Team
           </span>
           <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
@@ -234,7 +234,7 @@ const Team = () => {
         </div>
 
         <div className="mt-10 max-w-4xl mx-auto">
-          <h3 className="text-center text-sm font-bold uppercase tracking-widest text-text-muted mb-5">Advisors</h3>
+          <h3 className="text-center text-sm font-bold text-text-muted mb-5">Advisors</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {ADVISORS.map((a) => (
               <div key={a.name} className="bg-bg-card rounded-3xl shadow-m p-6">

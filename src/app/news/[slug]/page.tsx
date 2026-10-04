@@ -79,7 +79,7 @@ export default async function ArticlePage({ params }: Props) {
 
             {/* Meta: date then tags on next line */}
             <div className="mb-5">
-              <span className="block text-xs font-semibold text-[#3d7e93] uppercase tracking-widest mb-2">
+              <span className="block text-xs font-semibold text-[#3d7e93] mb-2">
                 {formatDate(article.date)}
               </span>
               {article.tags.length > 0 && (

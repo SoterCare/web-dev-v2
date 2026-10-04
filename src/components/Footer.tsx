@@ -421,7 +421,7 @@ const Footer = () => {
                     }}
                   >
                     <div className="flex flex-col items-center">
-                      <span className="mb-5 text-sm font-semibold uppercase tracking-[0.22em] text-white/80">
+                      <span className="mb-5 text-sm font-semibold text-white/80">
                         SoterCare Mini Pitch
                       </span>
                       <button

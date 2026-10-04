@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,7 +13,12 @@ const MISSION_TEXT =
 // Only the key points of the promise are bold blue.
 const HIGHLIGHT_WORDS = ["responsible", "retirement", "connect", "family", "safe"];
 
-const Mission = () => {
+interface MissionProps {
+  children?: ReactNode;
+}
+
+// The promise and the latest news share one section so together they fill the screen.
+const Mission = ({ children }: MissionProps) => {
   const textRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -36,7 +41,7 @@ const Mission = () => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 80%",
-            end: "top 10%",
+            end: "top 15%",
             scrub: 1,
           },
         },
@@ -49,7 +54,7 @@ const Mission = () => {
     <section
       id="promise"
       ref={sectionRef}
-      className="py-24 md:py-40 bg-bg-body overflow-hidden relative z-10"
+      className="pt-24 pb-16 md:pt-32 md:pb-24 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-center gap-12 md:gap-16"
     >
       <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
       <div ref={textRef} className="container mx-auto px-4 text-center max-w-5xl relative z-10">
@@ -68,6 +73,7 @@ const Mission = () => {
           })}
         </div>
       </div>
+      {children}
     </section>
   );
 };
