@@ -81,7 +81,6 @@ const SCENARIOS: Scenario[] = [
 ];
 
 // Success green for confirmations, and the site blues for the resting state.
-const GREEN_TINT = 'rgba(103,217,116,0.28)';
 const GREEN_TEXT = '#14532d';
 const BLUE = '#3d7e93';
 const BLUE_TILE = 'rgba(61,126,147,0.08)';
@@ -135,7 +134,7 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
     }, label)
       .to(circle, { backgroundColor: c.tint, color: c.text, scale: 1.12, duration: 0.4 }, label)
       .to(wave, { backgroundColor: c.solid }, label)
-      .to(chip, { autoAlpha: 1, y: 0, backgroundColor: c.tint, color: c.text, duration: 0.4 }, label)
+      .to(chip, { autoAlpha: 1, y: 0, color: c.text, duration: 0.4 }, label)
       .to(tile, { backgroundColor: c.tint, duration: 0.4 }, label)
       .to(tileStatus, { color: c.text, duration: 0.4 }, label)
       .to(tileDot, { backgroundColor: c.solid, duration: 0.4 }, label)
@@ -150,7 +149,7 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
         confirm.textContent = 'On my way';
         chip.textContent = 'Attended';
       }, `${label}+=3.3`)
-      .to(chip, { backgroundColor: GREEN_TINT, color: GREEN_TEXT, duration: 0.3 }, `${label}+=3.3`)
+      .to(chip, { color: GREEN_TEXT, duration: 0.3 }, `${label}+=3.3`)
       .to(circle, { backgroundColor: BLUE_DOT, color: BLUE, scale: 1, duration: 0.5 }, `${label}+=4.3`)
       .to(wave, { backgroundColor: WAVE, duration: 0.5 }, `${label}+=4.3`)
       .to(tile, { backgroundColor: BLUE_TILE, duration: 0.5 }, `${label}+=4.3`)

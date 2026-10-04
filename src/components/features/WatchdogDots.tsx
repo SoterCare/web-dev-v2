@@ -23,10 +23,10 @@ const WatchdogDots = () => (
         </span>
       ))}
     </div>
-    <div className="mt-4 flex h-8 items-center justify-center">
+    <div className="mt-5 flex min-h-8 items-center justify-center">
       <span
         data-watch-chip
-        className="rounded-full bg-black/5 px-4 py-1.5 text-xs font-bold text-text-muted opacity-0"
+        className="text-center text-lg font-extrabold uppercase leading-none text-text-muted opacity-0 md:text-xl"
       >
         Caregiver alerted
       </span>
