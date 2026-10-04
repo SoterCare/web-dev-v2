@@ -10,9 +10,7 @@ const DoctorRecordMock = () => (
     aria-hidden="true"
     className="relative rounded-xl bg-white p-4 shadow-xl ring-1 ring-black/5 md:p-5"
   >
-    {/* folded corner */}
-    <span className="absolute right-0 top-0 h-6 w-6 rounded-bl-xl bg-gradient-to-br from-black/5 to-white" />
-    <div className="mb-3 flex items-center justify-between pr-6">
+    <div className="mb-3 flex items-center justify-between">
       <span className="text-xs font-bold text-text">Resident record</span>
     </div>
     <ul className="space-y-2">
