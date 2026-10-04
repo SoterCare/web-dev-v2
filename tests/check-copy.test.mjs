@@ -8,6 +8,8 @@ test("flags banned consumer and vitals copy", () => {
   assert.ok(findViolations("live Heart Rate and SpO2", "src/components/Product.tsx").length > 0);
   assert.ok(findViolations("Wellness Simplified", "src/emails/ContactAutoReply.tsx").length > 0);
   assert.ok(findViolations("Komudi Dhara", "src/components/Team.tsx").length > 0);
+  assert.ok(findViolations("LKR 166,000", "src/components/Pricing.tsx").length > 0);
+  assert.ok(findViolations("peace of mind", "src/components/Hero.tsx").length > 0);
 });
 
 test("clean care-home copy passes", () => {

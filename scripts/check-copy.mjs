@@ -19,6 +19,8 @@ export const RULES = [
   { name: "subscription tiers", re: /\benterprise\b/i },
   { name: "published price", re: /\$\s?\d/ },
   { name: "structured-data offer", re: /priceCurrency/ },
+  { name: "LKR/Rs price", re: /\bLKR\b|\bRs\.?\s?\d/i },
+  { name: "consumer 'peace of mind' copy", re: /peace of mind/i },
 ];
 
 export const REQUIRED = [
