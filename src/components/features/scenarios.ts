@@ -212,6 +212,23 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
     const hideChip = (t: number) => {
       tl.to(chip, { autoAlpha: 0, y: 10, duration: 0.4 }, t);
     };
+    // A completed alert shrinks down to just its coloured left tag. It stays in the feed.
+    const collapse = (t: number) => {
+      tl.to(Array.from(p.body.children), { autoAlpha: 0, duration: 0.25 }, t).to(
+        p.body,
+        {
+          width: 4,
+          height: 16,
+          padding: 0,
+          borderRadius: 2,
+          backgroundColor: 'rgba(0,0,0,0)',
+          boxShadow: 'none',
+          duration: 0.6,
+          ease: 'power2.inOut',
+        },
+        t + 0.15,
+      );
+    };
     const tap = (el: HTMLElement, t: number) => {
       tl.to(el, { scale: 0.9, duration: 0.12, yoyo: true, repeat: 1 }, t);
     };
@@ -261,6 +278,7 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
       showChip(sc.resolvedAt, 'Attended', GREEN_TEXT);
       hideChip(sc.resolvedAt + 1.5);
       calm(sc.resolvedAt + 0.6);
+      collapse(sc.resolvedAt + 1.1);
     } else if (sc.attendedAt !== undefined) {
       // 3. The caregiver confirms, and everything settles back. The alert stays in the feed.
       tap(p.confirm, sc.attendedAt);
@@ -273,6 +291,7 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
       showChip(sc.attendedAt + 0.3, 'Attended', GREEN_TEXT);
       hideChip(sc.attendedAt + 1.8);
       calm(sc.attendedAt + 1.1);
+      collapse(sc.attendedAt + 1.2);
     }
   });
 

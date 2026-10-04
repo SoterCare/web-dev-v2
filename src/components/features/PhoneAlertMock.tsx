@@ -1,5 +1,8 @@
 import { PALETTES, RESIDENTS, SCENARIOS } from "@/components/features/scenarios";
 
+// Three earlier alerts already sit collapsed under the first new one, so the feed never starts empty.
+const PREVIOUS = ["moisture", "standup", "checkup"] as const;
+
 // Decorative preview of a caregiver's phone. Names are made up.
 // It is a feed: each new alert lands at the top and pushes the older ones down. Alerts are
 // never removed. One that nobody attends repeats until someone taps On my way, then stays
@@ -65,10 +68,14 @@ const PhoneAlertMock = () => (
             );
           })}
 
-        <div className="rounded-2xl bg-bg-card/70 p-3">
-          <span className="block text-xs font-bold text-text">Kamala, Resident 1</span>
-          <span className="mt-0.5 block text-xs text-text-muted">Moisture, attended 8 min ago</span>
-        </div>
+        {/* Earlier alerts, already completed: just their coloured tags remain. */}
+        {PREVIOUS.map((kind, k) => (
+          <div
+            key={k}
+            style={{ borderLeftColor: PALETTES[kind].solid }}
+            className="mb-2.5 h-4 w-1 rounded-sm border-l-4"
+          />
+        ))}
       </div>
     </div>
   </div>
