@@ -65,21 +65,6 @@ const TEAM_MEMBERS = [
   },
 ];
 
-const ADVISORS = [
-  {
-    name: "Banu Athuraliya",
-    role: "External advisor",
-    detail:
-      "Visiting Lecturer and SDGP Module Leader, Digital Consultant, Informatics Institute of Technology (IIT)",
-  },
-  {
-    name: "Dr. P.A.D.M. Senarachchi",
-    role: "Medical expert",
-    detail:
-      "Accident and Emergency Unit, National Hospital, Kandy. Trauma and Stroke Rehabilitation Hospital, Digana",
-  },
-];
-
 const Team = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -233,18 +218,6 @@ const Team = () => {
           ))}
         </div>
 
-        <div className="mt-10 max-w-4xl mx-auto">
-          <h3 className="text-center text-sm font-bold text-text-muted mb-5">Advisors</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {ADVISORS.map((a) => (
-              <div key={a.name} className="bg-bg-card rounded-3xl shadow-m p-6">
-                <p className="text-sm font-medium text-[#3d7e93] mb-0.5">{a.role}</p>
-                <h4 className="text-lg font-bold text-text tracking-tight">{a.name}</h4>
-                <p className="mt-2 text-sm text-text-muted leading-relaxed">{a.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
