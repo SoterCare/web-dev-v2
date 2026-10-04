@@ -106,7 +106,7 @@ const Features = () => {
           <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
             {/* Care homes: the buyer, so the largest card */}
             <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-7 md:p-10 lg:col-span-8">
-              <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
+              <div className="relative grid gap-8 md:grid-cols-2 md:items-stretch">
                 <div>
                   <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
                   <p className="mt-3 mb-6 text-lg text-text-muted leading-relaxed">
@@ -114,7 +114,12 @@ const Features = () => {
                   </p>
                   <Points items={HOME_POINTS} />
                 </div>
-                <WardOverviewMock />
+                {/* On desktop the overview fills the height of the text column, so it never stretches the card. */}
+                <div className="relative">
+                  <div className="md:absolute md:inset-0">
+                    <WardOverviewMock />
+                  </div>
+                </div>
               </div>
             </article>
 
