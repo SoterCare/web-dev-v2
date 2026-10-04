@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github } from "lucide-react";
+import WaitlistPopup from "@/components/WaitlistPopup";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -45,6 +46,7 @@ const Footer = () => {
   const [viewState, setViewState] = useState<ViewState>("footer");
   const [showIframe, setShowIframe] = useState(false);
   const [showPlayGate, setShowPlayGate] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
   const activeTimeline = useRef<gsap.core.Timeline | null>(null);
 
   // Scroll-triggered entrance animation (unchanged)
@@ -315,19 +317,20 @@ const Footer = () => {
                   Book a demo
                 </button>
 
-                <button
-                  onClick={handleMiniPitchButtonClick}
-                  className="bg-bg-card text-text px-8 py-4 rounded-full font-semibold text-lg shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
-                >
-                  <Play size={20} fill="currentColor" className="text-[#3d7e93]" />
-                  Mini Pitch
-                </button>
+                {/* Mini Pitch button removed for now. The video overlay and handlers below are kept
+                    so it can be added back: <button onClick={handleMiniPitchButtonClick}>Mini Pitch</button> */}
               </div>
 
               <p className="mt-8 max-w-xl text-sm md:text-base text-text-muted leading-relaxed">
-                We are a startup building SoterCare with our first care homes.
-                Early partners shape the product.
+                We are a startup building SoterCare with our first care homes. Early partners shape the product.
+                Once it is proven there, we will bring it to every home as a family kit. That is our promise to the community.
               </p>
+              <button
+                onClick={() => setWaitlistOpen(true)}
+                className="mt-3 text-sm md:text-base font-bold text-[#3d7e93] hover:underline"
+              >
+                Join the home-kit waitlist →
+              </button>
             </div>
 
             {/* Bottom Bar */}
@@ -464,6 +467,7 @@ const Footer = () => {
           </button>
         </div>
       </div>
+      <WaitlistPopup isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
     </footer>
   );
 };

@@ -57,7 +57,7 @@ Home (`/`) stays a single scrolling page. No new routes. Order changes to follow
 | 6 | Features (trimmed) | `#features` | Rewrite | Innovation slides |
 | 7 | ~~Proof and roadmap~~ | — | **Removed (user decision)** | — |
 | 8 | Pricing: talk to us, and who we are (startup) | `#pricing` | Rewrite (see 5.8) | Business Model |
-| 9 | Coming home (household kit promise) | `#home-kit` | **New** | User brief |
+| 9 | ~~Coming home~~ (now a promise line and waitlist button in the footer, plus the waitlist popup copy) | — | **Moved (user decision)** | User brief |
 | 10 | Latest News | — | Unchanged | — |
 | 11 | Community intro | — | Unchanged | — |
 | 12 | FAQ | `#faqs` | Rewrite | — |

@@ -14,9 +14,7 @@ import Hero from '@/components/Hero';
 import Mission from '@/components/Mission';
 import HowItWorks from '@/components/HowItWorks';
 import Pricing from '@/components/Pricing';
-import HomeKit from '@/components/HomeKit';
 import LatestNews from '@/components/LatestNews';
-import CommunityIntro from '@/components/CommunityIntro';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
 import Footer from '@/components/Footer';
@@ -59,8 +57,6 @@ export default function Home() {
       </Mission>
       <HowItWorks />
       <Pricing />
-      <HomeKit />
-      <CommunityIntro />
       <FAQ />
       <Team />
       <Footer />

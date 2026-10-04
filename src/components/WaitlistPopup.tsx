@@ -61,7 +61,7 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                             </div>
                             <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Join the Home-Kit Waitlist</h2>
                             <p className="text-[var(--text-muted)] leading-relaxed">
-                                We are starting with care homes. Leave your email and we will tell you when the home kit is ready.
+                                We are starting with care homes. Once SoterCare is proven there, we will bring it to every home as a family kit. That is our promise to the community. Leave your email and we will tell you when it is ready.
                             </p>
                         </div>
 
