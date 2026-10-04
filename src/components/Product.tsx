@@ -60,9 +60,6 @@ const Product = () => {
               src="/models/edge-gateway.html"
               title="Interactive 3D model of the SoterCare gateway prototype"
             />
-            <p className="text-sm text-text-muted mt-2 text-center">
-              Prototype hub shown. The final 15.6-inch ward gateway design is coming.
-            </p>
           </div>
         </div>
       </div>
