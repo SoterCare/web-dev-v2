@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Building2, Check, PersonStanding, Users } from 'lucide-react';
+import { Check, PersonStanding, Users } from 'lucide-react';
 import SectionHeader from '@/components/SectionHeader';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
@@ -132,9 +132,6 @@ const Features = () => {
               <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#a0cbdb]/25 blur-3xl" />
               <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
                 <div>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#a0cbdb]/25">
-                    <Building2 className="text-[#3d7e93]" size={26} />
-                  </div>
                   <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
                   <p className="mt-3 mb-6 text-lg text-text-muted leading-relaxed">
                     Everything you need to run safer care, and the records to show for it.
