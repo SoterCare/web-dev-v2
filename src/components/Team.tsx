@@ -110,8 +110,8 @@ const Team = () => {
             Meet the Minds Behind SoterCare
           </h2>
           <p className="max-w-2xl mx-auto text-lg text-text-muted">
-            We are a startup. Three founders who built every layer, from firmware to ML to the apps.
-            SoterCare started with caring for our own grandparents.
+            SoterCare started as a university project and is now being built as a startup,
+            founded by Daham together with his co-founders. It began with caring for our own grandparents.
           </p>
         </div>
 
