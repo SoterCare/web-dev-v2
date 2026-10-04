@@ -55,7 +55,7 @@ Home (`/`) stays a single scrolling page. No new routes. Order changes to follow
 | 4 | Product: thigh node, ward gateway, apps | `#product` | Rewrite | Product slide, A4/A5 |
 | 5 | ~~For carers and for families (two logins)~~ | — | **Removed (user decision)** | — |
 | 6 | Features (trimmed) | `#features` | Rewrite | Innovation slides |
-| 7 | Proof and roadmap | `#proof` | **New** | Traction, TRL, pilot targets |
+| 7 | ~~Proof and roadmap~~ | — | **Removed (user decision)** | — |
 | 8 | Pricing: talk to us, and who we are (startup) | `#pricing` | Rewrite (see 5.8) | Business Model |
 | 9 | Coming home (household kit promise) | `#home-kit` | **New** | User brief |
 | 10 | Latest News | — | Unchanged | — |

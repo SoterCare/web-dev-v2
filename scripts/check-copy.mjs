@@ -31,7 +31,6 @@ export const REQUIRED = [
   { file: "src/app/page.tsx", re: /<HomeKit/, why: "home-kit section mounted" },
   { file: "src/components/Mission.tsx", re: /id="promise"/, why: "anchor #promise" },
   { file: "src/components/HowItWorks.tsx", re: /id="how-it-works"/, why: "anchor #how-it-works" },
-  { file: "src/components/Proof.tsx", re: /id="proof"/, why: "anchor #proof" },
   { file: "src/components/Pricing.tsx", re: /id="pricing"/, why: "anchor #pricing" },
   { file: "src/components/HomeKit.tsx", re: /id="home-kit"/, why: "anchor #home-kit" },
   { file: "src/app/layout.tsx", re: /from "@\/lib\/faqs"/, why: "JSON-LD uses shared FAQ module" },
