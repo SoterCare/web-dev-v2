@@ -44,7 +44,7 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                     <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2">
                         <h2 className="text-xl font-bold text-[var(--text)]">You're on the list!</h2>
                         <p className="text-[var(--text-muted)] max-w-[200px]">
-                            We'll let you know as soon as spots open up.
+                            We'll let you know when the home kit is ready.
                         </p>
                         <button
                             onClick={onClose}
@@ -59,9 +59,9 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                             <div className="w-12 h-12 text-[#a0cbdb] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
                                 <UserPlus size={24} />
                             </div>
-                            <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Join the Waitlist</h2>
+                            <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Join the Home-Kit Waitlist</h2>
                             <p className="text-[var(--text-muted)] leading-relaxed">
-                                Be the first to know when SoterCare launches. Early access spots are limited!
+                                We are starting with care homes. Leave your email and we will tell you when the home kit is ready.
                             </p>
                         </div>
 
