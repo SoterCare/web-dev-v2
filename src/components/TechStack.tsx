@@ -50,7 +50,7 @@ const TechStack = () => {
     ));
 
   return (
-    <div className="relative z-10 w-full -mt-6 md:-mt-14">
+    <div className="relative z-10 w-full -mt-2 md:-mt-6">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 w-full">
         <div className="w-full flex items-center overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
           <div className="flex-shrink-0 px-4 sm:px-10 py-4 sm:py-8 z-10 relative">
