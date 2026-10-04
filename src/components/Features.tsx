@@ -176,7 +176,7 @@ const Features = () => {
               <HandHeart
                 aria-hidden="true"
                 strokeWidth={1.75}
-                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93]"
+                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-[#e3e3e3] transition-colors duration-500 group-hover:text-[#3d7e93]"
               />
               <h3 className="relative text-3xl font-bold tracking-tight">Elders</h3>
               <p className="relative mt-2 mb-6 text-lg text-text-muted">
@@ -192,7 +192,7 @@ const Features = () => {
               <Users
                 aria-hidden="true"
                 strokeWidth={1.75}
-                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93]"
+                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-[#e3e3e3] transition-colors duration-500 group-hover:text-[#3d7e93]"
               />
               <h3 className="relative text-3xl font-bold tracking-tight">Families</h3>
               <p className="relative mt-2 mb-6 text-lg text-text-muted">
