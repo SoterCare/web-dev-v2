@@ -44,7 +44,7 @@ export default function ContactPopup() {
             />
 
             {/* Card */}
-            <div className="relative w-full max-w-md bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[1.5rem] p-6 sm:p-8 border border-white/50 overflow-hidden animate-in zoom-in-95 duration-300 slide-in-from-bottom-4">
+            <div data-lenis-prevent className="relative w-full max-w-md bg-gradient-to-b from-[#fafafa] to-[#f7f7f7] shadow-m rounded-[1.5rem] p-6 sm:p-8 border border-white/50 max-h-[calc(100dvh-2rem)] overflow-y-auto animate-in zoom-in-95 duration-300 slide-in-from-bottom-4">
                 <button
                     onClick={handleClose}
                     aria-label="Close contact popup"
@@ -56,7 +56,7 @@ export default function ContactPopup() {
                 {status === "success" ? (
                     <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2">
                         <div className="w-14 h-14 rounded-full bg-[#a0cbdb]/10 flex items-center justify-center mb-4">
-                            <CheckCircle size={28} className="text-[#a0cbdb]" />
+                            <CheckCircle size={28} className="text-[#3d7e93]" />
                         </div>
                         <h2 className="text-xl font-extrabold text-[var(--text)] leading-[1.1] tracking-tight">
                             Request sent!
@@ -66,7 +66,7 @@ export default function ContactPopup() {
                         </p>
                         <button
                             onClick={handleClose}
-                            className="mt-6 px-6 py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
+                            className="mt-6 px-6 py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#3d7e93] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
                         >
                             Done
                         </button>
@@ -74,7 +74,7 @@ export default function ContactPopup() {
                 ) : (
                     <>
                         <div className="mb-6 flex flex-col items-center text-center">
-                            <div className="w-12 h-12 text-[#a0cbdb] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+                            <div className="w-12 h-12 text-[#3d7e93] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
                                 <MessageSquare size={24} />
                             </div>
                             <h2 className="text-2xl font-extrabold text-[var(--text)] mb-1 leading-[1.1] tracking-tight">Book a demo</h2>
@@ -98,6 +98,7 @@ export default function ContactPopup() {
                         }} className="space-y-3">
                             <input
                                 name="name"
+                                aria-label="Your name"
                                 type="text"
                                 placeholder="Your name"
                                 required
@@ -105,6 +106,7 @@ export default function ContactPopup() {
                             />
                             <input
                                 name="email"
+                                aria-label="Your email"
                                 type="email"
                                 placeholder="your@email.com"
                                 required
@@ -112,13 +114,15 @@ export default function ContactPopup() {
                             />
                             <input
                                 name="home"
+                                aria-label="Care home name"
                                 type="text"
                                 placeholder="Care home name (optional)"
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
                             />
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <input
                                     name="beds"
+                                    aria-label="Number of beds"
                                     type="text"
                                     inputMode="numeric"
                                     placeholder="Number of beds (optional)"
@@ -126,6 +130,7 @@ export default function ContactPopup() {
                                 />
                                 <input
                                     name="role"
+                                    aria-label="Your role"
                                     type="text"
                                     placeholder="Your role (optional)"
                                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
@@ -133,6 +138,7 @@ export default function ContactPopup() {
                             </div>
                             <textarea
                                 name="message"
+                                aria-label="Your message"
                                 placeholder="How can we help your home?"
                                 required
                                 rows={4}
@@ -145,7 +151,7 @@ export default function ContactPopup() {
 
                             <button
                                 disabled={status === "loading"}
-                                className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#a0cbdb] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
+                                className="w-full py-3 rounded-full font-bold transition-all duration-300 flex items-center justify-center group text-md bg-[#3d7e93] shadow-m text-white hover:text-black hover:bg-white disabled:opacity-70"
                             >
                                 {status === "loading" ? (
                                     <>

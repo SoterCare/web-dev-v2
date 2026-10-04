@@ -124,6 +124,10 @@ export async function contactAction(formData: FormData) {
 
     if (notifError) {
       console.error("Contact Notification Email Failed:", notifError);
+      return {
+        success: false,
+        error: "We couldn't send your request. Please email support@sotercare.com.",
+      };
     }
 
     // 2. Send auto-reply to the user
@@ -142,9 +146,14 @@ export async function contactAction(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("contactAction Error:", error);
+    const message = error instanceof Error ? error.message : "";
+    const isConfigError = message.startsWith("Configuration Error");
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to send message",
+      error:
+        message && !isConfigError
+          ? message
+          : "We couldn't send your request. Please email support@sotercare.com.",
     };
   }
 }
