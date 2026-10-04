@@ -11,7 +11,8 @@ import { ReactLenis, useLenis } from 'lenis/react';
 import Navbar from '@/components/Navbar';
 import SplashScreen from '@/components/SplashScreen';
 import Hero from '@/components/Hero';
-import Mission from '@/components/Mission';
+import Problem from '@/components/Problem';
+import TechStack from '@/components/TechStack';
 import CommunityIntro from '@/components/CommunityIntro';
 import Product from '@/components/Product';
 import Features from '@/components/Features';
@@ -53,9 +54,10 @@ export default function Home() {
       <SplashScreen />
       <Navbar />
       <Hero />
-      <Mission />
+      <Problem />
       <LatestNews />
       <Product />
+      <TechStack />
       <Features />
       <CommunityIntro />
       <FAQ />
