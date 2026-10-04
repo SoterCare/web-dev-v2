@@ -30,7 +30,7 @@ const Mission = ({ children }: MissionProps) => {
       const textElements = textRef.current.querySelectorAll(".word");
 
       // No pin: the words start lighting up as soon as the section is a fifth of the way
-      // into view, and finish just before it fills the screen.
+      // into view, and take their time, finishing only once it has passed the top of the screen.
       gsap.fromTo(
         textElements,
         { opacity: 0.1 },
@@ -41,8 +41,8 @@ const Mission = ({ children }: MissionProps) => {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 80%",
-            end: "top 15%",
-            scrub: 1,
+            end: "top -15%",
+            scrub: 1.5,
           },
         },
       );

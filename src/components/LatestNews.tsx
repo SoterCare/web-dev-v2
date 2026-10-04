@@ -21,10 +21,6 @@ export default function LatestNews() {
 
   return (
     <div id="news" className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 w-full">
-      <p className="mb-5 text-center text-sm font-bold text-text-muted">
-        Latest news
-      </p>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
         {articles.map((article) => (
           <Link
@@ -67,12 +63,18 @@ export default function LatestNews() {
         ))}
       </div>
 
-      <div className="text-center mt-8">
+      <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link
           href="/news"
           className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-full bg-text text-bg-card shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
         >
           View all news →
+        </Link>
+        <Link
+          href="/community"
+          className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-full bg-bg-card text-text shadow-m hover:scale-105 active:scale-95 transition-all duration-300"
+        >
+          Visit our community →
         </Link>
       </div>
     </div>
