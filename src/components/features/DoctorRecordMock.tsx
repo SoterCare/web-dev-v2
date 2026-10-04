@@ -20,8 +20,8 @@ const DoctorRecordMock = () => (
         data-record-new
         className="flex gap-3 rounded-lg bg-[#3d7e93]/10 px-2.5 py-2 text-[11px]"
       >
-        <span className="w-16 shrink-0 font-semibold text-[#3d7e93]">Tue 02:14</span>
-        <span className="font-semibold text-text">Stand-up attempt, Indrani</span>
+        <span data-record-time className="w-16 shrink-0 font-semibold text-[#3d7e93]">Tue 02:14</span>
+        <span data-record-text className="font-semibold text-text">Stand-up attempt, Indrani</span>
       </li>
       {ROWS.map((r) => (
         <li key={r.when} className="flex gap-3 px-2.5 py-1 text-[11px] text-text-muted">

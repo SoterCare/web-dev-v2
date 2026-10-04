@@ -10,6 +10,7 @@ import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
 import DoctorRecordMock from '@/components/features/DoctorRecordMock';
 import WatchdogDots from '@/components/features/WatchdogDots';
+import { buildCareCircleTimeline } from '@/components/features/scenarios';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,8 +67,8 @@ const Features = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  // One choreographed moment, played once when the grid scrolls into view:
-  // a resident needs help, the caregiver is alerted, and the record gains a line.
+  // Four short scenarios play on a loop while the grid is on screen: a resident needs help,
+  // the AI spots it, the caregiver is alerted and confirms, and the record gains a line.
   useGSAP(
     () => {
       const root = stageRef.current;
@@ -75,35 +76,14 @@ const Features = () => {
 
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const tile = root.querySelector('[data-alert-tile]');
-        const status = root.querySelector('[data-alert-status]');
-        const ping = root.querySelector('[data-alert-ping]');
-        const notice = root.querySelector('[data-alert-notice]');
-        const record = root.querySelector('[data-record-new]');
-        if (!tile || !status || !ping || !notice || !record) return;
-
-        gsap.set([notice, record], { autoAlpha: 0, y: 14 });
-
-        const tl = gsap.timeline({ paused: true });
-        tl.to(tile, { backgroundColor: '#fbe0bc', duration: 0.4 })
-          .to(status, { color: '#8a4e0c', duration: 0.4 }, '<')
-          .add(() => {
-            status.textContent = 'Needs help';
-          }, '<')
-          .fromTo(
-            ping,
-            { scale: 0.9, autoAlpha: 0.9 },
-            { scale: 1.35, autoAlpha: 0, duration: 1, ease: 'power2.out', repeat: 1 },
-            '<',
-          )
-          .to(notice, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.4')
-          .to(record, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.7');
+        const tl = buildCareCircleTimeline(root);
+        if (!tl) return;
 
         ScrollTrigger.create({
           trigger: root,
-          start: 'top 60%',
-          once: true,
-          onEnter: () => tl.play(),
+          start: 'top 75%',
+          end: 'bottom 15%',
+          onToggle: (self) => (self.isActive ? tl.play() : tl.pause()),
         });
       });
 

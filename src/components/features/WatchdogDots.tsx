@@ -1,25 +1,34 @@
-// Decorative preview of AI watching every resident: a soft wave of attention passes over the
-// residents, and now and then one is flagged and the caregiver is alerted. Initials are made up.
-const INITIALS = ["K", "N", "S", "M", "R", "C", "P", "S", "G", "L", "S", "I"];
-const FLAGGED = 6;
+import { RESIDENTS } from "@/components/features/scenarios";
 
+// Decorative preview of AI watching every resident: each circle gives off a soft light-blue
+// wave, and when something is spotted the matching circle reacts. Initials are made up.
 const WatchdogDots = () => (
   <div aria-hidden="true" className="mx-auto w-full max-w-[260px]">
     <div className="grid grid-cols-4 gap-3">
-      {INITIALS.map((initial, i) => (
+      {RESIDENTS.map((r, i) => (
         <span
-          key={i}
-          style={{ animationDelay: `${(i % 4) * 0.35 + Math.floor(i / 4) * 0.35}s` }}
-          className={`flex aspect-square items-center justify-center rounded-full bg-[#a0cbdb]/35 text-sm font-bold text-[#3d7e93] motion-reduce:animate-none ${
-            i === FLAGGED ? "animate-watch-flag" : "animate-watch"
+          key={r.name}
+          data-dot={i}
+          className={`relative flex aspect-square items-center justify-center rounded-full bg-[#a0cbdb]/35 text-sm font-bold text-[#3d7e93] ${
+            r.status === "Offline" ? "opacity-40" : ""
           }`}
         >
-          {initial}
+          {r.status !== "Offline" && (
+            <span
+              data-dot-wave
+              style={{ animationDelay: `${((i * 7) % 12) * 0.27}s` }}
+              className="pointer-events-none absolute inset-0 animate-watch-ripple rounded-full bg-[#a0cbdb] motion-reduce:animate-none"
+            />
+          )}
+          <span className="relative">{r.name[0]}</span>
         </span>
       ))}
     </div>
     <div className="mt-4 flex h-8 items-center justify-center">
-      <span className="animate-watch-chip rounded-full bg-[#e08a2e]/15 px-4 py-1.5 text-xs font-bold text-[#8a4e0c] motion-reduce:animate-none">
+      <span
+        data-watch-chip
+        className="rounded-full bg-black/5 px-4 py-1.5 text-xs font-bold text-text-muted opacity-0"
+      >
         Caregiver alerted
       </span>
     </div>
