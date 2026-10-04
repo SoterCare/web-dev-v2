@@ -129,7 +129,6 @@ const Features = () => {
           <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
             {/* Care homes: the buyer, so the largest card */}
             <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-7 md:p-10 lg:col-span-8">
-              <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#a0cbdb]/25 blur-3xl" />
               <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
                 <div>
                   <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
