@@ -39,6 +39,9 @@ interface Scenario {
   alertText: string; // the caregiver's alert
   record: string; // the line added to the resident record
   time: string;
+  // Nobody attends right away: the alert repeats until someone taps On my way, then it
+  // stays active below until someone marks it resolved.
+  escalates?: boolean;
 }
 
 const SCENARIOS: Scenario[] = [
@@ -59,6 +62,7 @@ const SCENARIOS: Scenario[] = [
     alertText: 'Temperature is above normal. Please go and check.',
     record: 'High temperature, Ranjith',
     time: 'Tue 03:40',
+    escalates: true,
   },
   {
     kind: 'moisture',
@@ -77,6 +81,7 @@ const SCENARIOS: Scenario[] = [
     alertText: 'A fall was detected. Please go immediately.',
     record: 'Fall detected, Piyal',
     time: 'Tue 06:25',
+    escalates: true,
   },
 ];
 
@@ -96,16 +101,26 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
   const notice = find(root, '[data-alert-notice]');
   const title = find(root, '[data-alert-title]');
   const text = find(root, '[data-alert-text]');
+  const count = find(root, '[data-alert-count]');
   const confirm = find(root, '[data-alert-confirm]');
+  const active = find(root, '[data-active-card]');
+  const activeBody = find(root, '[data-active-body]');
+  const activeTitle = find(root, '[data-active-title]');
+  const activeText = find(root, '[data-active-text]');
+  const activeDone = find(root, '[data-active-done]');
   const record = find(root, '[data-record-new]');
   const recordTime = find(root, '[data-record-time]');
   const recordText = find(root, '[data-record-text]');
   const chip = find(root, '[data-watch-chip]');
-  if (!notice || !title || !text || !confirm || !record || !recordTime || !recordText || !chip) {
+  if (
+    !notice || !title || !text || !count || !confirm || !active || !activeBody || !activeTitle || !activeText ||
+    !activeDone || !record || !recordTime || !recordText || !chip
+  ) {
     return null;
   }
 
   gsap.set([notice, record, chip], { autoAlpha: 0, y: 10 });
+  gsap.set(active, { height: 0 });
 
   const tl = gsap.timeline({ paused: true, repeat: -1 });
 
@@ -118,14 +133,17 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
     if (!tile || !tileStatus || !tileDot || !circle || !wave) return;
 
     const c = PALETTES[sc.kind];
+    const name = `${RESIDENTS[sc.resident].name}, Resident ${sc.resident + 1}`;
     const baseStatus = tileStatus.textContent ?? '';
     const label = `s${i}`;
+    const at = (t: number) => `${label}+=${t}`;
     tl.addLabel(label);
 
     // 1. The AI spots it: the resident's circle, the ward tile and the chip all react.
     tl.add(() => {
-      title.textContent = `${RESIDENTS[sc.resident].name}, Resident ${sc.resident + 1}`;
+      title.textContent = name;
       text.textContent = sc.alertText;
+      count.textContent = '';
       confirm.textContent = 'Confirm';
       recordTime.textContent = sc.time;
       recordText.textContent = sc.record;
@@ -139,27 +157,64 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
       .to(tileStatus, { color: c.text, duration: 0.4 }, label)
       .to(tileDot, { backgroundColor: c.solid, duration: 0.4 }, label)
       // 2. The caregiver is alerted and the record gains a line.
-      .set(notice, { borderLeftColor: c.solid }, `${label}+=0.8`)
-      .set(confirm, { backgroundColor: c.solid, color: c.button }, `${label}+=0.8`)
-      .to(notice, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, `${label}+=0.9`)
-      .to(record, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, `${label}+=1.6`)
+      .set(notice, { borderLeftColor: c.solid }, at(0.8))
+      .set([confirm, activeDone], { backgroundColor: c.solid, color: c.button }, at(0.8))
+      .set(activeBody, { borderLeftColor: c.solid }, at(0.8))
+      .to(notice, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, at(0.9))
+      .to(record, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, at(1.6));
+
+    let end: number;
+
+    if (sc.escalates) {
+      // Nobody attends: the alert repeats, a little louder each time.
+      [2.4, 3.9].forEach((t, k) => {
+        tl.add(() => {
+          count.textContent = `Alert ${k + 2}`;
+          chip.textContent = 'Alert again';
+        }, at(t))
+          .to(notice, { keyframes: { x: [0, -5, 5, -4, 4, 0] }, duration: 0.45 }, at(t))
+          .to(tile, { scale: 1.06, duration: 0.2, yoyo: true, repeat: 1 }, at(t));
+      });
+
+      // Someone taps On my way: the alert slides down into the active list, pushing the
+      // older alert further down, and stays there.
+      tl.to(confirm, { scale: 0.9, duration: 0.12, yoyo: true, repeat: 1 }, at(5.6))
+        .add(() => {
+          activeTitle.textContent = name;
+          activeText.textContent = 'On my way';
+          chip.textContent = 'On the way';
+        }, at(5.8))
+        .to(chip, { color: GREEN_TEXT, duration: 0.3 }, at(5.8))
+        .to(notice, { autoAlpha: 0, y: 24, duration: 0.45, ease: 'power2.in' }, at(5.8))
+        .to(active, { height: 'auto', duration: 0.55, ease: 'power3.out' }, at(5.9))
+        // It stays active until someone confirms it is resolved.
+        .to(activeDone, { scale: 0.9, duration: 0.12, yoyo: true, repeat: 1 }, at(8.6))
+        .add(() => {
+          chip.textContent = 'Attended';
+        }, at(8.8))
+        .to(active, { height: 0, duration: 0.5, ease: 'power2.inOut' }, at(8.9));
+      end = 9.2;
+    } else {
       // 3. The caregiver confirms, and everything settles back.
-      .to(confirm, { scale: 0.9, duration: 0.12, yoyo: true, repeat: 1 }, `${label}+=3.2`)
-      .add(() => {
-        confirm.textContent = 'On my way';
-        chip.textContent = 'Attended';
-      }, `${label}+=3.3`)
-      .to(chip, { color: GREEN_TEXT, duration: 0.3 }, `${label}+=3.3`)
-      .to(circle, { backgroundColor: BLUE_DOT, color: BLUE, scale: 1, duration: 0.5 }, `${label}+=4.3`)
-      .to(wave, { backgroundColor: WAVE, duration: 0.5 }, `${label}+=4.3`)
-      .to(tile, { backgroundColor: BLUE_TILE, duration: 0.5 }, `${label}+=4.3`)
-      .to(tileStatus, { color: BLUE, duration: 0.5 }, `${label}+=4.3`)
-      .to(tileDot, { backgroundColor: BLUE, duration: 0.5 }, `${label}+=4.3`)
+      tl.to(confirm, { scale: 0.9, duration: 0.12, yoyo: true, repeat: 1 }, at(3.2))
+        .add(() => {
+          confirm.textContent = 'On my way';
+          chip.textContent = 'Attended';
+        }, at(3.3))
+        .to(chip, { color: GREEN_TEXT, duration: 0.3 }, at(3.3));
+      end = 4.3;
+    }
+
+    tl.to(circle, { backgroundColor: BLUE_DOT, color: BLUE, scale: 1, duration: 0.5 }, at(end))
+      .to(wave, { backgroundColor: WAVE, duration: 0.5 }, at(end))
+      .to(tile, { backgroundColor: BLUE_TILE, duration: 0.5 }, at(end))
+      .to(tileStatus, { color: BLUE, duration: 0.5 }, at(end))
+      .to(tileDot, { backgroundColor: BLUE, duration: 0.5 }, at(end))
       .add(() => {
         tileStatus.textContent = baseStatus;
-      }, `${label}+=4.5`)
-      .to([notice, record, chip], { autoAlpha: 0, y: 10, duration: 0.4 }, `${label}+=4.8`)
-      .to({}, { duration: 0.6 }, `${label}+=5.2`);
+      }, at(end + 0.2))
+      .to([notice, record, chip], { autoAlpha: 0, y: 10, duration: 0.4 }, at(end + 0.5))
+      .to({}, { duration: 0.6 }, at(end + 0.9));
   });
 
   return tl;
