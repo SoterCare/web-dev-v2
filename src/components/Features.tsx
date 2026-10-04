@@ -5,7 +5,6 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check, HandHeart, Users } from 'lucide-react';
-import SectionHeader from '@/components/SectionHeader';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
 import DoctorRecordMock from '@/components/features/DoctorRecordMock';
@@ -64,7 +63,7 @@ const Points = ({ items, tone = 'dark' }: { items: string[]; tone?: 'dark' | 'li
 );
 
 const Features = () => {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
   // Four short scenarios play on a loop while the grid is on screen: a resident needs help,
@@ -93,18 +92,16 @@ const Features = () => {
   );
 
   return (
-    <section
-      id="features"
-      ref={sectionRef}
-      className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden"
-    >
-      <div className="w-full relative z-10 px-4 sm:px-8 pt-16 md:pt-24 pb-8">
-        <div className="w-full max-w-7xl mx-auto">
-          <SectionHeader
-            chip="Features"
-            title="Built for the whole circle of care"
-            subtitle="Care homes get the system. Caregivers get the alerts. Elders and families get the care you can now offer."
-          />
+    <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14 md:mt-20">
+      <div className="w-full">
+        <div className="mb-8 md:mb-12 text-center flex flex-col items-center">
+          <h3 className="text-3xl md:text-5xl font-bold tracking-tight">
+            Built for the whole circle of care
+          </h3>
+          <p className="mt-4 max-w-2xl text-lg md:text-xl text-text-muted leading-relaxed">
+            Care homes get the system. Caregivers get the alerts. Elders and families get the care you can now offer.
+          </p>
+        </div>
 
           <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
             {/* Care homes: the buyer, so the largest card */}
@@ -203,9 +200,8 @@ const Features = () => {
               </div>
             </article>
           </div>
-        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

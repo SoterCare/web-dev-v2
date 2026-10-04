@@ -57,8 +57,7 @@ const jsonLd = {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: "https://sotercare.com" },
         { "@type": "ListItem", position: 2, name: "How it works", item: "https://sotercare.com/#how-it-works" },
-        { "@type": "ListItem", position: 3, name: "Features", item: "https://sotercare.com/#features" },
-        { "@type": "ListItem", position: 4, name: "Team", item: "https://sotercare.com/#team" },
+        { "@type": "ListItem", position: 3, name: "Team", item: "https://sotercare.com/#team" },
       ],
     },
     {
