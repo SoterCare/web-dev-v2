@@ -20,14 +20,15 @@ interface Palette {
   solid: string; // dots, borders
   tint: string; // fills
   text: string; // readable text on the tint
+  button: string; // label colour on a solid button
 }
 
 // One colour per kind of alert.
 const PALETTES = {
-  standup: { solid: '#4FE0C8', tint: 'rgba(79,224,200,0.28)', text: '#0B6B5D' },
-  fall: { solid: '#F05B6E', tint: 'rgba(240,91,110,0.16)', text: '#B42A3E' },
-  moisture: { solid: '#7CC4D6', tint: '#C4EBF0', text: '#1F5F73' },
-  checkup: { solid: '#F5A04A', tint: 'rgba(245,160,74,0.22)', text: '#8A4A0A' },
+  standup: { solid: '#4FE0C8', tint: 'rgba(79,224,200,0.28)', text: '#0B6B5D', button: '#04332C' },
+  fall: { solid: '#F05B6E', tint: 'rgba(240,91,110,0.16)', text: '#B42A3E', button: '#FFFFFF' },
+  moisture: { solid: '#7CC4D6', tint: '#C4EBF0', text: '#1F5F73', button: '#10404F' },
+  checkup: { solid: '#F5A04A', tint: 'rgba(245,160,74,0.22)', text: '#8A4A0A', button: '#3D2000' },
 } satisfies Record<string, Palette>;
 
 interface Scenario {
@@ -140,6 +141,7 @@ export function buildCareCircleTimeline(root: HTMLElement): gsap.core.Timeline |
       .to(tileDot, { backgroundColor: c.solid, duration: 0.4 }, label)
       // 2. The caregiver is alerted and the record gains a line.
       .set(notice, { borderLeftColor: c.solid }, `${label}+=0.8`)
+      .set(confirm, { backgroundColor: c.solid, color: c.button }, `${label}+=0.8`)
       .to(notice, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, `${label}+=0.9`)
       .to(record, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, `${label}+=1.6`)
       // 3. The caregiver confirms, and everything settles back.

@@ -9,7 +9,7 @@ const PhoneAlertMock = () => (
 
       <div
         data-alert-notice
-        className="mb-2.5 rounded-2xl border-l-4 border-[#F05B6E] bg-bg-card p-3 shadow-m"
+        className="mb-2.5 rounded-2xl border-l-4 border-[#4FE0C8] bg-bg-card p-3 shadow-m"
       >
         <span data-alert-title className="block text-xs font-bold text-text">
           Indrani, Resident 12
@@ -20,7 +20,7 @@ const PhoneAlertMock = () => (
         <div className="mt-2.5 flex gap-2">
           <span
             data-alert-confirm
-            className="rounded-full bg-[#67D974] px-3 py-1 text-[10px] font-bold text-[#14532d]"
+            className="rounded-full bg-[#4FE0C8] px-3 py-1 text-[10px] font-bold text-[#04332C]"
           >
             Confirm
           </span>
