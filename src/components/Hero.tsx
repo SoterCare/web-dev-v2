@@ -126,17 +126,10 @@ const Hero = () => {
             className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-20 pt-12 md:pt-0 px-4 will-change-transform"
           >
             <div className="flex flex-col items-center">
-              {/* Eyebrow pill — same chip as the section labels */}
-              <span className="reveal-text opacity-0 bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold uppercase tracking-widest text-text-muted mb-7 md:mb-9 w-fit">
-                For care homes
-              </span>
-
               <h1 className="mb-6 md:mb-8 leading-tight">
                 <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text leading-none tracking-tighter pb-1 reveal-text opacity-0">
-                  Safer care for every resident.
-                </span>
-                <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#3d7e93] leading-none tracking-tight mt-1 md:mt-2 reveal-text opacity-0">
-                  Without hiring more staff.
+                  Smarter care ecosystem{" "}
+                  <span className="text-[#3d7e93]">for every resident.</span>
                 </span>
               </h1>
 
@@ -163,11 +156,16 @@ const Hero = () => {
                 </a>
               </div>
 
-              <ul className="reveal-text opacity-0 mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-text-muted">
-                <li>97.65% gait accuracy (lab data)</li>
-                <li>Alerts in seconds</li>
-                <li>24/7 recording</li>
-                <li>No cameras, ever</li>
+              <ul className="reveal-text opacity-0 mt-10 md:mt-12 flex flex-wrap justify-center gap-3 md:gap-4">
+                {["Gait analysis", "Alerts in seconds", "24/7 recording", "No cameras, ever"].map((claim) => (
+                  <li
+                    key={claim}
+                    className="bg-bg-card shadow-m rounded-2xl px-5 py-3 md:px-7 md:py-4 text-base sm:text-lg md:text-xl font-bold text-text flex items-center gap-2.5"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#3d7e93]" aria-hidden="true" />
+                    {claim}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
