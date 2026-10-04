@@ -28,7 +28,7 @@ export const ContactAutoReply = ({
                     {/* Brand Header */}
                     <Section style={brandSection}>
                         <Heading style={brandText}>SOTERCARE</Heading>
-                        <Text style={subheading}>WELLNESS SIMPLIFIED</Text>
+                        <Text style={subheading}>SMARTER CARE FOR EVERY ELDER</Text>
                     </Section>
 
                     <Hr style={divider} />
@@ -42,14 +42,14 @@ export const ContactAutoReply = ({
                             We have received your message and appreciate you reaching out to us.
                         </Text>
                         <Text style={paragraph}>
-                            One of our team members will review your message and get back to you as soon as possible. We typically respond within 24 hours.
+                            We are a small startup team, and one of us will read your message and reply personally. We typically respond within 24 hours.
                         </Text>
                     </Section>
 
                     {/* Info Box */}
                     <Section style={infoBox}>
                         <Text style={infoText}>
-                            In the meantime, feel free to explore our website to learn more about how SoterCare is transforming elderly care with IoT and AI-powered solutions.
+                            In the meantime, feel free to explore our website to learn more about how SoterCare helps care homes give safer care with camera-free monitoring, instant carer alerts and complete records.
                         </Text>
                     </Section>
 
@@ -70,7 +70,7 @@ export const ContactAutoReply = ({
                             <Link href="mailto:support@sotercare.com" style={link}>Mail Us</Link>
                         </Text>
                         <Text style={copyright}>
-                            © {new Date().getFullYear()} SoterCare. Wellness Simplified.
+                            © {new Date().getFullYear()} SoterCare.
                         </Text>
                         <Text style={disclaimer}>
                             This is an automated response. Please do not reply directly to this email.

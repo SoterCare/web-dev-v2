@@ -5,31 +5,9 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { faqs } from '@/lib/faqs';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const faqs = [
-  {
-    "question": "How does the gait analysis model prevent falls?",
-    "answer": "The model identifies risky movements with 97.65% accuracy. It triggers haptic vibrations in the thigh node, allowing users to self-correct their posture before an actual fall occurs."
-  },
-  {
-    "question": "Does SoterCare use cameras to monitor the elderly?",
-    "answer": "No, SoterCare is camera-free. It uses motion sensors and conductivity clips to protect user privacy and dignity while providing 24/7 monitoring without invasive visual surveillance."
-  },
-  {
-    "question": "Does the system work without an internet connection?",
-    "answer": "Yes. Critical alerts process locally on the Raspberry Pi 5 gateway. This \"Edge-First\" approach ensures fall and hygiene detections function with near-zero latency even during Wi-Fi outages."
-  },
-  {
-    "question": "How is urinary incontinence detected by the wearable?",
-    "answer": "Real-time conductivity clips detect moisture instantly. This replaces slow chemical sensors and invasive manual checks, allowing caregivers to respond immediately while fully preserving the user's dignity."
-  },
-  {
-    "question": "What is the cost of the SoterCare system?",
-    "answer": "The hardware kit costs under $150. A premium subscription for AI-generated health summaries and advanced clinical analytics is available for approximately $1.99 per month."
-  }
-];
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -60,11 +38,11 @@ const FAQ = () => {
 
       <div ref={contentRef} className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-10">
-          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
-            Support
+          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold text-foreground/60 mx-auto w-fit">
+            FAQs
           </span>
           <h2 className="tracking-tight">
-            FAQs
+            Questions, answered
           </h2>
         </div>
 
@@ -94,7 +72,7 @@ const FAQ = () => {
                 id={`faq-answer-${index}`}
                 role="region"
                 aria-labelledby={`faq-question-${index}`}
-                className={`px-8 transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-48 opacity-100 pb-8' : 'max-h-0 opacity-0'
+                className={`px-8 transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-80 opacity-100 pb-8' : 'max-h-0 opacity-0'
                   }`}
               >
                 <p className="leading-relaxed">

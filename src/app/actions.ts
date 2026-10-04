@@ -3,6 +3,7 @@
 import { Resend } from "resend";
 import WelcomeNewsletter from "@/emails/WelcomeNewsletter";
 import WelcomeWaitlist from "@/emails/WelcomeWaitlist";
+import { parseDemoRequest, buildSubject } from "@/lib/demoRequest";
 
 // Initialize Resend with API Key check
 const getResendClient = () => {
@@ -102,36 +103,40 @@ export async function joinWaitlistAction(formData: FormData) {
 
 export async function contactAction(formData: FormData) {
   try {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
-
-    if (!name || !email || !message) {
-      throw new Error("All fields are required");
-    }
-
+    const req = parseDemoRequest(formData);
     const resend = getResendClient();
 
-    // 1. Send notification email to the SoterCare team
+    // 1. Send notification email to the SoterCare team (same inbox as before)
     const { default: ContactNotification } = await import("@/emails/ContactNotification");
     const { error: notifError } = await resend.emails.send({
       from: "SoterCare <info@sotercare.com>",
       to: "daham.20242053@iit.ac.lk",
-      subject: `New Message from ${name} — SoterCare Contact`,
-      react: ContactNotification({ senderName: name, senderEmail: email, message }),
+      subject: buildSubject(req),
+      react: ContactNotification({
+        senderName: req.name,
+        senderEmail: req.email,
+        message: req.message,
+        home: req.home,
+        beds: req.beds,
+        role: req.role,
+      }),
     });
 
     if (notifError) {
       console.error("Contact Notification Email Failed:", notifError);
+      return {
+        success: false,
+        error: "We couldn't send your request. Please email support@sotercare.com.",
+      };
     }
 
     // 2. Send auto-reply to the user
     const { default: ContactAutoReply } = await import("@/emails/ContactAutoReply");
     const { error: replyError } = await resend.emails.send({
       from: "SoterCare <info@sotercare.com>",
-      to: email,
+      to: req.email,
       subject: "We got your message — SoterCare",
-      react: ContactAutoReply({ senderName: name }),
+      react: ContactAutoReply({ senderName: req.name }),
     });
 
     if (replyError) {
@@ -141,9 +146,14 @@ export async function contactAction(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("contactAction Error:", error);
+    const message = error instanceof Error ? error.message : "";
+    const isConfigError = message.startsWith("Configuration Error");
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to send message",
+      error:
+        message && !isConfigError
+          ? message
+          : "We couldn't send your request. Please email support@sotercare.com.",
     };
   }
 }

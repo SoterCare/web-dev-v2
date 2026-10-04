@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowDown, ArrowRight, Mail } from "lucide-react";
+import { ArrowDown, ArrowRight, CalendarCheck } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -74,10 +74,10 @@ const Hero = () => {
   );
 
   const marqueeRows = [
-    { text: "WELLNESS SIMPLIFIED", dir: "left", duration: "35s" },
+    { text: "MONITOR · ALERT · ANALYSE · RECORD", dir: "left", duration: "35s" },
     { text: "SOTERCARE", dir: "right", duration: "28s" },
-    { text: "WEIGHT INTO WELLNESS", dir: "left", duration: "38s" },
-    { text: "MEDTECH CARE", dir: "right", duration: "32s" },
+    { text: "CAMERA-FREE", dir: "left", duration: "38s" },
+    { text: "CARE HOME READY", dir: "right", duration: "32s" },
   ];
 
   return (
@@ -123,53 +123,48 @@ const Hero = () => {
           {/* Main Text Content */}
           <div
             ref={textContainerRef}
-            className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto z-20 pt-12 md:pt-0 px-4 will-change-transform"
+            className="flex-1 flex flex-col items-center justify-center text-center max-w-6xl mx-auto z-20 pt-12 md:pt-0 px-4 will-change-transform"
           >
             <div className="flex flex-col items-center">
-              {/* Eyebrow pill — same chip as the section labels */}
-              <span className="reveal-text opacity-0 bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold uppercase tracking-widest text-text-muted mb-7 md:mb-9 w-fit">
-                Wellness Simplified
-              </span>
-
-              <h1 className="mb-6 md:mb-8 leading-tight">
-                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-text leading-none tracking-tighter pb-1 reveal-text opacity-0">
-                  Proactive Elderly Care
+              <h1 className="mb-6 md:mb-8 leading-[1.02]">
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-text tracking-tighter reveal-text opacity-0">
+                  Smarter care ecosystem
                 </span>
-                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#3d7e93] leading-none tracking-tight mt-1 md:mt-2 reveal-text opacity-0">
-                  Monitoring System
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-[#3d7e93] tracking-tighter mt-1 md:mt-2 reveal-text opacity-0">
+                  for every resident.
                 </span>
               </h1>
 
               <span className="max-w-sm sm:max-w-2xl mx-auto leading-relaxed text-base md:text-xl tracking-wide text-text-muted reveal-text opacity-0">
-                Advanced real-time health monitoring ensuring safety and peace
-                of mind for your loved ones.
+                SoterCare monitors every resident, alerts the right carer in seconds, learns
+                each person&apos;s patterns and keeps the home&apos;s records. No cameras. Works without internet.
               </span>
 
               {/* CTA pair — dark primary for contrast, soft card secondary */}
               <div className="reveal-text opacity-0 flex flex-col sm:flex-row items-center gap-4 mt-9 md:mt-11">
-                <a
-                  href="#product"
-                  className="group bg-text text-bg-card px-7 py-3.5 rounded-full font-bold text-base hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg"
-                >
-                  See how it works
-                  <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-                </a>
                 <button
                   onClick={() => window.dispatchEvent(new Event("open-contact-popup"))}
-                  className="bg-bg-card text-text px-7 py-3.5 rounded-full font-bold text-base shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
+                  className="group bg-text text-bg-card px-7 py-3.5 rounded-full font-bold text-base hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-lg"
                 >
-                  <Mail size={18} className="text-[#3d7e93]" />
-                  Get in touch
+                  <CalendarCheck size={18} />
+                  Book a demo
                 </button>
+                <a
+                  href="#how-it-works"
+                  className="group bg-bg-card text-text px-7 py-3.5 rounded-full font-bold text-base shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2"
+                >
+                  See how it works
+                  <ArrowRight size={18} className="text-[#3d7e93] transition-transform group-hover:translate-x-1" />
+                </a>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold uppercase tracking-widest text-text-muted z-20 pb-4 md:pb-0 px-2 sm:px-4">
+          <div className="w-full flex justify-center md:justify-between items-end text-[10px] sm:text-xs font-bold text-text-muted z-20 pb-4 md:pb-0 px-2 sm:px-4">
             <div className="w-20 sm:w-32 hidden md:block">#healthtech</div>
             <div className="flex flex-col items-center gap-1.5">
-              <span className="text-text-muted font-bold text-xs sm:text-sm whitespace-nowrap tracking-widest uppercase">
+              <span className="text-text-muted font-bold text-xs sm:text-sm whitespace-nowrap ">
                 Scroll to Explore
               </span>
               <ArrowDown size={16} className="text-[#3d7e93] animate-jump" />

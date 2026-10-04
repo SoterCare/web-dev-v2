@@ -12,12 +12,11 @@ import Navbar from '@/components/Navbar';
 import SplashScreen from '@/components/SplashScreen';
 import Hero from '@/components/Hero';
 import Mission from '@/components/Mission';
-import CommunityIntro from '@/components/CommunityIntro';
-import Product from '@/components/Product';
-import Features from '@/components/Features';
+import HowItWorks from '@/components/HowItWorks';
+import Pricing from '@/components/Pricing';
+import LatestNews from '@/components/LatestNews';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
-import LatestNews from '@/components/LatestNews';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -53,11 +52,11 @@ export default function Home() {
       <SplashScreen />
       <Navbar />
       <Hero />
-      <Mission />
-      <LatestNews />
-      <Product />
-      <Features />
-      <CommunityIntro />
+      <Mission>
+        <LatestNews />
+      </Mission>
+      <HowItWorks />
+      <Pricing />
       <FAQ />
       <Team />
       <Footer />

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold uppercase tracking-widest text-text-muted w-fit">
+    <span className="bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold text-text-muted w-fit">
       {children}
     </span>
   );
@@ -61,7 +61,7 @@ function ArticleCard({ article }: { article: NewsArticle }) {
       )}
 
       <div className="p-5 flex flex-col">
-        <p className="text-xs font-semibold text-[#3d7e93] uppercase tracking-widest mb-2">
+        <p className="text-xs font-semibold text-[#3d7e93] mb-2">
           {formatDate(article.date)}
         </p>
         <h2 className="!text-[23px] !font-semibold !leading-[1.3] text-text mb-1.5 group-hover:text-[#3d7e93] transition-colors">

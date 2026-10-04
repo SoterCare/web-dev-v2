@@ -1,98 +1,71 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
+import { useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
-// Mobile browsers resize the viewport as the address bar shows/hides; don't re-measure the pin on that.
-ScrollTrigger.config({ ignoreMobileResize: true });
 
-const technologies = [
-  { name: "Next.js", src: "/assets/tech-logos/nextjs.webp" },
-  { name: "React Native", src: "/assets/tech-logos/reactnative.webp" },
-  { name: "NestJS", src: "/assets/tech-logos/nestjs.webp" },
-  { name: "Flask", src: "/assets/tech-logos/flask.webp" },
-  { name: "PostgreSQL", src: "/assets/tech-logos/postgresql.webp" },
-  { name: "TensorFlow", src: "/assets/tech-logos/edgeimpulse.webp" },
-  { name: "Raspberry Pi", src: "/assets/tech-logos/raspberry-pi.webp" },
-  { name: "ESP", src: "/assets/tech-logos/ESP.webp" },
-];
+const MISSION_TEXT =
+  "\u201COur promise is to make elderly care more responsible. Retirement should never mean distance, so we connect every elder, carer and family in one proper way to stay close and stay safe.\u201D";
 
-const Mission = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const part1Ref = useRef<HTMLDivElement>(null);
-  const part2Ref = useRef<HTMLDivElement>(null);
+// Only the key points of the promise are bold blue.
+const HIGHLIGHT_WORDS = ["responsible", "retirement", "connect", "family", "safe"];
 
+interface MissionProps {
+  children?: ReactNode;
+}
+
+// The promise and the latest news share one section so together they fill the screen.
+const Mission = ({ children }: MissionProps) => {
   const textRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const missionText =
-    '"' +
-    "We believe that caring for parents should be love. Our technology can lift every worry by watching over the absolute truth of their safety. Now, drop that weight and simply be their child again." +
-    '"';
-  const words = missionText.split(" ");
+  const words = MISSION_TEXT.split(" ");
 
   useGSAP(
     () => {
-      // Marquee Animation
-      gsap.to([part1Ref.current, part2Ref.current], {
-        xPercent: -100,
-        repeat: -1,
-        duration: 30,
-        ease: "none",
-      });
+      if (!textRef.current || !sectionRef.current) return;
+      const textElements = textRef.current.querySelectorAll(".word");
 
-      // Text Reveal Animation
-      if (textRef.current && sectionRef.current) {
-        const textElements = textRef.current.querySelectorAll(".word");
-
-        // One pinned, scrubbed timeline: the section only unpins once every word is revealed,
-        // with a short hold at the end so the full text is readable before scrolling on.
-        const tl = gsap.timeline({
+      // No pin: the words start lighting up as soon as the section is a fifth of the way
+      // into view, and take their time, finishing only once it has passed the top of the screen.
+      gsap.fromTo(
+        textElements,
+        { opacity: 0.1 },
+        {
+          opacity: 1,
+          stagger: 0.1,
+          ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top top",
-            end: "+=200%",
-            pin: true,
-            anticipatePin: 1,
-            scrub: 1,
-            invalidateOnRefresh: true,
+            start: "top 80%",
+            end: "top -15%",
+            scrub: 1.5,
           },
-        });
-        tl.fromTo(
-          textElements,
-          { opacity: 0.1 },
-          { opacity: 1, stagger: 0.1, ease: "none" },
-        );
-        tl.to({}, { duration: 1.2 });
-      }
+        },
+      );
     },
-    { scope: containerRef },
+    { scope: sectionRef },
   );
 
   return (
     <section
+      id="promise"
       ref={sectionRef}
-      className="pt-24 md:pt-32 pb-6 md:pb-12 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-between"
+      className="pt-24 pb-16 md:pt-32 md:pb-24 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-center gap-12 md:gap-16"
     >
-      <div
-        className="container mx-auto px-4 mb-0 text-center max-w-5xl relative z-10 flex-1 flex flex-col justify-center"
-        ref={textRef}
-      >
-        <div className="text-[38px] leading-[1.1] sm:text-[48px] sm:leading-tight md:text-6xl font-medium mb-2 md:mb-8 text-text opacity-100">
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
+      <div ref={textRef} className="container mx-auto px-4 text-center max-w-5xl relative z-10">
+        <div className="text-[34px] leading-[1.15] sm:text-[44px] sm:leading-tight md:text-6xl font-medium text-text">
           {words.map((word, i) => {
-            const cleanWord = word.replace(/[^a-zA-Z’']/g, "").toLowerCase();
-            const highlightWords = ["we", "lift", "the", "weight"];
-            const isHighlighted = highlightWords.includes(cleanWord);
-
+            const cleanWord = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+            const isHighlighted = HIGHLIGHT_WORDS.includes(cleanWord);
             return (
               <span
                 key={i}
-                className={`word inline-block mr-[0.2em] opacity-10 ${isHighlighted ? "text-[#a0cbdb] font-bold" : ""
-                  }`}
+                className={`word inline-block mr-[0.2em] opacity-10 ${isHighlighted ? "text-[#3d7e93] font-bold" : ""}`}
               >
                 {word}
               </span>
@@ -100,72 +73,7 @@ const Mission = () => {
           })}
         </div>
       </div>
-
-      {/* Static Dotted Background (Independent) */}
-      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
-
-      {/* Tech Stack Section */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 w-full">
-        <div className="w-full bg-transparent border border-white/10 flex items-center overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
-          {/* Label */}
-          <div className="flex-shrink-0 px-4 sm:px-10 py-4 sm:py-8 z-10 bg-bg-transparent relative border-r border-white/5">
-            <span className="font-bold text-sm md:text-2xl text-text uppercase tracking-widest whitespace-nowrap">
-              Tech Stack
-            </span>
-          </div>
-
-          {/* Slider with Fade Mask */}
-          <div
-            className="flex-1 flex overflow-hidden py-4 sm:py-8 max-w-full relative"
-            ref={containerRef}
-            style={{
-              maskImage:
-                "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-            }}
-          >
-            <div
-              className="flex flex-shrink-0 items-center min-w-full"
-              ref={part1Ref}
-            >
-              {technologies.map((tech, index) => (
-                <div
-                  key={index}
-                  className="mx-4 md:mx-12 relative h-10 w-10 sm:h-16 sm:w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
-                >
-                  <Image
-                    src={tech.src}
-                    alt={tech.name}
-                    fill
-                    sizes="(max-width: 768px) 64px, 80px"
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-            <div
-              className="flex flex-shrink-0 items-center min-w-full"
-              ref={part2Ref}
-            >
-              {technologies.map((tech, index) => (
-                <div
-                  key={`clone-${index}`}
-                  className="mx-4 md:mx-12 relative h-10 w-10 sm:h-16 sm:w-16 md:h-20 md:w-20 aspect-square flex items-center justify-center opacity-100 grayscale-0 transition-all duration-300"
-                >
-                  <Image
-                    src={tech.src}
-                    alt={tech.name}
-                    fill
-                    sizes="(max-width: 768px) 64px, 80px"
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {children}
     </section>
   );
 };

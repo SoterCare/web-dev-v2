@@ -36,7 +36,7 @@ const RESOURCES_URL = 'https://github.com/SoterCare/awesome-student-resources';
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold uppercase tracking-widest text-text-muted w-fit">
+    <span className="bg-bg-card px-6 py-2.5 rounded-[2rem] shadow-m text-xs sm:text-sm font-bold text-text-muted w-fit">
       {children}
     </span>
   );
@@ -384,7 +384,7 @@ export default function CommunityPage() {
                 </div>
               </div>
               <div className="bg-bg-card rounded-3xl shadow-sm border border-black/5 p-6 md:p-8 text-center">
-                <p className="text-sm font-semibold text-text-muted uppercase tracking-widest mb-3">
+                <p className="text-sm font-semibold text-text-muted mb-3">
                   Community members have also competed in
                 </p>
                 <p className="text-sm md:text-base text-text leading-relaxed">

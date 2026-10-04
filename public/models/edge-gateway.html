@@ -300,12 +300,15 @@ addEventListener('resize', () => {
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clock = new THREE.Clock();
-renderer.setAnimationLoop(() => {
+const frame = () => {
   const bob = reduced ? 0 : Math.sin(clock.getElapsedTime() * 1.2) * 0.25;
   device.position.y = bob * 28;
   const k = 1 - bob * 0.35; shadow.scale.set(k, k, 1); shadowMat.opacity = 1 - bob * 0.9;
   controls.update(); renderer.render(scene, camera);
-});
+};
+renderer.setAnimationLoop(frame);
+// Stop rendering while the model is scrolled out of view.
+new IntersectionObserver(([e]) => renderer.setAnimationLoop(e.isIntersecting ? frame : null)).observe(renderer.domElement);
 </script>
 </body>
 </html>

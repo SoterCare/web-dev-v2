@@ -365,7 +365,9 @@ renderer.domElement.addEventListener('pointerup',e=>{
 });
 
 const clock=new THREE.Clock();
+let visible=true,running=true;
 function loop(){
+  if(!visible){running=false;return;}
   const dt=Math.min(clock.getDelta(),0.05),t=clock.elapsedTime;
   if(floater){
     const bob=reduced?0:Math.sin(t*1.2)*0.25;floater.position.y=0.3+bob;
@@ -376,6 +378,7 @@ function loop(){
   controls.update();renderer.render(scene,camera);requestAnimationFrame(loop);
 }
 build().catch(err=>{document.getElementById('status').textContent='The model could not load. Refresh to try again.';console.error(err);});
+new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible&&!running){running=true;loop();}}).observe(stage);
 loop();
 </script>
 </body>

@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import CardSlider from "@/components/CardSlider";
 import { Github, Linkedin, Instagram, Mail, Globe } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -10,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const TEAM_MEMBERS = [
   {
     name: "Daham Dissanayake",
-    role: "Team Lead & IoT Sub Lead",
+    role: "Founder · IoT & ML",
     contributions: [
       "Project Management",
       "Gait Analysis ML Model",
@@ -29,7 +30,7 @@ const TEAM_MEMBERS = [
   },
   {
     name: "Sanjula Herath",
-    role: "Backend & Mobile Sub Lead",
+    role: "Co-founder · Backend & AI",
     contributions: [
       "Mobile App",
       "App Backend",
@@ -47,7 +48,7 @@ const TEAM_MEMBERS = [
   },
   {
     name: "Komudi Senarachchi",
-    role: "UI/UX Sub Lead",
+    role: "Co-founder · Design & Docs",
     contributions: [
       "Mobile UI Design",
       "3D Modelling",
@@ -103,20 +104,21 @@ const Team = () => {
       >
         {/* Header */}
         <div className="mb-12 text-center">
-          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m text-base font-bold uppercase tracking-widest text-text-muted mx-auto w-fit">
+          <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m text-base font-bold text-text-muted mx-auto w-fit">
             Our Team
           </span>
           <h2 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
             Meet the Minds Behind SoterCare
           </h2>
           <p className="max-w-2xl mx-auto text-lg text-text-muted">
-            A tight team of developers, designers, and engineers building the
-            future of elderly care.
+            SoterCare started as a university project and is now being built as a startup,
+            founded by Daham together with his co-founders. It began with caring for our own grandparents.
           </p>
         </div>
 
         {/* Cards — 3-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-start">
+        <div className="max-w-4xl mx-auto">
+          <CardSlider label="Team" breakpoint="sm" gridClassName="sm:grid-cols-3 sm:gap-5 sm:items-start">
           {TEAM_MEMBERS.map((member, index) => (
             <div
               key={index}
@@ -216,7 +218,9 @@ const Team = () => {
               </div>
             </div>
           ))}
+          </CardSlider>
         </div>
+
       </div>
     </section>
   );
