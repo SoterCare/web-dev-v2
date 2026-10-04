@@ -256,10 +256,10 @@ const Footer = () => {
           {/* ── Marquee Bands — faint dark texture watermark ── */}
           {(() => {
             const marqueeRows = [
-              { text: "WELLNESS SIMPLIFIED", dir: "left",  duration: "35s" },
+              { text: "MONITOR · ALERT · ANALYSE · RECORD", dir: "left",  duration: "35s" },
               { text: "SOTERCARE",           dir: "right", duration: "28s" },
-              { text: "WEIGHT INTO WELLNESS",dir: "left",  duration: "38s" },
-              { text: "MEDTECH CARE",        dir: "right", duration: "32s" },
+              { text: "CAMERA-FREE",         dir: "left",  duration: "38s" },
+              { text: "CARE HOME READY",     dir: "right", duration: "32s" },
             ];
             return (
               <div className="absolute inset-0 z-[1] flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
@@ -296,8 +296,8 @@ const Footer = () => {
                 <span className="block text-3xl sm:text-4xl md:text-5xl font-bold text-[#3d7e93] leading-none tracking-tight pb-2 md:pb-4">
                   That&apos;s our story.
                 </span>
-                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-text leading-none tracking-tighter">
-                  Wellness Simplified.
+                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text leading-none tracking-tighter">
+                  Smarter care for every elder.
                 </span>
               </h2>
 
@@ -312,7 +312,7 @@ const Footer = () => {
                   className="bg-text text-bg-card px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
                 >
                   <Mail size={20} />
-                  Send a Message
+                  Book a demo
                 </button>
 
                 <button
@@ -323,6 +323,11 @@ const Footer = () => {
                   Mini Pitch
                 </button>
               </div>
+
+              <p className="mt-8 max-w-xl text-sm md:text-base text-text-muted leading-relaxed">
+                We are a startup building SoterCare with our first care homes.
+                Early partners shape the product.
+              </p>
             </div>
 
             {/* Bottom Bar */}
@@ -341,6 +346,9 @@ const Footer = () => {
                     className="hover:text-text transition-colors"
                   >
                     support@sotercare.com
+                  </a>
+                  <a href="https://sotercare.com" className="hover:text-text transition-colors">
+                    sotercare.com
                   </a>
                 </div>
 

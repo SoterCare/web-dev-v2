@@ -104,9 +104,9 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
           <Link href="#product" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Product</Link>
-          <Link href="#features" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Features</Link>
+          <Link href="#how-it-works" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>How it works</Link>
+          <Link href="#pricing" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Pricing</Link>
           <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
-          <Link href="#contact" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Contact</Link>
           <Link href="/community" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Community</Link>
           <Link href="/news" className="transition-colors text-base font-medium text-[#3d7e93] hover:text-black"><span className="news-heartbeat">News</span></Link>
         </div>
@@ -117,7 +117,7 @@ const Navbar = () => {
             href="/dashboard"
             className="px-6 py-2 rounded-[1rem] font-bold text-base transition-all hover:scale-105 active:scale-95 bg-bg-card shadow-m text-text"
           >
-            Dashboard
+            Carer login
           </Link>
         </div>
 
@@ -144,12 +144,20 @@ const Navbar = () => {
           Product
         </Link>
         <Link
-          href="#features"
+          href="#how-it-works"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
           scroll={false}
         >
-          Features
+          How it works
+        </Link>
+        <Link
+          href="#pricing"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+          scroll={false}
+        >
+          Pricing
         </Link>
         <Link
           href="#team"
@@ -158,14 +166,6 @@ const Navbar = () => {
           scroll={false}
         >
           Team
-        </Link>
-        <Link
-          href="#contact"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Contact
         </Link>
         <Link
           href="/community"
@@ -186,7 +186,7 @@ const Navbar = () => {
           className="bg-bg-panel shadow-m text-text px-6 py-3 rounded-xl font-bold text-lg text-center mt-2 transition-all active:scale-95"
           onClick={() => setIsOpen(false)}
         >
-          Dashboard
+          Carer login
         </Link>
       </div>
 
