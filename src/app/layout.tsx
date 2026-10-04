@@ -94,6 +94,15 @@ export const metadata: Metadata = {
   authors: [{ name: "SoterCare Team", url: "https://sotercare.com" }],
   creator: "SoterCare",
   publisher: "SoterCare",
+  // iPhone Safari turns dates, phone numbers and addresses into links before the page's script
+  // runs. That changes the server HTML under React, which then fails to hydrate and redraws the
+  // page. Real links (tel:, mailto:) are written out in the markup already.
+  formatDetection: {
+    telephone: false,
+    date: false,
+    email: false,
+    address: false,
+  },
   robots: {
     index: true,
     follow: true,
