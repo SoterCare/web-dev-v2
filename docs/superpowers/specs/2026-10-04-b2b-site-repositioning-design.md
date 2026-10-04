@@ -50,7 +50,7 @@ Home (`/`) stays a single scrolling page. No new routes. Order changes to follow
 | # | Section | Anchor | Status | Source in deck |
 |---|---|---|---|---|
 | 1 | Hero | — | Rewrite | Cover |
-| 2 | Problem | `#problem` | **New** (replaces Mission quote) | Slide 2: The Problem |
+| 2 | Promise (pinned word-reveal, B2B-updated mission quote) | `#promise` | Rewrite (user decision: no stats-style problem section) | Mission |
 | 3 | How it works (Monitor, Alert, Analyse, Record) | `#how-it-works` | **New** (replaces Features intro) | Solution/Ecosystem |
 | 4 | Product: thigh node, ward gateway, apps | `#product` | Rewrite | Product slide, A4/A5 |
 | 5 | For carers and for families (two logins) | `#apps` | Rewrite of Mobile App block | Ecosystem, user brief |

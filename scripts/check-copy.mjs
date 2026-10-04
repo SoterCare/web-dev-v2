@@ -29,7 +29,7 @@ export const REQUIRED = [
   { file: "src/components/Team.tsx", re: /startup/i, why: "startup statement" },
   { file: "src/components/HomeKit.tsx", re: /promise/i, why: "household-kit promise" },
   { file: "src/app/page.tsx", re: /<HomeKit/, why: "home-kit section mounted" },
-  { file: "src/components/Problem.tsx", re: /id="problem"/, why: "anchor #problem" },
+  { file: "src/components/Mission.tsx", re: /id="promise"/, why: "anchor #promise" },
   { file: "src/components/HowItWorks.tsx", re: /id="how-it-works"/, why: "anchor #how-it-works" },
   { file: "src/components/AppsDuo.tsx", re: /id="apps"/, why: "anchor #apps" },
   { file: "src/components/Proof.tsx", re: /id="proof"/, why: "anchor #proof" },
