@@ -1,100 +1,231 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { PersonStanding, BellRing, Building2, Users } from 'lucide-react';
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Building2, Check, PersonStanding, Users } from 'lucide-react';
 import SectionHeader from '@/components/SectionHeader';
-import { useSectionReveal } from '@/lib/useSectionReveal';
+import WardOverviewMock from '@/components/features/WardOverviewMock';
+import PhoneAlertMock from '@/components/features/PhoneAlertMock';
+import DoctorRecordMock from '@/components/features/DoctorRecordMock';
+import WatchdogRadar from '@/components/features/WatchdogRadar';
 
-interface FeatureGroup {
-  key: string;
-  title: string;
-  tagline: string;
-  Icon: typeof BellRing;
-  items: { name: string; desc: string }[];
-}
+gsap.registerPlugin(ScrollTrigger);
 
-const GROUPS: FeatureGroup[] = [
-  {
-    key: 'elders',
-    title: 'Elders',
-    tagline: 'Safer nights, with dignity kept.',
-    Icon: PersonStanding,
-    items: [
-      { name: 'Camera-free', desc: 'No cameras in bedrooms or bathrooms. Motion, moisture and skin temperature only.' },
-      { name: 'Stand-up warning', desc: 'Our gait model spots a stand-up attempt before a fall: 97.65% accuracy on lab data, across five movement states.' },
-      { name: 'Discreet hygiene alerts', desc: 'Moisture is detected on the band and reported privately and silently to the carer.' },
-      { name: 'Haptic nudge', desc: 'The band can give a private vibration warning. Working in our prototype.' },
-    ],
-  },
-  {
-    key: 'carers',
-    title: 'Carers',
-    tagline: 'The right alert, to the right room.',
-    Icon: BellRing,
-    items: [
-      { name: 'Critical alerts', desc: 'Delivered to the right carer\'s phone in seconds, with the resident and room.' },
-      { name: 'Instant hard-fall detection', desc: 'A fast threshold-based check catches sudden impacts and hard falls immediately.' },
-      { name: 'Confirm or dismiss', desc: 'Mark a false alarm and it moves to the Recycle Bin and retrains the model.' },
-      { name: 'Ask ARIA', desc: 'ARIA answers questions about a resident from their own records, in plain language.' },
-    ],
-  },
-  {
-    key: 'homes',
-    title: 'Care homes',
-    tagline: 'See everyone at once. Keep the record.',
-    Icon: Building2,
-    items: [
-      { name: 'All residents at a glance', desc: 'The 15.6-inch ward gateway shows every resident\'s status on one screen.' },
-      { name: 'Works offline', desc: 'Detection and alerts run on the gateway over the home\'s local network, with no internet needed.' },
-      { name: 'Records without paperwork', desc: 'Every resident, alert and response time is logged, and AI writes the shift handover.' },
-      { name: 'Three AI agents', desc: 'Safety Guard watches readings and raises alerts with no LLM. ARIA answers questions. A clinical report agent writes six-hourly summaries.' },
-    ],
-  },
-  {
-    key: 'families',
-    title: 'Families',
-    tagline: 'Informed, without being flooded.',
-    Icon: Users,
-    items: [
-      { name: 'Real-time status', desc: 'See how their family member is doing right now.' },
-      { name: 'Daily summaries', desc: 'Plain-language updates on the day, written by AI from the sensor data.' },
-      { name: 'Trends and patterns', desc: 'Movement, night-time activity and moisture patterns over weeks.' },
-      { name: 'Full records', desc: 'Every record, exportable as PDF or CSV.' },
-      { name: 'Only when it matters', desc: 'Notified when something concerning happens or an update is necessary, not for every alert.' },
-    ],
-  },
+const HOME_POINTS = [
+  'Every resident at a glance on the 15.6-inch ward gateway',
+  'Keeps working without internet, on your own network',
+  'Records and shift handover written for you, with no extra paperwork',
+  'Features you can offer to your residents and their families',
 ];
+
+const CAREGIVER_POINTS = [
+  'Critical alerts with the resident and room',
+  'Instant hard-fall detection',
+  'Confirm or dismiss an alert, and the system learns from you',
+  'Ask ARIA about any resident',
+];
+
+const ELDER_POINTS = [
+  'No cameras in bedrooms or bathrooms',
+  'A stand-up warning before a fall, 97.65% accurate in lab data',
+  'Private, silent moisture alerts',
+  'A gentle vibration nudge on the band (working in our prototype)',
+];
+
+const FAMILY_POINTS = [
+  'Real-time status of their family member',
+  'Daily summaries in plain language',
+  'Trends and patterns over weeks',
+  'Every record, any time',
+  'Notified only when something concerning happens',
+];
+
+const Points = ({ items, tone = 'dark' }: { items: string[]; tone?: 'dark' | 'light' }) => (
+  <ul className="space-y-3">
+    {items.map((item) => (
+      <li
+        key={item}
+        className={`flex items-start gap-3 leading-relaxed ${
+          tone === 'light' ? 'text-white/80' : 'text-text-muted'
+        }`}
+      >
+        <Check
+          size={18}
+          strokeWidth={3}
+          className={`mt-1 flex-shrink-0 ${tone === 'light' ? 'text-[#a0cbdb]' : 'text-[#3d7e93]'}`}
+        />
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+);
 
 const Features = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  useSectionReveal(sectionRef, contentRef);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // One choreographed moment, played once when the grid scrolls into view:
+  // a resident needs help, the caregiver is alerted, and the record gains a line.
+  useGSAP(
+    () => {
+      const root = stageRef.current;
+      if (!root) return;
+
+      const mm = gsap.matchMedia();
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const tile = root.querySelector('[data-alert-tile]');
+        const status = root.querySelector('[data-alert-status]');
+        const ping = root.querySelector('[data-alert-ping]');
+        const notice = root.querySelector('[data-alert-notice]');
+        const record = root.querySelector('[data-record-new]');
+        if (!tile || !status || !ping || !notice || !record) return;
+
+        gsap.set([notice, record], { autoAlpha: 0, y: 14 });
+
+        const tl = gsap.timeline({ paused: true });
+        tl.to(tile, { backgroundColor: '#fbe0bc', color: '#4a2f0e', duration: 0.4 })
+          .to(status, { color: '#7a5320', duration: 0.4 }, '<')
+          .add(() => {
+            status.textContent = 'Needs help';
+          }, '<')
+          .fromTo(
+            ping,
+            { scale: 0.9, autoAlpha: 0.9 },
+            { scale: 1.35, autoAlpha: 0, duration: 1, ease: 'power2.out', repeat: 1 },
+            '<',
+          )
+          .to(notice, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.4')
+          .to(record, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.7');
+
+        ScrollTrigger.create({
+          trigger: root,
+          start: 'top 60%',
+          once: true,
+          onEnter: () => tl.play(),
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef },
+  );
 
   return (
-    <section id="features" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden">
-      <div ref={contentRef} className="w-full relative z-10 px-4 sm:px-8 pt-16 md:pt-24 pb-8">
+    <section
+      id="features"
+      ref={sectionRef}
+      className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden"
+    >
+      <div className="w-full relative z-10 px-4 sm:px-8 pt-16 md:pt-24 pb-8">
         <div className="w-full max-w-7xl mx-auto">
           <SectionHeader
             chip="Features"
-            title="Built for every party in care"
-            subtitle="Elders wear it. Carers act on it. Families stay informed. Homes keep the record."
+            title="Built for the whole circle of care"
+            subtitle="Care homes get the system. Caregivers get the alerts. Elders and families get the care you can now offer."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {GROUPS.map(({ key, title, tagline, Icon, items }) => (
-              <article key={key} className="bg-bg-card p-8 rounded-3xl shadow-sm border border-black/5 relative overflow-hidden">
-                <Icon className="absolute -bottom-4 -right-4 text-[#3d7e93] opacity-5 w-32 h-32 rotate-12" />
-                <h3 className="text-3xl font-bold">{title}</h3>
-                <p className="text-[#3d7e93] font-semibold mb-5">{tagline}</p>
-                <ul className="space-y-4 relative">
-                  {items.map((item) => (
-                    <li key={item.name}>
-                      <p className="font-bold text-text">{item.name}</p>
-                      <p className="text-text-muted leading-relaxed">{item.desc}</p>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+
+          <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
+            {/* Care homes: the buyer, so the largest card */}
+            <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-7 md:p-10 lg:col-span-8">
+              <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#a0cbdb]/25 blur-3xl" />
+              <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
+                <div>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#a0cbdb]/25">
+                    <Building2 className="text-[#3d7e93]" size={26} />
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
+                  <p className="mt-3 mb-6 text-lg text-text-muted leading-relaxed">
+                    Everything you need to run safer care, and the records to show for it.
+                  </p>
+                  <Points items={HOME_POINTS} />
+                </div>
+                <WardOverviewMock />
+              </div>
+            </article>
+
+            {/* AI watchdog */}
+            <article className="rounded-[2rem] bg-text text-white shadow-m p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
+              <WatchdogRadar />
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
+                  AI that never looks away
+                </h3>
+                <p className="mt-3 !text-white/80 leading-relaxed">
+                  AI monitors every resident around the clock and alerts your caregivers the
+                  moment something goes wrong.
+                </p>
+              </div>
+            </article>
+
+            {/* Caregivers */}
+            <article className="rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-5">
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight">Caregivers</h3>
+              <p className="mt-2 mb-6 text-lg text-text-muted leading-relaxed">
+                The right alert, to the right room, in seconds.
+              </p>
+              <div className="grid gap-8 sm:grid-cols-2 sm:items-center lg:grid-cols-1 xl:grid-cols-2">
+                <Points items={CAREGIVER_POINTS} />
+                <PhoneAlertMock />
+              </div>
+            </article>
+
+            {/* Records for doctors */}
+            <article className="rounded-[1.75rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-7">
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Records your doctor can use
+              </h3>
+              <p className="mt-2 mb-6 text-lg text-text-muted leading-relaxed max-w-xl">
+                Every fall, stand-up attempt, moisture event and skin temperature reading is
+                logged with its time. Export a clear report as PDF or CSV for the doctor&apos;s
+                visit.
+              </p>
+              <div className="grid gap-6 md:grid-cols-2 md:items-center">
+                <DoctorRecordMock />
+                <p className="text-text-muted leading-relaxed">
+                  A record to support the conversation with the doctor, not a diagnosis. The
+                  history is always there, so nobody has to rely on memory at handover.
+                </p>
+              </div>
+            </article>
+
+            {/* What the home can offer */}
+            <p className="lg:col-span-12 pt-6 text-center text-xl md:text-2xl font-semibold text-text">
+              And what you can offer your residents and their families
+            </p>
+
+            {/* Elders */}
+            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
+              <PersonStanding
+                aria-hidden="true"
+                strokeWidth={1.75}
+                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93]"
+              />
+              <h3 className="relative text-3xl font-bold tracking-tight">Elders</h3>
+              <p className="relative mt-2 mb-6 text-lg text-text-muted">
+                Safer nights, with dignity kept.
+              </p>
+              <div className="relative">
+                <Points items={ELDER_POINTS} />
+              </div>
+            </article>
+
+            {/* Families */}
+            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
+              <Users
+                aria-hidden="true"
+                strokeWidth={1.75}
+                className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93]"
+              />
+              <h3 className="relative text-3xl font-bold tracking-tight">Families</h3>
+              <p className="relative mt-2 mb-6 text-lg text-text-muted">
+                Informed, without being flooded.
+              </p>
+              <div className="relative">
+                <Points items={FAMILY_POINTS} />
+              </div>
+            </article>
           </div>
         </div>
       </div>
