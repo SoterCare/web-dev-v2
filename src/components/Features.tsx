@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Check, Clock, FileDown, HandHeart, History, ScanEye, Users } from 'lucide-react';
+import { Check, HandHeart, ScanEye, Users } from 'lucide-react';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
 import DoctorRecordMock from '@/components/features/DoctorRecordMock';
@@ -42,9 +42,9 @@ const FAMILY_POINTS = [
 ];
 
 const RECORD_POINTS = [
-  { Icon: Clock, text: 'Every event logged with its exact time' },
-  { Icon: History, text: "Each resident's full history in one place" },
-  { Icon: FileDown, text: 'PDF or CSV export in one tap' },
+  'Every event logged with its exact time',
+  "Each resident's full history in one place",
+  'Trends and patterns analysed by the SoterCare system',
 ];
 
 const Points = ({ items, tone = 'dark' }: { items: string[]; tone?: 'dark' | 'light' }) => (
@@ -175,16 +175,7 @@ const Features = () => {
               <div className="grid flex-1 gap-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-8 lg:grid-cols-1 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
                 <DoctorRecordMock />
                 <div className="flex flex-col justify-center gap-5">
-                  <ul className="space-y-4">
-                    {RECORD_POINTS.map(({ Icon, text }) => (
-                      <li key={text} className="flex items-center gap-3">
-                        <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-[#3d7e93]/[0.08] text-[#3d7e93]">
-                          <Icon size={18} strokeWidth={2.25} aria-hidden="true" />
-                        </span>
-                        <span className="font-semibold leading-snug text-text">{text}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <Points items={RECORD_POINTS} />
                   {/* A div, not a p: the global p style would make it larger than the card points. */}
                   <div className="border-t border-black/5 pt-5 text-base text-text-muted leading-relaxed">
                     A record to support the conversation with the doctor, not a diagnosis. The

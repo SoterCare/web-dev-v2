@@ -29,9 +29,8 @@ const DoctorRecordMock = () => (
     aria-hidden="true"
     className="flex h-full flex-col rounded-2xl bg-bg-card p-4 shadow-xl ring-1 ring-black/5 md:p-5"
   >
-    <div className="mb-3 flex items-center justify-between gap-3">
+    <div className="mb-3">
       <span className="text-sm font-bold text-text">Care records</span>
-      <span className="text-xs font-semibold text-text-muted">Tuesday · Night shift</span>
     </div>
     {/* The list fades out at the bottom, so a line is never sliced in half. */}
     <div
