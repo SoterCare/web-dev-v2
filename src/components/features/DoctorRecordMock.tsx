@@ -31,10 +31,10 @@ const DoctorRecordMock = () => (
       ))}
     </ul>
     <div className="mt-4 flex gap-2">
-      <span className="rounded-full bg-[#3d7e93] px-3 py-1 text-[10px] font-bold text-white">
+      <span className="inline-flex h-6 items-center justify-center rounded-full bg-[#3d7e93] px-3 text-[10px] font-bold leading-none text-white">
         Export PDF
       </span>
-      <span className="rounded-full bg-black/5 px-3 py-1 text-[10px] font-bold text-text">
+      <span className="inline-flex h-6 items-center justify-center rounded-full bg-black/5 px-3 text-[10px] font-bold leading-none text-text">
         Export CSV
       </span>
     </div>

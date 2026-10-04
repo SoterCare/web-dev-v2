@@ -20,11 +20,11 @@ const PhoneAlertMock = () => (
         <div className="mt-2.5 flex gap-2">
           <span
             data-alert-confirm
-            className="rounded-full bg-[#4FE0C8] px-3 py-1 text-[10px] font-bold text-[#04332C]"
+            className="inline-flex h-6 items-center justify-center rounded-full bg-[#4FE0C8] px-3 text-[10px] font-bold leading-none text-[#04332C]"
           >
             Confirm
           </span>
-          <span className="rounded-full bg-black/5 px-3 py-1 text-[10px] font-bold text-text-muted">
+          <span className="inline-flex h-6 items-center justify-center rounded-full bg-black/5 px-3 text-[10px] font-bold leading-none text-text-muted">
             Dismiss
           </span>
         </div>
