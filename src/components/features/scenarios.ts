@@ -54,7 +54,7 @@ const SCENARIOS: Scenario[] = [
   {
     kind: 'checkup',
     resident: 4,
-    wardStatus: 'High temperature',
+    wardStatus: 'High temp',
     chip: 'High temperature',
     alertText: 'Temperature is above normal. Please go and check.',
     record: 'High temperature, Ranjith',
@@ -63,7 +63,7 @@ const SCENARIOS: Scenario[] = [
   {
     kind: 'moisture',
     resident: 9,
-    wardStatus: 'Moisture detected',
+    wardStatus: 'Moisture',
     chip: 'Moisture detected',
     alertText: 'Moisture detected. Please check and change.',
     record: 'Moisture event, Latha',
@@ -72,7 +72,7 @@ const SCENARIOS: Scenario[] = [
   {
     kind: 'fall',
     resident: 6,
-    wardStatus: 'Fall detected',
+    wardStatus: 'Fall',
     chip: 'Fall detected',
     alertText: 'A fall was detected. Please go immediately.',
     record: 'Fall detected, Piyal',

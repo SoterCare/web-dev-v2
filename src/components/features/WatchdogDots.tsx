@@ -16,7 +16,6 @@ const WatchdogDots = () => (
           {r.status !== "Offline" && (
             <span
               data-dot-wave
-              style={{ animationDelay: `${((i * 7) % 12) * 0.27}s` }}
               className="pointer-events-none absolute inset-0 animate-watch-ripple rounded-full bg-[#a0cbdb] motion-reduce:animate-none"
             />
           )}
