@@ -48,13 +48,19 @@ const HowItWorks = () => {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {STEPS.map(({ verb, Icon, body }, i) => (
-            <div key={verb} className="bg-bg-card rounded-3xl shadow-m p-8 flex flex-col">
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-sm font-bold text-text-muted tracking-widest">0{i + 1}</span>
-                <Icon className="text-[#3d7e93]" size={28} />
-              </div>
-              <h3 className="text-3xl font-bold mb-3">{verb}</h3>
-              <p className="text-text-muted leading-relaxed">{body}</p>
+            <div
+              key={verb}
+              className="group relative overflow-hidden bg-bg-card rounded-3xl shadow-m p-8 flex flex-col min-h-[260px]"
+            >
+              {/* Large icon, half cropped by the card edge. Muted until the card is hovered. */}
+              <Icon
+                aria-hidden="true"
+                strokeWidth={1.25}
+                className="absolute -bottom-12 -right-12 h-56 w-56 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93] pointer-events-none"
+              />
+              <span className="relative text-sm font-bold text-text-muted mb-6">0{i + 1}</span>
+              <h3 className="relative text-3xl font-bold mb-3">{verb}</h3>
+              <p className="relative text-text-muted leading-relaxed">{body}</p>
             </div>
           ))}
         </div>
