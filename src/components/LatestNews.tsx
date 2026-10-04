@@ -47,14 +47,14 @@ export default function LatestNews() {
             </div>
 
             <div className="p-5 flex flex-col flex-1">
-              <h3 className="text-lg font-bold text-text leading-snug line-clamp-2 group-hover:text-[#3d7e93] transition-colors">
+              <h3 className="text-xl font-bold text-text leading-snug line-clamp-2 group-hover:text-[#3d7e93] transition-colors">
                 {article.title}
               </h3>
               <div className="mt-auto pt-3 flex items-center justify-between gap-3">
-                <span className="text-[11px] font-medium text-text-muted">
+                <span className="text-sm font-semibold text-text-muted">
                   {formatDate(article.date)}
                 </span>
-                <span className="text-sm font-semibold text-[#3d7e93] group-hover:underline">
+                <span className="text-base font-bold text-[#3d7e93] group-hover:underline">
                   Read more →
                 </span>
               </div>

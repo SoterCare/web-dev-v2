@@ -169,9 +169,10 @@ const Features = () => {
             </article>
 
             {/* What the home can offer */}
-            <p className="lg:col-span-12 pt-6 text-center text-xl md:text-2xl font-semibold text-text">
-              And what you can offer your residents and their families
-            </p>
+            <h3 className="lg:col-span-12 pt-10 md:pt-14 text-center text-3xl md:text-5xl font-bold tracking-tight text-text">
+              And what you can offer your{' '}
+              <span className="text-[#3d7e93]">residents and their families</span>
+            </h3>
 
             {/* Elders */}
             <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
