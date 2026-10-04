@@ -50,10 +50,10 @@ const TechStack = () => {
     ));
 
   return (
-    <section className="relative z-10 py-8 md:py-12">
+    <div className="relative z-10 w-full -mt-6 md:-mt-14">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 w-full">
         <div className="w-full flex items-center overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
-          <div className="flex-shrink-0 px-4 sm:px-10 py-4 sm:py-8 z-10 relative border-r border-black/5">
+          <div className="flex-shrink-0 px-4 sm:px-10 py-4 sm:py-8 z-10 relative">
             <span className="font-bold text-sm md:text-2xl text-text whitespace-nowrap">
               Tech Stack
             </span>
@@ -75,7 +75,7 @@ const TechStack = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

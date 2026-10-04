@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Activity, BellRing, TrendingUp, ClipboardList } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import Product from "@/components/Product";
+import TechStack from "@/components/TechStack";
 import { useSectionReveal } from "@/lib/useSectionReveal";
 
 const STEPS = [
@@ -69,6 +70,7 @@ const HowItWorks = () => {
         </p>
         <div className="mt-12 md:mt-16">
           <Product />
+          <TechStack />
         </div>
       </div>
     </section>
