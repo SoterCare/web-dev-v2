@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Check, PersonStanding, Users } from 'lucide-react';
+import { Check, HandHeart, Users } from 'lucide-react';
 import SectionHeader from '@/components/SectionHeader';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
@@ -173,7 +173,7 @@ const Features = () => {
 
             {/* Elders */}
             <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
-              <PersonStanding
+              <HandHeart
                 aria-hidden="true"
                 strokeWidth={1.75}
                 className="pointer-events-none absolute right-6 top-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93]"
