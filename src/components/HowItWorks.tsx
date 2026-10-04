@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Activity, BellRing, TrendingUp, ClipboardList } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import CardSlider from "@/components/CardSlider";
 import Features from "@/components/Features";
 import Product from "@/components/Product";
 import TechStack from "@/components/TechStack";
@@ -48,7 +49,7 @@ const HowItWorks = () => {
           title="Monitor. Alert. Analyse. Record."
           subtitle="SoterCare connects elders, carers and families in one system. Here is how each step works, and the hardware behind it."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <CardSlider label="How it works" breakpoint="sm" gridClassName="sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
           {STEPS.map(({ verb, Icon, body }, i) => (
             <div
               key={verb}
@@ -65,7 +66,7 @@ const HowItWorks = () => {
               <p className="relative text-text-muted leading-relaxed">{body}</p>
             </div>
           ))}
-        </div>
+        </CardSlider>
         <p className="mt-10 text-center text-lg font-semibold text-text">
           No cameras. Works without internet.
         </p>

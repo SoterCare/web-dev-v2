@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CardSlider from '@/components/CardSlider';
 import type { NewsArticle } from '@/types/news';
 import { sortArticles } from '@/lib/news-sort';
 import newsJson from '../../data/news.json';
@@ -21,7 +22,7 @@ export default function LatestNews() {
 
   return (
     <div id="news" className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+      <CardSlider label="Latest news" breakpoint="md" gridClassName="md:grid-cols-3 md:gap-6">
         {articles.map((article) => (
           <Link
             key={article.id}
@@ -61,7 +62,7 @@ export default function LatestNews() {
             </div>
           </Link>
         ))}
-      </div>
+      </CardSlider>
 
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link

@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import CardSlider from "@/components/CardSlider";
 import { Github, Linkedin, Instagram, Mail, Globe } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -116,7 +117,8 @@ const Team = () => {
         </div>
 
         {/* Cards — 3-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-start">
+        <div className="max-w-4xl mx-auto">
+          <CardSlider label="Team" breakpoint="sm" gridClassName="sm:grid-cols-3 sm:gap-5 sm:items-start">
           {TEAM_MEMBERS.map((member, index) => (
             <div
               key={index}
@@ -216,6 +218,7 @@ const Team = () => {
               </div>
             </div>
           ))}
+          </CardSlider>
         </div>
 
       </div>

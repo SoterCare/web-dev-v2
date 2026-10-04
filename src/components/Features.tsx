@@ -1,5 +1,6 @@
 'use client';
 
+import CardSlider from "@/components/CardSlider";
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -103,9 +104,10 @@ const Features = () => {
           </p>
         </div>
 
-          <div ref={stageRef} className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
+          <div ref={stageRef} className="flex flex-col gap-5 md:gap-6">
+          <CardSlider label="Care homes, caregivers and records" breakpoint="lg" slideClassName="w-[90%]" gridClassName="lg:grid-cols-12 lg:gap-6">
             {/* Care homes: the buyer, so the largest card */}
-            <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-7 md:p-10 lg:col-span-8">
+            <article className="relative overflow-hidden rounded-[2.5rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-10 lg:col-span-8">
               <div className="relative grid gap-8 md:grid-cols-2 md:items-stretch">
                 <div>
                   <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Care homes</h3>
@@ -124,7 +126,7 @@ const Features = () => {
             </article>
 
             {/* AI watchdog */}
-            <article className="rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
+            <article className="rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
               <WatchdogDots />
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
@@ -138,7 +140,7 @@ const Features = () => {
             </article>
 
             {/* Caregivers */}
-            <article className="rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-5">
+            <article className="rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-5">
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight">Caregivers</h3>
               <p className="mt-2 mb-6 text-lg text-text-muted leading-relaxed">
                 The right alert, to the right caregiver, in seconds.
@@ -150,7 +152,7 @@ const Features = () => {
             </article>
 
             {/* Records for doctors */}
-            <article className="rounded-[1.75rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-7">
+            <article className="rounded-[1.75rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-7">
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Records your doctor can use
               </h3>
@@ -168,14 +170,17 @@ const Features = () => {
               </div>
             </article>
 
+          </CardSlider>
+
             {/* What the home can offer */}
-            <h3 className="lg:col-span-12 pt-10 md:pt-14 text-center text-3xl md:text-5xl font-bold tracking-tight text-text">
+            <h3 className="pt-10 md:pt-14 text-center text-3xl md:text-5xl font-bold tracking-tight text-text">
               And what you can offer your{' '}
               <span className="text-[#3d7e93]">residents and their families</span>
             </h3>
 
+          <CardSlider label="Elders and families" breakpoint="lg" slideClassName="w-[90%]" gridClassName="lg:grid-cols-12 lg:gap-6">
             {/* Elders */}
-            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
+            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-6">
               <HandHeart
                 aria-hidden="true"
                 strokeWidth={1.75}
@@ -191,7 +196,7 @@ const Features = () => {
             </article>
 
             {/* Families */}
-            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-6">
+            <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-6">
               <Users
                 aria-hidden="true"
                 strokeWidth={1.75}
@@ -205,6 +210,7 @@ const Features = () => {
                 <Points items={FAMILY_POINTS} />
               </div>
             </article>
+          </CardSlider>
           </div>
       </div>
     </div>
