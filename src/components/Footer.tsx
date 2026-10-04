@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github, Home } from "lucide-react";
 import WaitlistPopup from "@/components/WaitlistPopup";
+import WatermarkMarquee from "@/components/WatermarkMarquee";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -256,36 +257,7 @@ const Footer = () => {
           </div>
 
           {/* ── Marquee Bands — faint dark texture watermark ── */}
-          {(() => {
-            const marqueeRows = [
-              { text: "MONITOR · ALERT · ANALYSE · RECORD", dir: "left",  duration: "35s" },
-              { text: "SOTERCARE",           dir: "right", duration: "28s" },
-              { text: "CAMERA-FREE",         dir: "left",  duration: "38s" },
-              { text: "CARE HOME READY",     dir: "right", duration: "32s" },
-            ];
-            return (
-              <div className="absolute inset-0 z-[1] flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
-                {marqueeRows.map((row, i) => {
-                  const repeated = Array(8).fill(`${row.text} · `).join('');
-                  return (
-                    <div key={i} className="overflow-hidden py-1 sm:py-2">
-                      <div
-                        className="flex whitespace-nowrap will-change-transform"
-                        style={{ animation: `marquee-${row.dir} ${row.duration} linear infinite` }}
-                      >
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
-                          {repeated}
-                        </span>
-                        <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]" aria-hidden="true">
-                          {repeated}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
+          <WatermarkMarquee />
 
           {/* Content Wrapper */}
           <div className="relative z-10 flex flex-col flex-grow justify-between">

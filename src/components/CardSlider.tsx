@@ -110,8 +110,6 @@ export default function CardSlider({
     });
   };
 
-  const left = total - 1 - active;
-
   return (
     <div>
       <div
@@ -151,10 +149,6 @@ export default function CardSlider({
           </div>
           <p className="text-sm font-semibold text-text-muted">
             {active + 1} of {total}
-            <span className="text-text-muted/70">
-              {" · "}
-              {left === 0 ? "last card" : left === 1 ? "1 more" : `${left} more`}
-            </span>
           </p>
         </div>
       )}

@@ -64,16 +64,17 @@ export default function LatestNews() {
         ))}
       </CardSlider>
 
-      <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      {/* Side by side at every width; on phones the buttons get tighter padding so both fit. */}
+      <div className="mt-8 flex flex-row items-center justify-center gap-3 sm:gap-4">
         <Link
           href="/news"
-          className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-full bg-text text-bg-card shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+          className="inline-flex items-center gap-2 whitespace-nowrap px-4 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base font-bold rounded-full bg-text text-bg-card shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
         >
           View all news →
         </Link>
         <Link
           href="/community"
-          className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-full bg-bg-card text-text shadow-m hover:scale-105 active:scale-95 transition-all duration-300"
+          className="inline-flex items-center gap-2 whitespace-nowrap px-4 sm:px-8 py-3 sm:py-3.5 text-sm sm:text-base font-bold rounded-full bg-bg-card text-text shadow-m hover:scale-105 active:scale-95 transition-all duration-300"
         >
           Visit our community →
         </Link>

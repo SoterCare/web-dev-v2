@@ -5,6 +5,7 @@ import { ArrowDown, ArrowRight, CalendarCheck } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import WatermarkMarquee from "@/components/WatermarkMarquee";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,21 +65,16 @@ const Hero = () => {
             borderTopRightRadius: "0px",
             ease: "none",
           })
+          // autoAlpha also hides it once faded. The hero is sticky and stays behind the whole
+          // page, so without this the phone keeps drawing it under every section.
           .to(contentRef.current, {
-            opacity: 0,
+            autoAlpha: 0,
             ease: "none",
           }),
       });
     },
     { scope: containerRef },
   );
-
-  const marqueeRows = [
-    { text: "MONITOR · ALERT · ANALYSE · RECORD", dir: "left", duration: "35s" },
-    { text: "SOTERCARE", dir: "right", duration: "28s" },
-    { text: "CAMERA-FREE", dir: "left", duration: "38s" },
-    { text: "CARE HOME READY", dir: "right", duration: "32s" },
-  ];
 
   return (
     <div ref={containerRef} className="h-screen w-full sticky top-0 z-0">
@@ -97,28 +93,7 @@ const Hero = () => {
           </div>
 
           {/* ── Marquee Bands — faint dark texture watermark ── */}
-          <div className="absolute inset-0 z-[1] flex flex-col justify-between py-4 md:py-8 overflow-hidden select-none pointer-events-none">
-            {marqueeRows.map((row, i) => {
-              const repeated = Array(8).fill(`${row.text} · `).join('');
-              return (
-                <div key={i} className="overflow-hidden py-1 sm:py-2">
-                  <div
-                    className="flex whitespace-nowrap will-change-transform"
-                    style={{
-                      animation: `marquee-${row.dir} ${row.duration} linear infinite`,
-                    }}
-                  >
-                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]">
-                      {repeated}
-                    </span>
-                    <span className="text-[18rem] font-black tracking-tighter leading-[0.8] text-black/[0.03]" aria-hidden="true">
-                      {repeated}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <WatermarkMarquee />
 
           {/* Main Text Content */}
           <div
