@@ -217,3 +217,21 @@ p {
   animation: news-heartbeat 2.5s ease-in-out infinite;
 }
 
+
+/* Features: AI watching the residents. A wave of attention passes over them; one gets flagged. */
+@keyframes watch-wave {
+  0%, 100% { transform: scale(1); background-color: rgb(160 203 219 / 0.35); }
+  18% { transform: scale(1.1); background-color: rgb(61 126 147 / 0.35); }
+  36% { transform: scale(1); background-color: rgb(160 203 219 / 0.35); }
+}
+@keyframes watch-flag {
+  0%, 55%, 100% { transform: scale(1); background-color: rgb(160 203 219 / 0.35); color: #3d7e93; }
+  62%, 90% { transform: scale(1.12); background-color: rgb(224 138 46 / 0.35); color: #8a4e0c; }
+}
+@keyframes watch-chip {
+  0%, 58%, 100% { opacity: 0; transform: translateY(6px); }
+  66%, 88% { opacity: 1; transform: translateY(0); }
+}
+.animate-watch { animation: watch-wave 4.2s ease-in-out infinite; }
+.animate-watch-flag { animation: watch-flag 8s ease-in-out infinite; }
+.animate-watch-chip { animation: watch-chip 8s ease-in-out infinite; }

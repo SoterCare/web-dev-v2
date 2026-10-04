@@ -16,7 +16,7 @@ const STEPS = [
   {
     verb: "Alert",
     Icon: BellRing,
-    body: "Critical alerts reach the right carer's phone in seconds, straight to the right room instead of blind rounds.",
+    body: "Critical alerts reach the right carer's phone in seconds, straight to the resident who needs help instead of blind rounds.",
   },
   {
     verb: "Analyse",

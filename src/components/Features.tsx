@@ -9,7 +9,7 @@ import SectionHeader from '@/components/SectionHeader';
 import WardOverviewMock from '@/components/features/WardOverviewMock';
 import PhoneAlertMock from '@/components/features/PhoneAlertMock';
 import DoctorRecordMock from '@/components/features/DoctorRecordMock';
-import WatchdogRadar from '@/components/features/WatchdogRadar';
+import WatchdogDots from '@/components/features/WatchdogDots';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +21,7 @@ const HOME_POINTS = [
 ];
 
 const CAREGIVER_POINTS = [
-  'Critical alerts with the resident and room',
+  'Critical alerts that name the resident who needs help',
   'Instant hard-fall detection',
   'Confirm or dismiss an alert, and the system learns from you',
   'Ask ARIA about any resident',
@@ -85,8 +85,8 @@ const Features = () => {
         gsap.set([notice, record], { autoAlpha: 0, y: 14 });
 
         const tl = gsap.timeline({ paused: true });
-        tl.to(tile, { backgroundColor: '#fbe0bc', color: '#4a2f0e', duration: 0.4 })
-          .to(status, { color: '#7a5320', duration: 0.4 }, '<')
+        tl.to(tile, { backgroundColor: '#fbe0bc', duration: 0.4 })
+          .to(status, { color: '#8a4e0c', duration: 0.4 }, '<')
           .add(() => {
             status.textContent = 'Needs help';
           }, '<')
@@ -146,13 +146,13 @@ const Features = () => {
             </article>
 
             {/* AI watchdog */}
-            <article className="rounded-[2rem] bg-text text-white shadow-m p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
-              <WatchdogRadar />
+            <article className="rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-4 flex flex-col justify-between gap-6">
+              <WatchdogDots />
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
                   AI that never looks away
                 </h3>
-                <p className="mt-3 !text-white/80 leading-relaxed">
+                <p className="mt-3 text-text-muted leading-relaxed">
                   AI monitors every resident around the clock and alerts your caregivers the
                   moment something goes wrong.
                 </p>
@@ -163,7 +163,7 @@ const Features = () => {
             <article className="rounded-[2rem] bg-bg-card shadow-m p-7 md:p-8 lg:col-span-5">
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight">Caregivers</h3>
               <p className="mt-2 mb-6 text-lg text-text-muted leading-relaxed">
-                The right alert, to the right room, in seconds.
+                The right alert, to the right caregiver, in seconds.
               </p>
               <div className="grid gap-8 sm:grid-cols-2 sm:items-center lg:grid-cols-1 xl:grid-cols-2">
                 <Points items={CAREGIVER_POINTS} />
