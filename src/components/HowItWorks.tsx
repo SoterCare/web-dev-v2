@@ -52,11 +52,11 @@ const HowItWorks = () => {
               key={verb}
               className="group relative overflow-hidden bg-bg-card rounded-3xl shadow-m p-8 flex flex-col min-h-[260px]"
             >
-              {/* Large icon, half cropped by the card edge. Muted until the card is hovered. */}
+              {/* Large icon, half cropped by the card's top-right corner. Muted until the card is hovered. */}
               <Icon
                 aria-hidden="true"
                 strokeWidth={1.25}
-                className="absolute -bottom-12 -right-12 h-56 w-56 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93] pointer-events-none"
+                className="absolute -top-12 -right-12 h-56 w-56 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93] pointer-events-none"
               />
               <span className="relative text-sm font-bold text-text-muted mb-6">0{i + 1}</span>
               <h3 className="relative text-3xl font-bold mb-3">{verb}</h3>
