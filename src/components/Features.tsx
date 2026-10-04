@@ -1,106 +1,105 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { Activity, BrainCircuit, Zap, HeartPulse, Droplets, BellRing, LayoutDashboard } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { PersonStanding, BellRing, Building2, Users } from 'lucide-react';
+import SectionHeader from '@/components/SectionHeader';
+import { useSectionReveal } from '@/lib/useSectionReveal';
 
-gsap.registerPlugin(ScrollTrigger);
+interface FeatureGroup {
+  key: string;
+  title: string;
+  tagline: string;
+  Icon: typeof BellRing;
+  items: { name: string; desc: string }[];
+}
+
+const GROUPS: FeatureGroup[] = [
+  {
+    key: 'elders',
+    title: 'Elders',
+    tagline: 'Safer nights, with dignity kept.',
+    Icon: PersonStanding,
+    items: [
+      { name: 'Camera-free', desc: 'No cameras in bedrooms or bathrooms. Motion, moisture and skin temperature only.' },
+      { name: 'Stand-up warning', desc: 'Our gait model spots a stand-up attempt before a fall: 97.65% accuracy on lab data, across five movement states.' },
+      { name: 'Discreet hygiene alerts', desc: 'Moisture is detected on the band and reported privately and silently to the carer.' },
+      { name: 'Haptic nudge', desc: 'The band can give a private vibration warning. Working in our prototype.' },
+    ],
+  },
+  {
+    key: 'carers',
+    title: 'Carers',
+    tagline: 'The right alert, to the right room.',
+    Icon: BellRing,
+    items: [
+      { name: 'Critical alerts', desc: 'Delivered to the right carer\'s phone in seconds, with the resident and room.' },
+      { name: 'Instant hard-fall detection', desc: 'A fast threshold-based check catches sudden impacts and hard falls immediately.' },
+      { name: 'Confirm or dismiss', desc: 'Mark a false alarm and it moves to the Recycle Bin and retrains the model.' },
+      { name: 'Ask ARIA', desc: 'ARIA answers questions about a resident from their own records, in plain language.' },
+    ],
+  },
+  {
+    key: 'homes',
+    title: 'Care homes',
+    tagline: 'See everyone at once. Keep the record.',
+    Icon: Building2,
+    items: [
+      { name: 'All residents at a glance', desc: 'The 15.6-inch ward gateway shows every resident\'s status on one screen.' },
+      { name: 'Works offline', desc: 'Detection and alerts run on the gateway over the home\'s local network, with no internet needed.' },
+      { name: 'Records without paperwork', desc: 'Every resident, alert and response time is logged, and AI writes the shift handover.' },
+      { name: 'Three AI agents', desc: 'Safety Guard watches readings and raises alerts with no LLM. ARIA answers questions. A clinical report agent writes six-hourly summaries.' },
+    ],
+  },
+  {
+    key: 'families',
+    title: 'Families',
+    tagline: 'Informed, without being flooded.',
+    Icon: Users,
+    items: [
+      { name: 'Real-time status', desc: 'See how their family member is doing right now.' },
+      { name: 'Daily summaries', desc: 'Plain-language updates on the day, written by AI from the sensor data.' },
+      { name: 'Trends and patterns', desc: 'Movement, night-time activity and moisture patterns over weeks.' },
+      { name: 'Full records', desc: 'Every record, exportable as PDF or CSV.' },
+      { name: 'Only when it matters', desc: 'Notified when something concerning happens or an update is necessary, not for every alert.' },
+    ],
+  },
+];
 
 const Features = () => {
-    const sectionRef = useRef<HTMLElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  useSectionReveal(sectionRef, contentRef);
 
-    useGSAP(() => {
-        gsap.fromTo(contentRef.current,
-            { opacity: 0, y: 50 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse',
-                    onEnter: () => localStorage.setItem('features-animated', 'true')
-                }
-            }
-        );
-    }, { scope: sectionRef });
-
-    return (
-        <section id="features" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden">
-            {/* Dotted Background removed (global) */}
-            {/* --- Section 3: Core Features --- */}
-            <div ref={contentRef} className="w-full relative z-10 flex items-center justify-center px-8 pt-16 md:pt-24 pb-8 feature-section-reveal">
-                <div className="w-full max-w-7xl mx-auto flex flex-col justify-center h-full">
-                    <div className="flex flex-col gap-12">
-                        <span className="bg-bg-card px-10 py-3 rounded-[2rem] flex items-center justify-center mb-4 shadow-m border-none text-base font-bold uppercase tracking-widest text-foreground/60 mx-auto w-fit">
-                            Features
-                        </span>
-                        <h2 className="text-5xl md:text-7xl font-bold text-center">Core Features</h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    title: 'Gait Analysis ML Model',
-                                    desc: 'A unified Machine Learning model that monitors movement and posture transitions. It specifically detects when a patient is attempting to stand up or sit down, sending real-time alerts to caregivers to prevent accidents during high-risk transitions.',
-                                    Icon: Activity,
-                                    color: 'text-blue-500',
-                                    span: 'md:col-span-2'
-                                },
-                                {
-                                    title: 'AI Nurse Aria',
-                                    desc: 'Your personal AI nurse, always on call. Ask Aria anything about your patient: vitals, fall history, daily patterns, and get clear instant answers in plain language.',
-                                    Icon: BrainCircuit,
-                                    color: 'text-purple-500',
-                                    span: 'md:col-span-1'
-                                },
-                                {
-                                    title: 'Instant Hard Fall Detection',
-                                    desc: 'For immediate safety, we use a high-speed Threshold-Based Algorithm to detect sudden impacts and hard falls instantly.',
-                                    Icon: Zap,
-                                    color: 'text-orange-500',
-                                    span: 'md:col-span-1'
-                                },
-                                {
-                                    title: 'AI Agent Orchestration',
-                                    desc: 'Three specialized AI agents work in coordination behind the scenes: a Monitoring Agent that continuously watches vitals and flags anomalies, a Summary Agent that distills sensor data into readable daily reports, and Aria the Nurse Agent that handles natural language queries about the patient in real time.',
-                                    Icon: LayoutDashboard,
-                                    color: 'text-indigo-500',
-                                    span: 'md:col-span-2'
-                                },
-                                {
-                                    title: 'Discrete Hygiene Management',
-                                    desc: 'Real-time urinary incident detection using conductivity sensors. Alerts are sent discreetly.',
-                                    Icon: Droplets,
-                                    color: 'text-blue-400',
-                                    span: 'md:col-span-2'
-                                },
-                                {
-                                    title: 'Smart Alert Management',
-                                    desc: 'Reduce false alarms with our "Recycle Bin." Easily flag incorrect alerts to retrain the system.',
-                                    Icon: BellRing,
-                                    color: 'text-yellow-500',
-                                    span: 'md:col-span-1'
-                                },
-                            ].map((feature, i) => (
-                                <div key={i} className={`bg-bg-card p-8 rounded-3xl shadow-sm transition-all border border-black/5 relative overflow-hidden group ${feature.span} flex flex-col justify-between`}>
-                                    <div>
-                                        <feature.Icon className={`absolute -bottom-4 -right-4 ${feature.color} opacity-5 group-hover:opacity-30 transition-opacity w-32 h-32 rotate-12`} />
-                                        <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
-                                        <p className="text-text-muted leading-relaxed">{feature.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+  return (
+    <section id="features" ref={sectionRef} className="scroll-mt-24 md:scroll-mt-28 bg-transparent relative z-10 w-full overflow-hidden">
+      <div ref={contentRef} className="w-full relative z-10 px-4 sm:px-8 pt-16 md:pt-24 pb-8">
+        <div className="w-full max-w-7xl mx-auto">
+          <SectionHeader
+            chip="Features"
+            title="Built for every party in care"
+            subtitle="Elders wear it. Carers act on it. Families stay informed. Homes keep the record."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {GROUPS.map(({ key, title, tagline, Icon, items }) => (
+              <article key={key} className="bg-bg-card p-8 rounded-3xl shadow-sm border border-black/5 relative overflow-hidden">
+                <Icon className="absolute -bottom-4 -right-4 text-[#3d7e93] opacity-5 w-32 h-32 rotate-12" />
+                <h3 className="text-3xl font-bold">{title}</h3>
+                <p className="text-[#3d7e93] font-semibold mb-5">{tagline}</p>
+                <ul className="space-y-4 relative">
+                  {items.map((item) => (
+                    <li key={item.name}>
+                      <p className="font-bold text-text">{item.name}</p>
+                      <p className="text-text-muted leading-relaxed">{item.desc}</p>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Features;
