@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github } from "lucide-react";
+import { Instagram, Linkedin, Play, Mail, ArrowLeft, Github, Home } from "lucide-react";
 import WaitlistPopup from "@/components/WaitlistPopup";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -303,73 +303,66 @@ const Footer = () => {
                 </span>
               </h2>
 
+              <p className="max-w-2xl text-base md:text-lg text-text-muted leading-relaxed">
+                We are a startup building SoterCare with our first care homes, and early partners shape
+                the product. Once it is proven there, we will bring it to every home as a family kit.
+                That is our promise to the community.
+              </p>
+
               <div
                 ref={ctaRef}
-                className="flex flex-col md:flex-row gap-4 md:gap-6 mt-6 md:mt-8 justify-center w-full max-w-xl mx-auto"
+                className="flex flex-col md:flex-row gap-4 md:gap-5 mt-8 md:mt-10 justify-center items-stretch w-full max-w-2xl mx-auto"
               >
                 <button
                   onClick={() =>
                     window.dispatchEvent(new Event("open-contact-popup"))
                   }
-                  className="bg-text text-bg-card px-8 py-4 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
+                  className="bg-text text-bg-card px-8 py-4 rounded-full font-bold text-lg md:text-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center shadow-lg"
                 >
-                  <Mail size={20} />
+                  <Mail size={22} />
                   Book a demo
+                </button>
+
+                <button
+                  onClick={() => setWaitlistOpen(true)}
+                  className="bg-bg-card text-text px-8 py-4 rounded-full font-bold text-lg md:text-xl shadow-m hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 w-full md:w-auto justify-center"
+                >
+                  <Home size={22} className="text-[#3d7e93]" />
+                  Join the home-kit waitlist
                 </button>
 
                 {/* Mini Pitch button removed for now. The video overlay and handlers below are kept
                     so it can be added back: <button onClick={handleMiniPitchButtonClick}>Mini Pitch</button> */}
               </div>
-
-              <p className="mt-8 max-w-xl text-sm md:text-base text-text-muted leading-relaxed">
-                We are a startup building SoterCare with our first care homes. Early partners shape the product.
-                Once it is proven there, we will bring it to every home as a family kit. That is our promise to the community.
-              </p>
-              <button
-                onClick={() => setWaitlistOpen(true)}
-                className="mt-3 text-sm md:text-base font-bold text-[#3d7e93] hover:underline"
-              >
-                Join the home-kit waitlist →
-              </button>
             </div>
 
             {/* Bottom Bar */}
             <div ref={bottomBarRef} className="w-full px-8 pb-8 pt-20">
-              <div className="border-t border-black/10 pt-8 flex flex-col xl:flex-row justify-between items-center text-sm md:text-base gap-6 md:gap-4 relative text-text-muted">
-                {/* Copyright */}
-                <div className="order-3 xl:order-1 text-center xl:text-left w-full xl:w-auto">
-                  &copy; {new Date().getFullYear()} SoterCare. | All Rights
-                  Reserved.
+              <div className="border-t border-black/10 pt-8 grid grid-cols-1 xl:grid-cols-3 items-center gap-6 text-sm md:text-base text-text-muted">
+                {/* Left: copyright */}
+                <div className="order-3 xl:order-1 text-center xl:text-left">
+                  &copy; {new Date().getFullYear()} SoterCare. All rights reserved.
                 </div>
 
-                {/* Contact Info */}
-                <div className="order-1 xl:order-2 flex flex-col md:flex-row gap-4 md:gap-8 items-center xl:absolute xl:left-1/2 xl:-translate-x-1/2">
-                  <a
-                    href="mailto:support@sotercare.com"
-                    className="hover:text-text transition-colors"
-                  >
+                {/* Centre: how to reach us */}
+                <div className="order-1 xl:order-2 flex flex-col md:flex-row flex-wrap gap-x-8 gap-y-3 items-center justify-center">
+                  <a href="mailto:support@sotercare.com" className="hover:text-text transition-colors">
                     support@sotercare.com
+                  </a>
+                  <a href="tel:+94704888440" className="hover:text-text transition-colors">
+                    +94 70 4888 440
                   </a>
                   <a href="https://sotercare.com" className="hover:text-text transition-colors">
                     sotercare.com
                   </a>
                 </div>
 
-                {/* Socials & Links */}
-                <div className="flex flex-col md:flex-row gap-6 md:gap-8 order-2 xl:order-3 items-center">
-                  <Link
-                    href="/community"
-                    className="hover:text-text transition-colors font-medium"
-                  >
+                {/* Right: community and socials */}
+                <div className="order-2 xl:order-3 flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center xl:justify-end">
+                  <Link href="/community" className="hover:text-text transition-colors font-medium">
                     Join our developer community →
                   </Link>
-                  <div className="flex gap-4 items-center">
-                    <a
-                      href="tel:+94704888440"
-                      className="hover:text-text transition-colors"
-                    >
-                      +94 70 4888 440
-                    </a>
+                  <div className="flex gap-2 items-center">
                     <a
                       href="https://www.instagram.com/sotercare_"
                       target="_blank"
