@@ -56,7 +56,7 @@ const HowItWorks = () => {
               <Icon
                 aria-hidden="true"
                 strokeWidth={1.25}
-                className="absolute top-6 right-6 h-28 w-28 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93] pointer-events-none"
+                className="absolute top-6 right-6 h-24 w-24 text-black/[0.09] transition-colors duration-500 group-hover:text-[#3d7e93] pointer-events-none"
               />
               <span className="relative text-sm font-bold text-text-muted mb-6">0{i + 1}</span>
               <h3 className="relative text-3xl font-bold mb-3">{verb}</h3>
