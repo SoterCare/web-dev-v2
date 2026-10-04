@@ -31,7 +31,7 @@ export const WelcomeWaitlist = () => {
                             Thanks for joining the SoterCare waitlist. We've saved your spot!
                         </Text>
                         <Text style={paragraph}>
-                            We're working hard to get everything ready. You'll be the first to know as soon as spots open up.
+                            We are starting with care homes, and the home kit comes next. You'll be among the first to know when it is ready.
                         </Text>
                     </Section>
 
@@ -52,7 +52,7 @@ export const WelcomeWaitlist = () => {
                             <Link href="mailto:support@sotercare.com" style={link}>Mail Us</Link>
                         </Text>
                         <Text style={copyright}>
-                            © 2026 SoterCare. Wellness Simplified.
+                            © {new Date().getFullYear()} SoterCare.
                         </Text>
                     </Section>
                 </Container>

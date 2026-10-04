@@ -16,12 +16,18 @@ interface ContactNotificationProps {
     senderName: string;
     senderEmail: string;
     message: string;
+    home?: string;
+    beds?: string;
+    role?: string;
 }
 
 export const ContactNotification = ({
     senderName = "John Doe",
     senderEmail = "john@example.com",
     message = "Hello, I'd like to learn more about SoterCare.",
+    home = "",
+    beds = "",
+    role = "",
 }: ContactNotificationProps) => {
     return (
         <Html>
@@ -32,14 +38,14 @@ export const ContactNotification = ({
                     {/* Brand Header */}
                     <Section style={brandSection}>
                         <Heading style={brandText}>SOTERCARE</Heading>
-                        <Text style={subheading}>NEW CONTACT MESSAGE</Text>
+                        <Text style={subheading}>NEW DEMO / CONTACT REQUEST</Text>
                     </Section>
 
                     <Hr style={divider} />
 
                     {/* Alert Banner */}
                     <Section style={alertBanner}>
-                        <Text style={alertText}>📬 You have a new message</Text>
+                        <Text style={alertText}>📬 New enquiry from the website</Text>
                     </Section>
 
                     {/* Sender Details */}
@@ -51,6 +57,24 @@ export const ContactNotification = ({
                         <Link href={`mailto:${senderEmail}`} style={emailLink}>
                             {senderEmail}
                         </Link>
+                        {home && (
+                            <>
+                                <Text style={label}>CARE HOME</Text>
+                                <Text style={value}>{home}</Text>
+                            </>
+                        )}
+                        {beds && (
+                            <>
+                                <Text style={label}>BEDS</Text>
+                                <Text style={value}>{beds}</Text>
+                            </>
+                        )}
+                        {role && (
+                            <>
+                                <Text style={label}>ROLE</Text>
+                                <Text style={value}>{role}</Text>
+                            </>
+                        )}
                     </Section>
 
                     <Hr style={divider} />
@@ -74,7 +98,7 @@ export const ContactNotification = ({
                             This message was sent via the SoterCare website contact form.
                         </Text>
                         <Text style={copyright}>
-                            © {new Date().getFullYear()} SoterCare. Wellness Simplified.
+                            © {new Date().getFullYear()} SoterCare.
                         </Text>
                     </Section>
                 </Container>

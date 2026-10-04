@@ -122,7 +122,7 @@ export default function NewsletterPopup() {
                             </div>
                             <h2 className="text-2xl font-bold text-[var(--text)] mb-2">Updates Newsletter</h2>
                             <p className="text-[var(--text-muted)] leading-relaxed">
-                                Join us to stay updated on our progress and be part of our journey with SoterCare.
+                                Follow our progress as we build SoterCare with our first care homes.
                             </p>
                         </div>
 

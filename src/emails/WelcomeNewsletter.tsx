@@ -28,7 +28,7 @@ export const WelcomeNewsletter = () => {
                     <Section style={contentSection}>
                         <Heading style={contentHeading}>Latest Updates</Heading>
                         <Text style={paragraph}>
-                            Explore our latest insights into IoT developments and Machine Learning milestones for elderly care.
+                            Follow our progress as we build SoterCare with our first care homes: new milestones, pilots and product updates.
                         </Text>
                     </Section>
 
@@ -49,7 +49,7 @@ export const WelcomeNewsletter = () => {
                             <Link href="mailto:support@sotercare.com" style={link}>Mail Us</Link>
                         </Text>
                         <Text style={copyright}>
-                            © 2026 SoterCare. Wellness Simplified.
+                            © {new Date().getFullYear()} SoterCare.
                         </Text>
                     </Section>
                 </Container>

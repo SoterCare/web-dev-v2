@@ -59,10 +59,10 @@ export default function ContactPopup() {
                             <CheckCircle size={28} className="text-[#a0cbdb]" />
                         </div>
                         <h2 className="text-xl font-extrabold text-[var(--text)] leading-[1.1] tracking-tight">
-                            Message Sent!
+                            Request sent!
                         </h2>
                         <p className="text-[var(--text-muted)] max-w-[260px] mt-2 leading-relaxed">
-                            Thank you for reaching out. A team member will get back to you soon.
+                            Thank you. A member of our small team will reply personally.
                         </p>
                         <button
                             onClick={handleClose}
@@ -77,9 +77,9 @@ export default function ContactPopup() {
                             <div className="w-12 h-12 text-[#a0cbdb] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
                                 <MessageSquare size={24} />
                             </div>
-                            <h2 className="text-2xl font-extrabold text-[var(--text)] mb-1 leading-[1.1] tracking-tight">Send a Message</h2>
+                            <h2 className="text-2xl font-extrabold text-[var(--text)] mb-1 leading-[1.1] tracking-tight">Book a demo</h2>
                             <p className="text-[var(--text-muted)] leading-relaxed">
-                                Have a question or feedback? We&apos;d love to hear from you.
+                                Tell us about your care home and we will get back to you personally. We are a startup, and we would love to build this with you.
                             </p>
                         </div>
 
@@ -110,9 +110,30 @@ export default function ContactPopup() {
                                 required
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
                             />
+                            <input
+                                name="home"
+                                type="text"
+                                placeholder="Care home name (optional)"
+                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
+                            />
+                            <div className="grid grid-cols-2 gap-3">
+                                <input
+                                    name="beds"
+                                    type="text"
+                                    inputMode="numeric"
+                                    placeholder="Number of beds (optional)"
+                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
+                                />
+                                <input
+                                    name="role"
+                                    type="text"
+                                    placeholder="Your role (optional)"
+                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800"
+                                />
+                            </div>
                             <textarea
                                 name="message"
-                                placeholder="Your message..."
+                                placeholder="How can we help your home?"
                                 required
                                 rows={4}
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#a0cbdb]/30 focus:border-[#a0cbdb] transition-all placeholder:text-gray-400 text-gray-800 resize-none"
@@ -133,7 +154,7 @@ export default function ContactPopup() {
                                     </>
                                 ) : (
                                     <>
-                                        Send Message
+                                        Request a demo
                                         <Send size={14} className="ml-2 transition-transform group-hover:translate-x-1" />
                                     </>
                                 )}
