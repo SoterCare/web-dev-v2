@@ -142,7 +142,7 @@ const Hero = () => {
 
               <span className="max-w-sm sm:max-w-2xl mx-auto leading-relaxed text-base md:text-xl tracking-wide text-text-muted reveal-text opacity-0">
                 SoterCare monitors every resident, alerts the right carer in seconds, learns
-                each person's patterns and keeps the home's records. No cameras. Works without internet.
+                each person&apos;s patterns and keeps the home&apos;s records. No cameras. Works without internet.
               </span>
 
               {/* CTA pair — dark primary for contrast, soft card secondary */}

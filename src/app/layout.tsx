@@ -121,7 +121,7 @@ export const metadata: Metadata = {
         url: "https://sotercare.com/og.png",
         width: 1200,
         height: 630,
-        alt: "SoterCare smart care system for care homes: thigh band, ward gateway and apps",
+        alt: "SoterCare - smart care monitoring for care homes",
       },
     ],
   },

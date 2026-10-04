@@ -98,7 +98,7 @@ const Problem = () => {
             ))}
           </div>
           <p className="mt-4 text-[11px] sm:text-xs text-text-muted">
-            Single-site studies: JAMDA 2025 (212 falls), JMIR 2021 (6 memory care facilities).
+            Single-site studies: JAMDA 2025 (212 falls), JMIR 2021 (6 memory care facilities). Staffing and carer quote: Kodagoda Gamage et al., BMC Geriatrics 2024.
           </p>
         </div>
       </section>

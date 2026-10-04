@@ -78,12 +78,15 @@ const Product = () => {
                   </p>
                 </div>
                 <div className="order-1 md:order-none w-full md:w-1/2 flex justify-center md:justify-end">
-                  <iframe
-                    src="/models/edge-gateway.html"
-                    title="Interactive 3D model of the SoterCare Ward Gateway"
-                    loading="lazy"
-                    className={iframeClass}
-                  />
+                  <div className="w-full flex flex-col items-center md:items-end">
+                    <iframe
+                      src="/models/edge-gateway.html"
+                      title="Interactive 3D model of the SoterCare gateway prototype"
+                      loading="lazy"
+                      className={iframeClass}
+                    />
+                    <p className="text-sm text-text-muted mt-2 text-center">Prototype hub shown. The final 15.6-inch ward gateway design is coming.</p>
+                  </div>
                 </div>
               </div>
             </div>

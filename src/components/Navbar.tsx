@@ -90,7 +90,7 @@ const Navbar = () => {
           <Link href="#" className="flex items-center gap-2" scroll={false}>
             <Image
               src="/assets/SoterCare-Primary-logo-brandblue.webp"
-              alt="SoterCare - Smart Elderly Care Monitoring System"
+              alt="SoterCare - smart care monitoring for care homes"
               width={0}
               height={0}
               sizes="100vw"

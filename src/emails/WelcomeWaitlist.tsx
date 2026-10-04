@@ -15,7 +15,7 @@ export const WelcomeWaitlist = () => {
     return (
         <Html>
             <Head />
-            <Preview>You're on the list!</Preview>
+            <Preview>You&apos;re on the list!</Preview>
             <Body style={main}>
                 <Container style={container}>
                     {/* Brand Header */}
@@ -26,12 +26,12 @@ export const WelcomeWaitlist = () => {
 
                     {/* Content */}
                     <Section style={contentSection}>
-                        <Heading style={contentHeading}>You're on the list!</Heading>
+                        <Heading style={contentHeading}>You&apos;re on the list!</Heading>
                         <Text style={paragraph}>
-                            Thanks for joining the SoterCare waitlist. We've saved your spot!
+                            Thanks for joining the SoterCare waitlist. Thanks for your interest!
                         </Text>
                         <Text style={paragraph}>
-                            We are starting with care homes, and the home kit comes next. You'll be among the first to know when it is ready.
+                            We are starting with care homes, and the home kit comes next. You&apos;ll be among the first to know when it is ready.
                         </Text>
                     </Section>
 

@@ -42,9 +42,9 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
 
                 {status === "success" ? (
                     <div className="flex flex-col items-center text-center py-4 animate-in fade-in slide-in-from-bottom-2">
-                        <h2 className="text-xl font-bold text-[var(--text)]">You're on the list!</h2>
+                        <h2 className="text-xl font-bold text-[var(--text)]">You&apos;re on the list!</h2>
                         <p className="text-[var(--text-muted)] max-w-[200px]">
-                            We'll let you know when the home kit is ready.
+                            We&apos;ll let you know when the home kit is ready.
                         </p>
                         <button
                             onClick={onClose}
