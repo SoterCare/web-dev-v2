@@ -15,7 +15,6 @@ import Mission from '@/components/Mission';
 import HowItWorks from '@/components/HowItWorks';
 import Product from '@/components/Product';
 import TechStack from '@/components/TechStack';
-import AppsDuo from '@/components/AppsDuo';
 import Features from '@/components/Features';
 import Proof from '@/components/Proof';
 import Pricing from '@/components/Pricing';
@@ -60,15 +59,14 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Mission />
+      <LatestNews />
       <HowItWorks />
       <Product />
       <TechStack />
-      <AppsDuo />
       <Features />
       <Proof />
       <Pricing />
       <HomeKit />
-      <LatestNews />
       <CommunityIntro />
       <FAQ />
       <Team />

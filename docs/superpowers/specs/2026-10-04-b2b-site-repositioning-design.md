@@ -50,10 +50,10 @@ Home (`/`) stays a single scrolling page. No new routes. Order changes to follow
 | # | Section | Anchor | Status | Source in deck |
 |---|---|---|---|---|
 | 1 | Hero | — | Rewrite | Cover |
-| 2 | Promise (pinned word-reveal, B2B-updated mission quote) | `#promise` | Rewrite (user decision: no stats-style problem section) | Mission |
+| 2 | Promise (non-pinned scroll reveal that starts as the section enters view; about responsible elderly care and families staying connected safely; only key words bold blue) | `#promise` | Rewrite | Mission |
 | 3 | How it works (Monitor, Alert, Analyse, Record) | `#how-it-works` | **New** (replaces Features intro) | Solution/Ecosystem |
 | 4 | Product: thigh node, ward gateway, apps | `#product` | Rewrite | Product slide, A4/A5 |
-| 5 | For carers and for families (two logins) | `#apps` | Rewrite of Mobile App block | Ecosystem, user brief |
+| 5 | ~~For carers and for families (two logins)~~ | — | **Removed (user decision)** | — |
 | 6 | Features (trimmed) | `#features` | Rewrite | Innovation slides |
 | 7 | Proof and roadmap | `#proof` | **New** | Traction, TRL, pilot targets |
 | 8 | Pricing: talk to us, and who we are (startup) | `#pricing` | Rewrite (see 5.8) | Business Model |

@@ -6,13 +6,12 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
-// Mobile browsers resize the viewport as the address bar shows/hides; don't re-measure the pin on that.
-ScrollTrigger.config({ ignoreMobileResize: true });
 
 const MISSION_TEXT =
-  "\u201CWe believe that caring for elders should be about love, not exhaustion. Our technology can lift the weight from every carer by watching over the absolute truth of each resident\u2019s safety. Now, put that weight down and simply care again.\u201D";
+  "\u201COur promise is to make elderly care more responsible. Retirement should never mean distance, so we connect every elder, carer and family in one proper way to stay close and stay safe.\u201D";
 
-const HIGHLIGHT_WORDS = ["we", "lift", "the", "weight"];
+// Only the key points of the promise are bold blue.
+const HIGHLIGHT_WORDS = ["responsible", "retirement", "connect", "family", "safe"];
 
 const Mission = () => {
   const textRef = useRef<HTMLDivElement>(null);
@@ -25,21 +24,23 @@ const Mission = () => {
       if (!textRef.current || !sectionRef.current) return;
       const textElements = textRef.current.querySelectorAll(".word");
 
-      // One pinned, scrubbed timeline: the section only unpins once every word is revealed,
-      // with a short hold at the end so the full text is readable before scrolling on.
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=200%",
-          pin: true,
-          anticipatePin: 1,
-          scrub: 1,
-          invalidateOnRefresh: true,
+      // No pin: the words start lighting up as soon as the section is a fifth of the way
+      // into view, and finish just before it fills the screen.
+      gsap.fromTo(
+        textElements,
+        { opacity: 0.1 },
+        {
+          opacity: 1,
+          stagger: 0.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "top 10%",
+            scrub: 1,
+          },
         },
-      });
-      tl.fromTo(textElements, { opacity: 0.1 }, { opacity: 1, stagger: 0.1, ease: "none" });
-      tl.to({}, { duration: 1.2 });
+      );
     },
     { scope: sectionRef },
   );
@@ -48,13 +49,13 @@ const Mission = () => {
     <section
       id="promise"
       ref={sectionRef}
-      className="pt-24 md:pt-32 pb-6 md:pb-12 bg-bg-body overflow-hidden relative z-10 min-h-[100svh] flex flex-col justify-center"
+      className="py-24 md:py-40 bg-bg-body overflow-hidden relative z-10"
     >
       <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
       <div ref={textRef} className="container mx-auto px-4 text-center max-w-5xl relative z-10">
-        <div className="text-[38px] leading-[1.1] sm:text-[48px] sm:leading-tight md:text-6xl font-medium text-text">
+        <div className="text-[34px] leading-[1.15] sm:text-[44px] sm:leading-tight md:text-6xl font-medium text-text">
           {words.map((word, i) => {
-            const cleanWord = word.replace(/[^a-zA-Z\u2019']/g, "").toLowerCase();
+            const cleanWord = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
             const isHighlighted = HIGHLIGHT_WORDS.includes(cleanWord);
             return (
               <span

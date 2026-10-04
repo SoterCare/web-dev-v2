@@ -103,8 +103,8 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="#product" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Product</Link>
           <Link href="#how-it-works" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>How it works</Link>
+          <Link href="#product" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Product</Link>
           <Link href="#pricing" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Pricing</Link>
           <Link href="#team" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Team</Link>
           <Link href="/community" className="transition-colors text-base font-medium text-[#797979] hover:text-black" scroll={false}>Community</Link>
@@ -136,20 +136,20 @@ const Navbar = () => {
         className={`absolute top-full mt-2 left-0 w-full bg-bg-card shadow-m border border-white/10 rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 origin-top ${isOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"}`}
       >
         <Link
-          href="#product"
-          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
-          onClick={() => setIsOpen(false)}
-          scroll={false}
-        >
-          Product
-        </Link>
-        <Link
           href="#how-it-works"
           className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
           onClick={() => setIsOpen(false)}
           scroll={false}
         >
           How it works
+        </Link>
+        <Link
+          href="#product"
+          className="text-text-muted hover:text-text hover:bg-black/5 px-4 py-3 rounded-xl transition-all font-medium text-lg text-center"
+          onClick={() => setIsOpen(false)}
+          scroll={false}
+        >
+          Product
         </Link>
         <Link
           href="#pricing"

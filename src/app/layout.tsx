@@ -58,9 +58,8 @@ const jsonLd = {
         { "@type": "ListItem", position: 1, name: "Home", item: "https://sotercare.com" },
         { "@type": "ListItem", position: 2, name: "How it works", item: "https://sotercare.com/#how-it-works" },
         { "@type": "ListItem", position: 3, name: "Hardware", item: "https://sotercare.com/#product" },
-        { "@type": "ListItem", position: 4, name: "Apps", item: "https://sotercare.com/#apps" },
-        { "@type": "ListItem", position: 5, name: "Features", item: "https://sotercare.com/#features" },
-        { "@type": "ListItem", position: 6, name: "Team", item: "https://sotercare.com/#team" },
+        { "@type": "ListItem", position: 4, name: "Features", item: "https://sotercare.com/#features" },
+        { "@type": "ListItem", position: 5, name: "Team", item: "https://sotercare.com/#team" },
       ],
     },
     {
