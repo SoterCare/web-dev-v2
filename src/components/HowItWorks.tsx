@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Activity, BellRing, TrendingUp, ClipboardList } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import Features from "@/components/Features";
 import Product from "@/components/Product";
 import TechStack from "@/components/TechStack";
 import { useSectionReveal } from "@/lib/useSectionReveal";
@@ -68,10 +69,14 @@ const HowItWorks = () => {
         <p className="mt-10 text-center text-lg font-semibold text-text">
           No cameras. Works without internet.
         </p>
-        <div className="mt-12 md:mt-16">
-          <Product />
-          <TechStack />
-        </div>
+      </div>
+
+      {/* Features explain how the system works for each party, so they sit between the steps and the hardware. */}
+      <Features />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
+        <Product />
+        <TechStack />
       </div>
     </section>
   );
