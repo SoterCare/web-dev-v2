@@ -67,7 +67,7 @@ export default function WaitlistPopup({ isOpen, onClose }: WaitlistPopupProps) {
                 <aside className="flex flex-col justify-between gap-8 bg-[#eaf3f6] p-7 sm:p-10 md:col-span-3">
                     <div>
                         <h2 id="waitlist-title" className="text-4xl font-bold !leading-[1.05] tracking-tight text-text md:text-5xl">
-                            Join the home-kit waitlist
+                            Join the home&#8209;kit waitlist
                         </h2>
                         <p className="mt-4 text-lg leading-relaxed text-text-muted">
                             We are starting with care homes. Once SoterCare is proven there, we will
