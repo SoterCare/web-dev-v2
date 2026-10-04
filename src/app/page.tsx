@@ -12,13 +12,18 @@ import Navbar from '@/components/Navbar';
 import SplashScreen from '@/components/SplashScreen';
 import Hero from '@/components/Hero';
 import Problem from '@/components/Problem';
-import TechStack from '@/components/TechStack';
-import CommunityIntro from '@/components/CommunityIntro';
+import HowItWorks from '@/components/HowItWorks';
 import Product from '@/components/Product';
+import TechStack from '@/components/TechStack';
+import AppsDuo from '@/components/AppsDuo';
 import Features from '@/components/Features';
+import Proof from '@/components/Proof';
+import Pricing from '@/components/Pricing';
+import HomeKit from '@/components/HomeKit';
+import LatestNews from '@/components/LatestNews';
+import CommunityIntro from '@/components/CommunityIntro';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
-import LatestNews from '@/components/LatestNews';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -55,10 +60,15 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Problem />
-      <LatestNews />
+      <HowItWorks />
       <Product />
       <TechStack />
+      <AppsDuo />
       <Features />
+      <Proof />
+      <Pricing />
+      <HomeKit />
+      <LatestNews />
       <CommunityIntro />
       <FAQ />
       <Team />

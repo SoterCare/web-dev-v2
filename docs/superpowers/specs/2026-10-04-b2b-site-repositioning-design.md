@@ -245,7 +245,7 @@ All in `src/app/layout.tsx`, `sitemap.ts`, `robots.ts`.
 | Advisor photos | Missing | Team |
 | Remove `the-wrist-node.webp` usages | Cleanup | Dev |
 
-Until mockups exist, ship with the current app mockup and a "coming soon" frame; do not block copy work on assets.
+Until mockups exist, `AppsDuo` shows a labelled 'App screens coming soon' frame. The old mockup shows vitals and is not used. Do not block copy work on assets.
 
 ---
 
@@ -263,7 +263,7 @@ Mostly content edits inside existing components; a few new components.
 ### Testing and verification
 - `next build` and `eslint` clean.
 - Manual pass at 375, 768 and 1440 widths for every changed section (GSAP pins are the usual breakage point).
-- Grep check that none of these remain on public pages: `wrist`, `$329`, `Pre-Order`, `loved one`, `$1.99`, `under \$150`, `Free`/`Pro` plan names, `Raspberry Pi`.
+- Grep check that none of these remain on public pages: `wrist`, `$329`, `Pre-Order`, `loved one`, `$1.99`, `under \$150`, `Free`/`Pro` plan names, `Raspberry Pi` (allowed only in `TechStack.tsx`, where it names the prototype logo).
 - JSON-LD validated with Google's Rich Results test; FAQ text identical to the page.
 - Contact form end to end (new fields, both emails).
 - `/dashboard`, `/editnews` untouched: `git diff --stat` shows no files under those paths.
