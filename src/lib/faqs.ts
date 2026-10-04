@@ -25,6 +25,11 @@ export const faqs: Faq[] = [
       "Pricing is per home: a band for each resident, one ward gateway and a small monthly fee per bed. We are a startup building SoterCare with our first care homes, so we quote each home personally. Book a demo and tell us about your home.",
   },
   {
+    question: "Are you raising investment, and what stage are you at?",
+    answer:
+      "SoterCare is an early-stage startup. We have a working prototype of the thigh band, the ward gateway and the apps (technology readiness level 6), and we have secured the University Voucher under the NIA Innovation Voucher Programme 2026. Next we pilot in real care homes, then release and onboard our first paying homes. We are raising a small first round to fund the production build and that pilot. If you would like to invest or partner with us, book a demo and tell us a little about yourself.",
+  },
+  {
     question: "What can families see, and who gets alerts?",
     answer:
       "There are two logins. Carers receive the critical alerts. Families, as guardians, see real-time status, daily summaries, trends and patterns, and the full records. They are notified only when something concerning happens or an update is necessary for them.",
