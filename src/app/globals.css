@@ -221,6 +221,16 @@ p {
 /* The splash has already played this session (set by a script in the layout's head). */
 .splash-seen [data-splash] { display: none; }
 
+/* No scrolling while the splash is up. Otherwise a swipe moves the page behind it, and when the
+   splash slides away the visitor lands part-way down the page instead of on the hero. Pure CSS,
+   so it holds before the page's script has loaded; it lifts as soon as the splash is removed. */
+html:not(.splash-seen):has([data-splash]),
+html:not(.splash-seen):has([data-splash]) body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+[data-splash] { touch-action: none; }
+
 /* Features: the AI frame on the ward overview gives off a soft wave around the resident it is watching. */
 @keyframes watch-ripple {
   0% { transform: scale(1); opacity: 0.5; }

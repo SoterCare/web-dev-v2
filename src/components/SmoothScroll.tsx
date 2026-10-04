@@ -11,6 +11,9 @@ export default function SmoothScroll() {
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
+            // Ignore the wheel while the splash is up, so the page stays on the hero behind it
+            // (globals.css locks native scrolling for the same time).
+            virtualScroll: () => !document.querySelector('[data-splash]') || document.documentElement.classList.contains('splash-seen'),
         });
 
         function raf(time: number) {
