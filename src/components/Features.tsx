@@ -103,9 +103,9 @@ const Features = () => {
     <div ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14 md:mt-20">
       <div className="w-full">
         <div className="mb-8 md:mb-12 text-center flex flex-col items-center">
-          <h3 className="text-3xl md:text-5xl font-bold tracking-tight">
+          <h2 className="!text-3xl md:!text-5xl !font-bold tracking-tight">
             Built for the whole circle of care
-          </h3>
+          </h2>
           <p className="mt-4 max-w-2xl text-lg md:text-xl text-text-muted leading-relaxed">
             Care homes get the system. Caregivers get the alerts. Elders and families get the care you can now offer.
           </p>
@@ -186,10 +186,10 @@ const Features = () => {
             </article>
 
             {/* What the home can offer */}
-            <h3 className="lg:col-span-12 pt-10 md:pt-14 text-center text-3xl md:text-5xl font-bold tracking-tight text-text">
+            <h2 className="lg:col-span-12 pt-10 md:pt-14 text-center !text-3xl md:!text-5xl !font-bold tracking-tight text-text">
               And what you can offer your{' '}
               <span className="text-[#3d7e93]">residents and their families</span>
-            </h3>
+            </h2>
 
             {/* Elders */}
             <article className="group relative overflow-hidden rounded-[2rem] bg-bg-card shadow-m p-5 sm:p-7 md:p-8 lg:col-span-6">

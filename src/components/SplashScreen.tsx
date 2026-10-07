@@ -41,16 +41,17 @@ const SplashScreen = () => {
       gsap.set(containerRef.current, { yPercent: 0 });
       gsap.set(logoRef.current, { scale: 0.8, opacity: 0 });
 
-      // Breathing/Pulse Animation (Simulating loading)
+      // Breathing/Pulse Animation (Simulating loading). Kept to about 2s in total: the hero
+      // can't count as painted (Largest Contentful Paint) until the splash has slid away.
       tl.to(logoRef.current, {
         scale: 1,
         opacity: 1,
-        duration: 1.5,
+        duration: 0.5,
         ease: "power2.out",
       })
         .to(logoRef.current, {
           scale: 0.9,
-          duration: 1,
+          duration: 0.35,
           yoyo: true,
           repeat: 1, // Pulse once
           ease: "sine.inOut",
@@ -58,9 +59,9 @@ const SplashScreen = () => {
         // Exit Animation - Slide Up Reveal
         .to(containerRef.current, {
           yPercent: -100,
-          duration: 1.2,
+          duration: 0.8,
           ease: "power4.inOut", // Smooth dramatic exit
-          delay: 0.2,
+          delay: 0.1,
         });
 
       // Leaving the page mid-splash must not leave scrolling locked.

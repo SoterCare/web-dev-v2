@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preload } from "react-dom";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -125,26 +126,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Preload the above-the-fold font weights for better CLS and FCP. React's preload() emits one tag
+  // each; hand-written <link rel="preload"> tags in <head> were being output twice.
+  preload("/fonts/URWGeometricMedium.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload("/fonts/URWGeometricBold.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preload critical fonts for better CLS and FCP */}
-        <link
-          rel="preload"
-          href="/fonts/URWGeometricMedium.otf"
-          as="font"
-          type="font/otf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/URWGeometricBold.otf"
-          as="font"
-          type="font/otf"
-          crossOrigin="anonymous"
-        />
-        {/* Apple Touch Icon for iOS home screen */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/SoterCare-centered-logo.webp" />
         {/* Theme color for browser chrome */}
         <meta name="theme-color" content="#a0cbdb" />
         {/* Preconnect to external domains */}
