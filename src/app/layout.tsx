@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { faqs } from "@/lib/faqs";
 
-// Safe, minimal, truthful schema - compliant with Google guidelines.
-// No Offer/price: SoterCare is quoted per care home, not sold at a public price.
+// Site-wide schema only. Page-specific schema (Service, FAQPage, NewsArticle) lives on its page.
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -16,16 +14,21 @@ const jsonLd = {
       logo: {
         "@type": "ImageObject",
         url: "https://sotercare.com/assets/SoterCare-centered-logo.webp",
-        width: 512,
-        height: 512,
+        width: 2000,
+        height: 2000,
       },
       description:
         "SoterCare is a startup building a smart care system for care homes: a camera-free thigh band, a ward gateway and apps that monitor every resident, alert the right carer in seconds, spot trends and keep the home's records.",
-      email: "sotercare@gmail.com",
+      email: "support@sotercare.com",
       telephone: "+94704888440",
       address: {
         "@type": "PostalAddress",
         addressCountry: "LK",
+      },
+      founder: {
+        "@type": "Person",
+        name: "Daham Dissanayake",
+        sameAs: "https://www.linkedin.com/in/daham-dissanayake/",
       },
       sameAs: [
         "https://www.instagram.com/sotercare_",
@@ -41,32 +44,6 @@ const jsonLd = {
       publisher: {
         "@id": "https://sotercare.com/#organization",
       },
-    },
-    {
-      "@type": "Service",
-      "@id": "https://sotercare.com/#service",
-      name: "SoterCare care home monitoring",
-      serviceType: "Care home resident monitoring and alerting",
-      description:
-        "A body-worn thigh band, a 15.6-inch ward gateway and caregiver and guardian apps that monitor every resident, alert carers to critical events, learn each resident's patterns and keep the home's records, with no cameras.",
-      provider: { "@id": "https://sotercare.com/#organization" },
-      areaServed: { "@type": "Country", name: "Sri Lanka" },
-    },
-    {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://sotercare.com" },
-        { "@type": "ListItem", position: 2, name: "How it works", item: "https://sotercare.com/#how-it-works" },
-        { "@type": "ListItem", position: 3, name: "Team", item: "https://sotercare.com/#team" },
-      ],
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: { "@type": "Answer", text: faq.answer },
-      })),
     },
   ],
 };
@@ -114,14 +91,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  // Defaults for pages that don't build their own (see pageMetadata in lib/seo.ts). No url or
+  // canonical here: Next.js copies them to every child page, which pointed them all at the homepage.
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://sotercare.com",
     siteName: "SoterCare",
-    title: "SoterCare - Smart Care Monitoring for Care Homes",
-    description:
-      "Safer care for every resident without hiring more staff. Camera-free monitoring, instant carer alerts, trends and records for care homes.",
     images: [
       {
         url: "https://sotercare.com/og.png",
@@ -133,14 +108,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SoterCare - Smart Care Monitoring for Care Homes",
-    description:
-      "Safer care for every resident without hiring more staff. Camera-free monitoring, instant carer alerts, trends and records.",
     images: ["https://sotercare.com/og.png"],
-    creator: "@sotercare",
-  },
-  alternates: {
-    canonical: "https://sotercare.com",
   },
   category: "Healthcare Technology",
 };
@@ -195,7 +163,6 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="antialiased">
-        {/* JSON-LD Structured Data - injected client-side to avoid hydration mismatch */}
         <JsonLd data={jsonLd} id="site-jsonld" />
         <SmoothScroll />
         <HashScroll />

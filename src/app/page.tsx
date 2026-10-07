@@ -1,65 +1,57 @@
-"use client";
+import type { Metadata } from "next";
+import HomePage from "@/components/HomePage";
+import JsonLd from "@/components/JsonLd";
+import { faqs } from "@/lib/faqs";
+import { pageMetadata, SITE_URL } from "@/lib/seo";
 
-import { useRef, useEffect } from 'react';
+const TITLE = "SoterCare - Smart Care Monitoring for Care Homes";
 
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+export const metadata: Metadata = {
+  ...pageMetadata({
+    title: TITLE,
+    description:
+      "Camera-free monitoring for care homes in Sri Lanka. A thigh band on each resident alerts the right carer in seconds, spots trends and keeps records.",
+    path: "/",
+    socialTitle: TITLE,
+    socialDescription:
+      "Safer care for every resident without hiring more staff. Camera-free monitoring, instant carer alerts, trends and records for care homes.",
+  }),
+  // The page already names the brand, so skip the "| SoterCare" template.
+  title: { absolute: TITLE },
+};
 
-import { ReactLenis, useLenis } from 'lenis/react';
-
-import Navbar from '@/components/Navbar';
-import SplashScreen from '@/components/SplashScreen';
-import Hero from '@/components/Hero';
-import Mission from '@/components/Mission';
-import HowItWorks from '@/components/HowItWorks';
-import Pricing from '@/components/Pricing';
-import LatestNews from '@/components/LatestNews';
-import FAQ from '@/components/FAQ';
-import Team from '@/components/Team';
-import Footer from '@/components/Footer';
+// Schema that describes the home page only. Organization and WebSite are in the root layout.
+// No Offer/price: SoterCare is quoted per care home, not sold at a public price.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": `${SITE_URL}/#service`,
+      name: "SoterCare care home monitoring",
+      serviceType: "Care home resident monitoring and alerting",
+      description:
+        "A body-worn thigh band, a 15.6-inch ward gateway and caregiver and guardian apps that monitor every resident, alert carers to critical events, learn each resident's patterns and keep the home's records, with no cameras.",
+      provider: { "@id": `${SITE_URL}/#organization` },
+      areaServed: { "@type": "Country", name: "Sri Lanka" },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE_URL}/#faq`,
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  ],
+};
 
 export default function Home() {
-  const bgRef = useRef<HTMLDivElement>(null);
-
-
-
-  useGSAP(() => {
-    if (!bgRef.current) return;
-
-    gsap.to(bgRef.current, {
-      y: -300, // Move up slowly (parallax effect)
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true
-      }
-    });
-  });
-
   return (
-    <main className="min-h-screen bg-[#fafafa] text-foreground selection:bg-blue-100 selection:text-blue-900 relative">
-      <div
-        ref={bgRef}
-        className="fixed top-0 left-0 z-0 h-[200%] w-full pointer-events-none will-change-transform bg-fixed"
-        style={{
-          backgroundImage: 'radial-gradient(#e5e7eb 2px, transparent 1px)',
-          backgroundSize: '32px 32px'
-        }}
-      ></div>
-      <SplashScreen />
-      <Navbar />
-      <Hero />
-      <Mission>
-        <LatestNews />
-      </Mission>
-      <HowItWorks />
-      <Pricing />
-      <FAQ />
-      <Team />
-      <Footer />
-    </main>
+    <>
+      <JsonLd data={jsonLd} id="home-jsonld" />
+      <HomePage />
+    </>
   );
 }

@@ -31,7 +31,7 @@ export const REQUIRED = [
   { file: "src/components/Mission.tsx", re: /id="promise"/, why: "anchor #promise" },
   { file: "src/components/HowItWorks.tsx", re: /id="how-it-works"/, why: "anchor #how-it-works" },
   { file: "src/components/Pricing.tsx", re: /id="pricing"/, why: "anchor #pricing" },
-  { file: "src/app/layout.tsx", re: /from "@\/lib\/faqs"/, why: "JSON-LD uses shared FAQ module" },
+  { file: "src/app/page.tsx", re: /from "@\/lib\/faqs"/, why: "JSON-LD uses shared FAQ module" },
   { file: "src/components/FAQ.tsx", re: /from ['"]@\/lib\/faqs['"]/, why: "FAQ uses shared FAQ module" },
 ];
 

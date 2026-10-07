@@ -3,7 +3,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
+import JsonLd from '@/components/JsonLd';
 import { readNews } from '@/lib/news-store';
+import { pageMetadata, SITE_NAME, SITE_URL } from '@/lib/seo';
 import type { ContentBlock } from '@/types/news';
 
 interface Props {
@@ -20,10 +22,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { articles } = readNews();
   const article = articles.find((a) => a.slug === slug);
   if (!article) return {};
-  return {
+  return pageMetadata({
     title: article.title,
     description: article.summary,
-  };
+    path: `/news/${article.slug}`,
+    image: article.coverImage ? { url: article.coverImage, alt: article.title } : undefined,
+    article: { publishedTime: article.date, tags: article.tags },
+  });
 }
 
 function formatDate(iso: string): string {
@@ -41,12 +46,40 @@ export default async function ArticlePage({ params }: Props) {
   const article = articles.find((a) => a.slug === slug);
   if (!article) notFound();
 
+  const url = `${SITE_URL}/news/${article.slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'NewsArticle',
+        '@id': `${url}#article`,
+        headline: article.title,
+        description: article.summary,
+        datePublished: article.date,
+        ...(article.coverImage && { image: [`${SITE_URL}${article.coverImage}`] }),
+        ...(article.tags.length > 0 && { keywords: article.tags }),
+        mainEntityOfPage: url,
+        author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'News', item: `${SITE_URL}/news` },
+          { '@type': 'ListItem', position: 3, name: article.title, item: url },
+        ],
+      },
+    ],
+  };
+
   const paragraphs = article.body.split(/\n\n+/).filter(Boolean);
   const blocks: ContentBlock[] | undefined =
     article.bodyBlocks && article.bodyBlocks.length > 0 ? article.bodyBlocks : undefined;
 
   return (
     <main className="min-h-screen bg-[#fafafa] relative">
+      <JsonLd data={jsonLd} id="article-jsonld" />
       {/* Dotted background */}
       <div
         className="fixed top-0 left-0 z-0 h-full w-full pointer-events-none"

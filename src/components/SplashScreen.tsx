@@ -83,6 +83,7 @@ const SplashScreen = () => {
           src="/assets/SoterCare-centered-logo.webp"
           alt="SoterCare Logo"
           fill
+          sizes="160px"
           className="object-contain"
           priority
         />
