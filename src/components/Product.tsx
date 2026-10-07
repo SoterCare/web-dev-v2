@@ -25,6 +25,8 @@ const Product = () => {
 
   return (
     <div id="product" className="scroll-mt-24 md:scroll-mt-28 w-full flex flex-col gap-0">
+      {/* No visible title here, but the two product h3s need a section heading in the outline. */}
+      <h2 className="sr-only">The SoterCare hardware</h2>
       {/* Thigh node: Monitor */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-8">
         <div className="order-2 md:order-none md:w-1/2 flex flex-col items-center md:items-end text-center md:text-right">

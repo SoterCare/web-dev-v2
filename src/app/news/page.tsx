@@ -7,11 +7,13 @@ import FooterSimple from '@/components/FooterSimple';
 import { readNews } from '@/lib/news-store';
 import { sortArticles } from '@/lib/news-sort';
 import type { NewsArticle } from '@/types/news';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'News',
+export const metadata: Metadata = pageMetadata({
+  title: 'News and Milestones',
   description: 'Latest news and updates from SoterCare — product announcements, research milestones, and team updates.',
-};
+  path: '/news',
+});
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
