@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/alert_seen.request",
+  "title": "POST /alerts/:id/seen (JWT) request body. Client-reported display/open evidence; never an acknowledgement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source"],
+  "properties": {
+    "source": { "enum": ["push_foreground", "push_opened", "in_app"] },
+    "notificationAttemptId": { "type": "integer", "minimum": 1 }
+  }
+}

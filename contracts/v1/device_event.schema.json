@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/device_event",
+  "title": "Socket.IO event 'device_event' on namespace /realtime (gateway -> cloud)",
+  "description": "A discrete, durable safety event (fall or SOS) created once on the gateway and retried with the same event_id until the cloud acknowledges durable acceptance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "event_id", "type", "device_id", "detected_at", "seq", "attempt"],
+  "properties": {
+    "schema": { "const": "sotercare.device_event.v1" },
+    "event_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "type": { "enum": ["fall", "sos"] },
+    "device_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "node_mac": { "type": ["string", "null"], "pattern": "^([0-9A-F]{2}:){5}[0-9A-F]{2}$" },
+    "detected_at": { "type": "integer", "minimum": 0, "description": "epoch ms of the frame that triggered the event, gateway (Pi) wall clock; firmware supplies no timestamp" },
+    "seq": { "type": "integer", "minimum": 1, "description": "per-gateway monotonic sequence, persisted across restarts" },
+    "boot_id": { "type": "string", "maxLength": 64 },
+    "clock_synced": { "type": "boolean" },
+    "attempt": { "type": "integer", "minimum": 1 },
+    "source": { "enum": ["udp", "ble", null] },
+    "detector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "maxLength": 64 },
+        "info": { "type": "string", "maxLength": 200 }
+      }
+    }
+  }
+}

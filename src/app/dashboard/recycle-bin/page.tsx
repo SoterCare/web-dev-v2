@@ -34,7 +34,7 @@ function unwrap(res: any): any[] {
 export default function RecycleBinPage() {
   const pathname = usePathname();
   const router = useRouter();
-  const { latestAlertDismissed } = useDashboardWebSocket();
+  const { latestAlertDismissed, latestAlertUpdated } = useDashboardWebSocket();
 
   const [items, setItems] = useState<DismissedItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,6 +71,12 @@ export default function RecycleBinPage() {
   useEffect(() => {
     if (latestAlertDismissed) fetchItems();
   }, [latestAlertDismissed]);
+
+  // Canonical alert.updated: the dismissed list changes on dismiss / false alarm / restore.
+  useEffect(() => {
+    const s = latestAlertUpdated?.status;
+    if (s === "dismissed" || s === "false_alarm" || s === "restored") fetchItems();
+  }, [latestAlertUpdated]);
 
   const handleRestore = async (id: string) => {
     setRestoringId(id);

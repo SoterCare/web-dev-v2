@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Activity, Droplets, AlertTriangle, Phone, ChevronDown, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { Activity, Droplets, AlertTriangle, Phone, ChevronDown, CheckCircle, XCircle, Loader2, Thermometer } from "lucide-react";
 import { useAlerts } from "@/lib/useAlerts";
 import { relativeTime } from "@/lib/timeUtils";
 import type { RecentAlert } from "@/types/dashboard";
@@ -11,6 +11,7 @@ const getAlertTheme = (type: string) => {
   if (t.includes("fall")) return { Icon: AlertTriangle, iconBg: "bg-[#FF9D93]", iconColor: "text-red-900" };
   if (t.includes("help") || t.includes("sos") || t.includes("help_call")) return { Icon: Phone, iconBg: "bg-[#FED7AA]", iconColor: "text-orange-900" };
   if (t.includes("urine") || t.includes("moisture")) return { Icon: Droplets, iconBg: "bg-[#91D7E4]", iconColor: "text-blue-900" };
+  if (t.includes("temperature")) return { Icon: Thermometer, iconBg: "bg-[#FDE68A]", iconColor: "text-amber-900" };
   return { Icon: Activity, iconBg: "bg-[#42dfdf]", iconColor: "text-cyan-950" };
 };
 
@@ -46,7 +47,7 @@ function AlertCard({ alert, onAttend, onFalse }: {
           </div>
           <div className="flex flex-col">
             <span className="text-[#4A4A4A] font-semibold text-[15px]">{alert.title}</span>
-            <span className="text-[var(--text-muted)] font-medium text-xs">{timeStr}</span>
+            <span className="text-[var(--text-muted)] font-medium text-xs">{timeStr}{alert.late ? " (delayed)" : ""}</span>
           </div>
         </div>
         {!expanded && <ChevronDown className="w-5 h-5 text-gray-400" />}

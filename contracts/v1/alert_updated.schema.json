@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/alert_updated",
+  "title": "Socket.IO event 'alert.updated' (canonical alert state change). Legacy aliases alert.attended / alert.dismissed are emitted while EMIT_LEGACY_ALERT_EVENTS != 'false'.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "deviceId", "status", "at"],
+  "properties": {
+    "id": { "type": "string" },
+    "deviceId": { "type": "string" },
+    "status": { "enum": ["attended", "false_alarm", "dismissed", "restored", "escalated", "condition_cleared"] },
+    "at": { "type": "integer" },
+    "actorUserId": { "type": ["integer", "null"] },
+    "escalationLevel": { "type": "integer" }
+  }
+}

@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef } from "react";
 import { Thermometer, Home, Droplets, Activity, Loader2 } from "lucide-react";
 import { dashboardApi } from "@/lib/dashboardApi";
+import { useDeviceId } from "@/lib/useDeviceId";
+import { mergeLiveVitals, type LatestVitalsResult } from "@/lib/latestVitals";
 import { useVitals } from "./WebSocketContext";
 
 // How long (ms) with no gateway data before showing Offline
@@ -10,21 +12,32 @@ const DATA_TIMEOUT_MS = 3000;
 
 export default function VitalsDisplay() {
   const { vitals: wsVitals, isConnected } = useVitals();
-  const [initialVitals, setInitialVitals] = useState<any>(null);
+  const { deviceId, deviceIdReady, revalidate } = useDeviceId();
+  const [snapshot, setSnapshot] = useState<LatestVitalsResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDataLive, setIsDataLive] = useState(false);
   const lastDataAtRef = useRef<number | null>(null);
 
+  // Initial vitals for the selected device only (never without a deviceId).
   useEffect(() => {
-    // Fetch fallback/initial vitals on mount
+    if (!deviceIdReady) return;
+    let active = true;
+    setLoading(true);
     dashboardApi
-      .getLatestVitals()
-      .then((data) => {
-        setInitialVitals(data.payload || data);
+      .getLatestVitals(deviceId)
+      .then((result) => {
+        if (!active) return;
+        setSnapshot(result);
+        // Device unclaimed/reassigned: refresh the device list instead of retrying it.
+        if (result.status === "not-found" || result.status === "forbidden") revalidate();
       })
-      .catch((err) => console.error("Failed to load initial vitals:", err))
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [deviceId, deviceIdReady, revalidate]);
 
   // Stamp the last time we received fresh gateway data
   useEffect(() => {
@@ -47,8 +60,22 @@ export default function VitalsDisplay() {
     return () => clearInterval(interval);
   }, []);
 
-  // Use WebSocket data if available, otherwise use initial API data, otherwise fallback to dashes
-  const currentData = { ...initialVitals, ...wsVitals };
+  // Live socket data wins over the snapshot; both only for the selected device.
+  const currentData = mergeLiveVitals(
+    snapshot?.status === "ok" ? snapshot.vitals : null,
+    wsVitals,
+    deviceId,
+  );
+  const notice =
+    snapshot?.status === "no-device"
+      ? "No device is linked to this account yet."
+      : snapshot?.status === "not-found" || snapshot?.status === "forbidden"
+        ? "This device is no longer linked to your account."
+        : snapshot?.status === "empty"
+          ? "No readings received from this device yet."
+          : snapshot?.status === "error" || snapshot?.status === "bad-request"
+            ? "Could not load the latest readings."
+            : null;
 
   const vitals = [
     { 
@@ -108,6 +135,11 @@ export default function VitalsDisplay() {
           )}
         </div>
       </div>
+      {notice && !isDataLive && (
+        <p className="text-sm text-[var(--text-muted)] font-semibold mb-4" role="status">
+          {notice}
+        </p>
+      )}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {vitals.map((v) => (
           <div key={v.title} className="depth-card p-6 flex flex-col gap-4 relative overflow-hidden">

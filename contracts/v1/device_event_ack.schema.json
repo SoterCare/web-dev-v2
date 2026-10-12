@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/device_event_ack",
+  "title": "Socket.IO acknowledgement for 'device_event' (cloud -> gateway)",
+  "description": "accepted:true is sent only AFTER the cloud transaction committed (durable acceptance). The gateway may delete/archive its outbox row only on accepted:true with a matching event_id. accepted:false + retryable:true means keep the event and retry; retryable:false means stop retrying and keep the row as rejected.",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["accepted", "success", "event_id", "alert_id", "duplicate"],
+      "properties": {
+        "accepted": { "const": true },
+        "success": { "const": true },
+        "event_id": { "type": "string" },
+        "alert_id": { "type": ["string", "null"], "description": "null when the event was recorded but quarantined" },
+        "duplicate": { "type": "boolean" },
+        "quarantined": { "type": "boolean", "description": "true when no current owner may see this event (device unclaimed, or event observed before the current ownership period)" },
+        "server_received_at": { "type": "integer" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["accepted", "success", "retryable", "reason"],
+      "properties": {
+        "accepted": { "const": false },
+        "success": { "const": false },
+        "event_id": { "type": ["string", "null"] },
+        "retryable": { "type": "boolean" },
+        "reason": { "enum": ["invalid_payload", "device_mismatch", "not_authenticated", "event_conflict", "internal_error", "disabled"] }
+      }
+    }
+  ]
+}

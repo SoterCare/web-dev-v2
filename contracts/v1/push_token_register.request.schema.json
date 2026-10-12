@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/push_token_register.request",
+  "title": "POST /notifications/push-tokens (JWT) request body",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["token", "platform", "installationId"],
+  "properties": {
+    "token": { "type": "string", "pattern": "^Expo(nent)?PushToken\\[[A-Za-z0-9_-]+\\]$", "maxLength": 255 },
+    "platform": { "enum": ["ios", "android"] },
+    "installationId": { "type": "string", "pattern": "^[0-9a-fA-F-]{16,64}$" },
+    "appVersion": { "type": "string", "maxLength": 32 },
+    "permission": { "enum": ["granted", "provisional"] }
+  }
+}

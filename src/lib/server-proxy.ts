@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { buildProxyHeaders } from "./proxyHeaders";
 
 export async function proxyRequest(request: Request, backendPath: string) {
   try {
@@ -13,11 +14,7 @@ export async function proxyRequest(request: Request, backendPath: string) {
       ? `${API_BASE}${backendPath}${new URL(request.url).search}`
       : `${API_BASE}${backendPath}`;
 
-    const reqHeaders: Record<string, string> = {
-      "Authorization": `Bearer ${token}`,
-    };
-
-    const options: RequestInit = { method: request.method, headers: reqHeaders };
+    const options: RequestInit = { method: request.method, headers: buildProxyHeaders(token) };
 
     // Only forward body and Content-Type for requests that carry a payload.
     // Sending Content-Type: application/json on a bodyless PATCH causes some
@@ -26,7 +23,7 @@ export async function proxyRequest(request: Request, backendPath: string) {
       const bodyText = await request.text();
       if (bodyText) {
         options.body = bodyText;
-        reqHeaders["Content-Type"] = "application/json";
+        options.headers = buildProxyHeaders(token, true);
       }
     }
 
