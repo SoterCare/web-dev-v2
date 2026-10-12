@@ -1,0 +1,1 @@
+{ "schema": "sotercare.device_event.v1", "type": "fall", "device_id": "it-dev-0001", "detected_at": 1791770400123, "seq": 17, "attempt": 1 }

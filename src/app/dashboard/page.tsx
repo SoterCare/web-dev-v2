@@ -5,6 +5,7 @@ import { Box, Smartphone } from "lucide-react";
 
 import VitalsDisplay from "@/components/dashboard/VitalsDisplay";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
+import NoPhoneBanner from "@/components/dashboard/NoPhoneBanner";
 import TemperatureStatistics from "@/components/dashboard/TemperatureStatistics";
 
 export const metadata: Metadata = {
@@ -62,6 +63,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-8">
+
+      {/* Shown only when no phone is registered for push alerts */}
+      <NoPhoneBanner />
 
       {/* Top: 4 vitals cards */}
       <VitalsDisplay />

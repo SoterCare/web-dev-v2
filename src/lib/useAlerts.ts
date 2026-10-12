@@ -4,30 +4,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dashboardApi } from "@/lib/dashboardApi";
 import { useDeviceId } from "@/lib/useDeviceId";
 import { useDashboardWebSocket } from "@/components/dashboard/WebSocketContext";
-import { parseToUnixMs } from "@/lib/timeUtils"; // still used in normaliseAlerts
+import {
+  alertUpdateAction,
+  applyAlertRemoved,
+  belongsToDevice,
+  normaliseRestAlerts,
+  reconcileRecent,
+  unwrapAlerts,
+  visibleAlerts,
+} from "@/lib/alertEvents";
 import type { RecentAlert } from "@/types/dashboard";
 
-function normaliseAlerts(list: any[]): RecentAlert[] {
-  return list.map((item) => ({
-    id: String(item.id ?? Math.random()),
-    type: item.type ?? "movement",
-    title: item.title ?? item.label ?? "Alert",
-    timestamp: parseToUnixMs(item.timestamp ?? item.ts ?? item.createdAt),
-    attendedAt:
-      item.attendedAt != null ? parseToUnixMs(item.attendedAt) : undefined,
-  }));
-}
-
-function unwrapAlerts(res: any): any[] {
-  // Handle every envelope shape the backend / proxy may return
-  const raw = res?.data ?? res;
-  if (Array.isArray(raw)) return raw;                     // { data: [...] } or plain [...]
-  if (Array.isArray(raw?.alerts)) return raw.alerts;      // { alerts: [...] }
-  if (Array.isArray(raw?.items)) return raw.items;        // { items: [...] }
-  if (Array.isArray(raw?.payload)) return raw.payload;    // { payload: [...] }
-  if (Array.isArray(raw?.data)) return raw.data;          // { data: { data: [...] } }
-  return [];
-}
+const MAX_VISIBLE = 5;
 
 export function useAlerts() {
   const { deviceId, deviceIdReady } = useDeviceId();
@@ -36,6 +24,7 @@ export function useAlerts() {
     latestAlertAttended,
     latestAlertDismissed,
     latestAlertUpdated,
+    connectionEpoch,
     postAlertAction,
   } = useDashboardWebSocket();
 
@@ -48,55 +37,53 @@ export function useAlerts() {
   // so attended/dismissed alerts don't snap back after the next poll.
   const removedRef = useRef(new Set<string>());
 
-  // Merged, deduped, newest-first, max 5
-  const alerts = useMemo<RecentAlert[]>(() => {
-    const all = [...wsAlerts, ...restAlerts];
-    const unique = Array.from(new Map(all.map((a) => [a.id, a])).values());
-    return unique.sort((a, b) => b.timestamp - a.timestamp).slice(0, 5);
-  }, [restAlerts, wsAlerts]);
+  // Only the latest REST request may write state (poll and reconnect can overlap).
+  const requestSeq = useRef(0);
+
+  // Merged, deduped, severity-first then newest-first, THEN capped: a fall is
+  // never hidden behind newer moisture alerts (AR-12).
+  const alerts = useMemo<RecentAlert[]>(
+    () => visibleAlerts(wsAlerts, restAlerts, MAX_VISIBLE),
+    [restAlerts, wsAlerts],
+  );
 
   // Ref so effects can read the latest list without stale closures
   const alertsRef = useRef<RecentAlert[]>([]);
   alertsRef.current = alerts;
 
   const addAlert = useCallback((alert: RecentAlert) => {
-    // Skip anything we already removed this session
+    // Skip anything we already removed this session, or another device's alert
     if (removedRef.current.has(alert.id)) return;
+    if (!belongsToDevice(alert, deviceId)) return;
     setWsAlerts((prev) => {
       if (prev.some((a) => a.id === alert.id)) return prev;
-      return [alert, ...prev];
+      return [{ ...alert, receivedAt: alert.receivedAt ?? Date.now() }, ...prev];
     });
-  }, []);
+  }, [deviceId]);
 
+  // Idempotent: legacy alert.attended/dismissed and canonical alert.updated may
+  // both arrive for the same action.
   const removeAlertById = useCallback((id: string) => {
     removedRef.current.add(id);
-    setRestAlerts((prev) => prev.filter((a) => a.id !== id));
-    setWsAlerts((prev) => prev.filter((a) => a.id !== id));
+    setRestAlerts((prev) => applyAlertRemoved(prev, id));
+    setWsAlerts((prev) => applyAlertRemoved(prev, id));
   }, []);
 
+  // GET /alerts/recent is the durable source: mount, 15 s poll, socket (re)connect.
   const refreshRestAlerts = useCallback(async () => {
     if (!deviceId) return;
+    const seq = ++requestSeq.current;
+    const startedAt = Date.now();
     try {
       const res = await dashboardApi.getRecentAlerts({ deviceId, limit: 20 });
-      const all = normaliseAlerts(unwrapAlerts(res));
-
-      // Filter out IDs the user has acted on this session
-      const filtered = all.filter((a) => !removedRef.current.has(a.id));
-      setRestAlerts(filtered);
-
-      // Drop wsAlerts that REST now has (REST is source of truth after poll),
-      // and also drop wsAlerts older than the oldest REST alert to prevent
-      // synthesised entries from getting stuck.
-      const restIds = new Set(filtered.map((a) => a.id));
-      const oldestRestTs =
-        filtered.length > 0 ? Math.min(...filtered.map((a) => a.timestamp)) : Date.now();
-      setWsAlerts((prev) =>
-        prev.filter((a) => !restIds.has(a.id) && a.timestamp > oldestRestTs)
-      );
-
+      if (seq !== requestSeq.current) return; // a newer request owns the state
+      const fetched = normaliseRestAlerts(unwrapAlerts(res));
+      const removed = removedRef.current;
+      setRestAlerts(reconcileRecent(fetched, [], removed, startedAt).rest);
+      setWsAlerts((prev) => reconcileRecent(fetched, prev, removed, startedAt).ws);
       setError("");
     } catch {
-      setError("Failed to load alerts.");
+      if (seq === requestSeq.current) setError("Failed to load alerts.");
     }
   }, [deviceId]);
 
@@ -111,6 +98,12 @@ export function useAlerts() {
     const id = setInterval(refreshRestAlerts, 15_000);
     return () => clearInterval(id);
   }, [deviceId, deviceIdReady, refreshRestAlerts]);
+
+  // Reconnect reconciliation: events emitted while the socket was down are not
+  // replayed, so refetch the durable list on every (re)connect.
+  useEffect(() => {
+    if (connectionEpoch > 0 && deviceId) refreshRestAlerts();
+  }, [connectionEpoch, deviceId, refreshRestAlerts]);
 
   // Source B — alert.new WebSocket
   useEffect(() => {
@@ -129,10 +122,15 @@ export function useAlerts() {
 
   useEffect(() => {
     if (!latestAlertUpdated) return;
-    const { status, id } = latestAlertUpdated;
-    if (status === "attended" || status === "dismissed" || status === "false_alarm")
-      removeAlertById(id);
-  }, [latestAlertUpdated, removeAlertById]);
+    // attended / false_alarm / dismissed remove; other (incl. unknown) statuses are ignored
+    if (alertUpdateAction(latestAlertUpdated) === "remove") {
+      removeAlertById(latestAlertUpdated.id);
+    } else if (latestAlertUpdated.status === "restored") {
+      // Restored elsewhere: stop hiding it locally and let REST bring it back.
+      removedRef.current.delete(latestAlertUpdated.id);
+      refreshRestAlerts();
+    }
+  }, [latestAlertUpdated, removeAlertById, refreshRestAlerts]);
 
   // Actions — optimistic only; 15 s poll is the background sync.
   // On failure: immediate rollback (re-add to wsAlerts) so the alert reappears
@@ -148,7 +146,7 @@ export function useAlerts() {
         removedRef.current.delete(alertId);
         if (snapshot) {
           setWsAlerts((prev) =>
-            prev.some((a) => a.id === snapshot.id) ? prev : [snapshot, ...prev]
+            prev.some((a) => a.id === snapshot.id) ? prev : [{ ...snapshot, receivedAt: Date.now() }, ...prev]
           );
         }
       }
@@ -167,7 +165,7 @@ export function useAlerts() {
         removedRef.current.delete(alertId);
         if (snapshot) {
           setWsAlerts((prev) =>
-            prev.some((a) => a.id === snapshot.id) ? prev : [snapshot, ...prev]
+            prev.some((a) => a.id === snapshot.id) ? prev : [{ ...snapshot, receivedAt: Date.now() }, ...prev]
           );
         }
       }

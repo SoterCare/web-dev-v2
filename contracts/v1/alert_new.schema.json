@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sotercare/v1/alert_new",
+  "title": "Socket.IO event 'alert.new' (cloud -> current owner's sockets)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "title", "timestamp", "deviceId"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "enum": ["fall", "help_call", "moisture", "temperature", "movement", "urine", "spo2", "heart_rate"] },
+    "title": { "type": "string" },
+    "timestamp": { "type": "integer", "description": "epoch ms of detection" },
+    "deviceId": { "type": "string" },
+    "severity": { "enum": ["critical", "high", "normal"] },
+    "eventId": { "type": ["string", "null"] },
+    "late": { "type": "boolean" }
+  }
+}

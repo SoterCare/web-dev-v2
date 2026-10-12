@@ -36,12 +36,21 @@ export interface ActivityDataPoint {
   value: number;
 }
 
+export type AlertSeverity = "critical" | "high" | "normal";
+
 export interface RecentAlert {
   id: string;
-  type: "movement" | "fall" | "urine" | "sos" | "help_call" | "moisture";
+  // contracts/v1/alert_new.schema.json `type` enum, plus the legacy "sos".
+  type:
+    | "movement" | "fall" | "urine" | "sos" | "help_call" | "moisture"
+    | "temperature" | "spo2" | "heart_rate";
   title: string;
-  timestamp: number;
+  timestamp: number; // epoch ms of detection
   attendedAt?: number;
+  deviceId?: string;
+  severity?: AlertSeverity; // from alert.new; derived from type when absent
+  late?: boolean; // detected while offline, persisted late
+  receivedAt?: number; // client clock when a live (socket) copy arrived
 }
 
 export interface UserProfile {

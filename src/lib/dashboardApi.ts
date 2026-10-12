@@ -1,4 +1,7 @@
 import { apiFetch } from "./api";
+import { buildProxyHeaders } from "./proxyHeaders";
+import { loadLatestVitals } from "./latestVitals";
+import { parseNotificationStatus, type NotificationStatus } from "./notificationStatus";
 
 // Direct backend URL — same base the proxy and WebSocket both use
 const BACKEND_BASE =
@@ -27,14 +30,26 @@ async function backendPatch(path: string): Promise<Response> {
   const token = await getBearerToken();
   return fetch(`${BACKEND_BASE}${path}`, {
     method: "PATCH",
-    headers: { "Authorization": `Bearer ${token}` },
+    // Includes X-Client: web for the back-end audit trail (AR-4).
+    headers: buildProxyHeaders(token),
   });
 }
 
 export const dashboardApi = {
-  getLatestVitals: () => apiFetch("/dashboard/vitals/latest").then(r => r.json()),
+  // deviceId is required and must belong to the signed-in user; see latestVitals.ts.
+  getLatestVitals: (deviceId: string | null) =>
+    loadLatestVitals(deviceId, async (path) => {
+      const r = await apiFetch(path);
+      return { status: r.status, body: await r.json().catch(() => null) };
+    }),
 
   getDevices: () => apiFetch("/devices").then(r => r.json()),
+
+  // GET /notifications/status -> phones registered for push; errors resolve to { status: "error" }.
+  getNotificationStatus: (): Promise<NotificationStatus> =>
+    apiFetch("/notifications/status")
+      .then(async (r) => parseNotificationStatus(r.status, await r.json().catch(() => null)))
+      .catch((): NotificationStatus => ({ status: "error" })),
 
   getRecentAlerts: (params?: Record<string, any>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";

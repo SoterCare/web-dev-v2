@@ -11,11 +11,23 @@ import React, {
 } from "react";
 import { io } from "socket.io-client";
 import { parseToUnixMs } from "@/lib/timeUtils";
+import {
+  parseAlertNew,
+  parseAlertUpdated,
+  shouldSynthesize,
+  synthesizeAlertFromLog,
+} from "@/lib/alertEvents";
 import type { RecentAlert } from "@/types/dashboard";
 
 const SOCKET_URL = "https://unlikely-caryn-sotercare-873e6112.koyeb.app/realtime";
 const STORAGE_KEY = "sotercare_deviceId";
 const BC_CHANNEL = "sotercare_alerts";
+
+// AR-12: the backend emits alert.new for every persisted live alert, so alerts are
+// no longer synthesised from device.logs.ingested. NEXT_PUBLIC_ALERT_SYNTHESIS=true
+// restores the old client-side synthesis (rollback only; it creates `urine_` ids
+// that never exist server-side and cannot be attended).
+const SYNTHESIZE_ALERTS = shouldSynthesize(process.env.NEXT_PUBLIC_ALERT_SYNTHESIS);
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -40,10 +52,13 @@ export interface AlertDismissedPayload {
   deviceId: string;
 }
 
+/** Canonical alert state change (contracts/v1/alert_updated.schema.json). */
 export interface AlertUpdatedPayload {
   id: string;
   status: string;
   deviceId: string;
+  at?: number;
+  actorUserId?: number | null;
 }
 
 // ─── Context A: Vitals — changes on every device log (high frequency) ─────────
@@ -70,6 +85,8 @@ interface AlertEventsContextValue {
   latestAlertAttended: AlertAttendedPayload | null;
   latestAlertDismissed: AlertDismissedPayload | null;
   latestAlertUpdated: AlertUpdatedPayload | null;
+  /** Increments on every socket connect/reconnect; consumers refetch REST to catch missed events. */
+  connectionEpoch: number;
   deviceId: string | null;
   postAlertAction: (type: "alert.attended" | "alert.dismissed", id: string) => void;
 }
@@ -79,6 +96,7 @@ const AlertEventsContext = createContext<AlertEventsContextValue>({
   latestAlertAttended: null,
   latestAlertDismissed: null,
   latestAlertUpdated: null,
+  connectionEpoch: 0,
   deviceId: null,
   postAlertAction: () => {},
 });
@@ -92,6 +110,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
   const [latestAlertDismissed, setLatestAlertDismissed] = useState<AlertDismissedPayload | null>(null);
   const [latestAlertUpdated, setLatestAlertUpdated] = useState<AlertUpdatedPayload | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [connectionEpoch, setConnectionEpoch] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(() =>
@@ -154,11 +173,12 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       if (!active) return;
       setIsConnected(true);
       setError(null);
+      setConnectionEpoch((n) => n + 1);
       const storedId = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
       if (storedId) socket.emit("subscribe", { deviceId: storedId });
     });
 
-    // High-frequency vitals + synthesise alert events from log flags
+    // High-frequency vitals (+ legacy alert synthesis only when the flag is on)
     const handleLogsIngested = (data: any) => {
       if (!active) return;
       try {
@@ -180,20 +200,12 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
           device_id: data?.device_id,
         }));
 
-        // Synthesise alert events — written to AlertEventsContext only when flags are set
-        const device = data?.device_id ?? deviceIdRef.current ?? "";
-        const tsMs = parseToUnixMs(log.timestamp ?? log.ts);
-
-        if (log.fall_alert && String(log.fall_alert) !== "0" && String(log.fall_alert) !== "false") {
-          if (active) setLatestAlertNew({ id: `fall_${device}_${tsMs}`, type: "fall", title: "Fall Detected", timestamp: tsMs });
-        } else if (log.sos && String(log.sos) !== "0" && String(log.sos) !== "false") {
-          if (active) setLatestAlertNew({ id: `sos_${device}_${tsMs}`, type: "help_call", title: "Help Call", timestamp: tsMs });
-        } else if (Number(log.moisture) > 25) {
+        if (SYNTHESIZE_ALERTS) {
+          const device = data?.device_id ?? deviceIdRef.current ?? "";
           const now = Date.now();
-          if (now - lastUrineAlertTs.current >= 5 * 60 * 1000) {
-            lastUrineAlertTs.current = now;
-            if (active) setLatestAlertNew({ id: `urine_${device}_${tsMs}`, type: "urine", title: "High Moisture Detected", timestamp: tsMs });
-          }
+          const out = synthesizeAlertFromLog(log ?? {}, device, lastUrineAlertTs.current, now);
+          lastUrineAlertTs.current = out.lastUrineTs;
+          if (out.alert && active) setLatestAlertNew({ ...out.alert, deviceId: device || undefined, receivedAt: now });
         }
       } catch (e) {
         console.error("[Socket.IO] Parsing error:", e);
@@ -203,19 +215,18 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     socket.on("vitals_update", handleLogsIngested);
     socket.on("device.logs.ingested", handleLogsIngested);
 
-    socket.on("alert.new", (data: any) => {
+    // contracts/v1/alert_new.schema.json — payloads without an id are dropped
+    // (they could never be attended); REST reconciliation still picks them up.
+    socket.on("alert.new", (data: unknown) => {
       if (!active) return;
-      const tsMs = parseToUnixMs(data.timestamp ?? data.ts);
-      setLatestAlertNew({
-        id: data.id || `ws_${data.deviceId}_${tsMs}`,
-        type: data.type || "movement",
-        title: data.title || "Alert",
-        timestamp: tsMs,
-      });
+      const alert = parseAlertNew(data);
+      if (alert) setLatestAlertNew({ ...alert, receivedAt: Date.now() });
     });
 
+    // Legacy aliases (one release). Removal by id is idempotent, so receiving both
+    // a legacy event and the canonical alert.updated for one action is harmless.
     socket.on("alert.attended", (data: AlertAttendedPayload) => {
-      if (!active) return;
+      if (!active || !data?.id) return;
       setLatestAlertAttended({
         ...data,
         attendedAt: data.attendedAt != null ? parseToUnixMs(data.attendedAt) : undefined,
@@ -223,13 +234,15 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
     });
 
     socket.on("alert.dismissed", (data: AlertDismissedPayload) => {
-      if (!active) return;
+      if (!active || !data?.id) return;
       setLatestAlertDismissed(data);
     });
 
-    socket.on("alert.updated", (data: AlertUpdatedPayload) => {
+    // Canonical state change (contracts/v1/alert_updated.schema.json).
+    socket.on("alert.updated", (data: unknown) => {
       if (!active) return;
-      setLatestAlertUpdated(data);
+      const ev = parseAlertUpdated(data);
+      if (ev) setLatestAlertUpdated(ev);
     });
 
     socket.on("disconnect", (reason: string) => {
@@ -282,10 +295,11 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
       latestAlertAttended,
       latestAlertDismissed,
       latestAlertUpdated,
+      connectionEpoch,
       deviceId,
       postAlertAction,
     }),
-    [latestAlertNew, latestAlertAttended, latestAlertDismissed, latestAlertUpdated, deviceId, postAlertAction]
+    [latestAlertNew, latestAlertAttended, latestAlertDismissed, latestAlertUpdated, connectionEpoch, deviceId, postAlertAction]
   );
 
   return (
