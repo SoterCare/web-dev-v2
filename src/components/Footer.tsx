@@ -270,7 +270,7 @@ const Footer = () => {
               <h2 ref={headingRef} className="mb-6 md:mb-10 leading-tight">
                 <span className="block text-3xl sm:text-4xl md:text-5xl font-bold text-[#3d7e93] leading-none tracking-tight pb-2 md:pb-4">
                   That&apos;s our story.
-                </span>
+                </span>{" "}
                 <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-text leading-none tracking-tighter">
                   Smarter care for every elder.
                 </span>

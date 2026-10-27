@@ -1,9 +1,13 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import NewsTopBar from '@/components/NewsTopBar';
 import FooterSimple from '@/components/FooterSimple';
+import JsonLd from '@/components/JsonLd';
 import { readNews } from '@/lib/news-store';
+import { sortArticles } from '@/lib/news-sort';
+import { pageMetadata, SITE_NAME, SITE_URL } from '@/lib/seo';
 import type { ContentBlock } from '@/types/news';
 
 interface Props {
@@ -20,10 +24,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { articles } = readNews();
   const article = articles.find((a) => a.slug === slug);
   if (!article) return {};
-  return {
+  return pageMetadata({
     title: article.title,
     description: article.summary,
-  };
+    path: `/news/${article.slug}`,
+    image: article.coverImage ? { url: article.coverImage, alt: article.title } : undefined,
+    article: { publishedTime: article.date, tags: article.tags },
+  });
 }
 
 function formatDate(iso: string): string {
@@ -41,12 +48,44 @@ export default async function ArticlePage({ params }: Props) {
   const article = articles.find((a) => a.slug === slug);
   if (!article) notFound();
 
+  const moreNews = sortArticles(articles)
+    .filter((a) => a.id !== article.id)
+    .slice(0, 3);
+
+  const url = `${SITE_URL}/news/${article.slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'NewsArticle',
+        '@id': `${url}#article`,
+        headline: article.title,
+        description: article.summary,
+        datePublished: article.date,
+        ...(article.coverImage && { image: [`${SITE_URL}${article.coverImage}`] }),
+        ...(article.tags.length > 0 && { keywords: article.tags }),
+        mainEntityOfPage: url,
+        author: { '@type': 'Organization', name: `The ${SITE_NAME} team`, url: `${SITE_URL}/#team` },
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'News', item: `${SITE_URL}/news` },
+          { '@type': 'ListItem', position: 3, name: article.title, item: url },
+        ],
+      },
+    ],
+  };
+
   const paragraphs = article.body.split(/\n\n+/).filter(Boolean);
   const blocks: ContentBlock[] | undefined =
     article.bodyBlocks && article.bodyBlocks.length > 0 ? article.bodyBlocks : undefined;
 
   return (
     <main className="min-h-screen bg-[#fafafa] relative">
+      <JsonLd data={jsonLd} id="article-jsonld" />
       {/* Dotted background */}
       <div
         className="fixed top-0 left-0 z-0 h-full w-full pointer-events-none"
@@ -80,7 +119,13 @@ export default async function ArticlePage({ params }: Props) {
             {/* Meta: date then tags on next line */}
             <div className="mb-5">
               <span className="block text-xs font-semibold text-[#3d7e93] mb-2">
-                {formatDate(article.date)}
+                <time dateTime={article.date}>{formatDate(article.date)}</time>
+                <span className="text-text-muted font-medium">
+                  {' · By '}
+                  <Link href="/#team" className="hover:underline">
+                    the SoterCare team
+                  </Link>
+                </span>
               </span>
               {article.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
@@ -158,10 +203,69 @@ export default async function ArticlePage({ params }: Props) {
               </div>
             )}
 
-            {/* Footer spacer */}
-            <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-black/[0.06]" />
+            {/* About SoterCare: links back into the product, so readers (and crawlers) arriving on
+                an article can find what SoterCare actually does. */}
+            <aside className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-black/[0.06]">
+              <p className="text-base text-text-muted leading-relaxed">
+                SoterCare is building a camera-free smart care system for care homes in Sri Lanka.{' '}
+                <Link href="/#how-it-works" className="font-semibold text-[#3d7e93] hover:underline">
+                  See how it works
+                </Link>
+                {', '}
+                <Link href="/#team" className="font-semibold text-[#3d7e93] hover:underline">
+                  meet the team
+                </Link>
+                {' or '}
+                <Link href="/community" className="font-semibold text-[#3d7e93] hover:underline">
+                  join our developer community
+                </Link>
+                .
+              </p>
+            </aside>
           </div>
         </article>
+
+        {moreNews.length > 0 && (
+          <section className="relative z-10 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-5xl mx-auto">
+              <div className="flex items-baseline justify-between mb-5 sm:mb-6">
+                <h2 className="!text-2xl sm:!text-3xl !font-bold !leading-tight text-text">More news</h2>
+                <Link href="/news" className="text-sm font-semibold text-[#3d7e93] hover:underline">
+                  All news →
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+                {moreNews.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={`/news/${a.slug}`}
+                    className="group bg-bg-card rounded-3xl shadow-m overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300 border border-black/[0.03]"
+                  >
+                    <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#a0cbdb]/10">
+                      {a.coverImage && (
+                        <Image
+                          src={a.coverImage}
+                          alt={a.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 330px"
+                          className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                        />
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col">
+                      <time dateTime={a.date} className="text-xs font-semibold text-[#3d7e93] mb-2">
+                        {formatDate(a.date)}
+                      </time>
+                      <h3 className="text-lg font-bold text-text leading-snug line-clamp-3 group-hover:text-[#3d7e93] transition-colors">
+                        {a.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         <FooterSimple />
       </div>

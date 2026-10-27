@@ -104,7 +104,7 @@ const Hero = () => {
               <h1 className="mb-6 md:mb-8 leading-[1.02]">
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-text tracking-tighter reveal-text opacity-0">
                   Smarter care ecosystem
-                </span>
+                </span>{" "}
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-[#3d7e93] tracking-tighter mt-1 md:mt-2 reveal-text opacity-0">
                   for every resident.
                 </span>

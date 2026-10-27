@@ -1,0 +1,65 @@
+"use client";
+
+import { useRef, useEffect } from 'react';
+
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import { ReactLenis, useLenis } from 'lenis/react';
+
+import Navbar from '@/components/Navbar';
+import SplashScreen from '@/components/SplashScreen';
+import Hero from '@/components/Hero';
+import Mission from '@/components/Mission';
+import HowItWorks from '@/components/HowItWorks';
+import Pricing from '@/components/Pricing';
+import LatestNews from '@/components/LatestNews';
+import FAQ from '@/components/FAQ';
+import Team from '@/components/Team';
+import Footer from '@/components/Footer';
+
+export default function HomePage() {
+  const bgRef = useRef<HTMLDivElement>(null);
+
+
+
+  useGSAP(() => {
+    if (!bgRef.current) return;
+
+    gsap.to(bgRef.current, {
+      y: -300, // Move up slowly (parallax effect)
+      ease: 'none',
+      scrollTrigger: {
+        trigger: document.body,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true
+      }
+    });
+  });
+
+  return (
+    <main className="min-h-screen bg-[#fafafa] text-foreground selection:bg-blue-100 selection:text-blue-900 relative">
+      <div
+        ref={bgRef}
+        className="fixed top-0 left-0 z-0 h-[200%] w-full pointer-events-none will-change-transform bg-fixed"
+        style={{
+          backgroundImage: 'radial-gradient(#e5e7eb 2px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }}
+      ></div>
+      <SplashScreen />
+      <Navbar />
+      <Hero />
+      <Mission>
+        <LatestNews />
+      </Mission>
+      <HowItWorks />
+      <Pricing />
+      <FAQ />
+      <Team />
+      <Footer />
+    </main>
+  );
+}

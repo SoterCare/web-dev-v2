@@ -83,6 +83,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Fonts never change in place; a new version gets a new file name.
+        source: "/fonts/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
         // Cache static assets aggressively
         source: "/assets/:path*",
         headers: [

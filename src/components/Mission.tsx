@@ -71,7 +71,7 @@ const Mission = ({ children }: MissionProps) => {
                 key={i}
                 className={`word inline-block mr-[0.2em] ${isHighlighted ? "text-[#3d7e93] font-bold" : ""}`}
               >
-                {word}
+                {word}{" "}
               </span>
             );
           })}

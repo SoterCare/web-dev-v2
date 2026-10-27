@@ -93,7 +93,7 @@ const Navbar = () => {
               alt="SoterCare - smart care monitoring for care homes"
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="180px"
               className="h-12 w-auto object-contain transition-opacity duration-700 ease-in-out"
               style={{ width: "auto", height: "48px" }}
               priority

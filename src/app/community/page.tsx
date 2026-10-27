@@ -23,12 +23,14 @@ import {
   Code2,
   Heart,
 } from 'lucide-react';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Community',
+export const metadata: Metadata = pageMetadata({
+  title: 'Student Developer Community',
   description:
     'SoterCare Developers — the student developer community of SoterCare. Learn through GitHub, open source, workshops, and real-world software engineering.',
-};
+  path: '/community',
+});
 
 const COMMUNITY_URL = 'https://github.com/SoterCare/community';
 const ORG_URL = 'https://github.com/SoterCare';

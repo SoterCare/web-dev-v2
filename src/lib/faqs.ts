@@ -5,6 +5,11 @@ export interface Faq {
 
 export const faqs: Faq[] = [
   {
+    question: "What is SoterCare?",
+    answer:
+      "SoterCare is an early-stage Sri Lankan startup building a smart care system for care homes. Each resident wears a camera-free thigh band, and a 15.6-inch ward gateway with caregiver and guardian apps alerts the right carer in seconds, learns each resident's patterns and keeps the home's records. It was founded by Daham Dissanayake with co-founders Sanjula Herath and Komudi Senarachchi.",
+  },
+  {
     question: "How is SoterCare different from call bells and CCTV?",
     answer:
       "Call bells need a resident who can press them, and CCTV needs someone watching 24/7. SoterCare is worn on the body, spots a stand-up attempt before a fall, and alerts the right carer's phone in seconds, day and night. Nobody has to press anything or watch a screen.",

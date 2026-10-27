@@ -38,7 +38,13 @@ export async function uploadNewsImageAction(formData: FormData): Promise<{ path:
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const sharp = (await import('sharp')).default;
-  await sharp(buffer).webp({ quality: 85 }).toFile(dest);
+  // Phone photos arrive at 4000px+. Pages show them at most 768px wide (1536px on retina), and
+  // the raw file is what link previews download, so cap the long edge.
+  await sharp(buffer)
+    .rotate()
+    .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: 85 })
+    .toFile(dest);
 
   return { path: `/images/news/${filename}` };
 }

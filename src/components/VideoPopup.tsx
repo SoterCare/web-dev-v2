@@ -50,7 +50,7 @@ export default function VideoPopup() {
                     {/* Background layers exactly matching Footer */}
                     <div className="absolute inset-0 z-0 select-none pointer-events-none">
                         <Image
-                            src="/assets/testfooter1.png"
+                            src="/assets/testfooter1.webp"
                             alt="Background pattern"
                             fill
                             className="object-cover opacity-[0.8]"

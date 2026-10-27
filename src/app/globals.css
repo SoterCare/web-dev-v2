@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: "URWGeometric";
-  src: url("/fonts/URWGeometricLight.otf") format("opentype");
+  src: url("/fonts/URWGeometricLight.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "URWGeometric";
-  src: url("/fonts/URWGeometricRegular.otf") format("opentype");
+  src: url("/fonts/URWGeometricRegular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: "URWGeometric";
-  src: url("/fonts/URWGeometricMedium.otf") format("opentype");
+  src: url("/fonts/URWGeometricMedium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -26,7 +26,7 @@
 
 @font-face {
   font-family: "URWGeometric";
-  src: url("/fonts/URWGeometricBold.otf") format("opentype");
+  src: url("/fonts/URWGeometricBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;

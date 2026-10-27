@@ -22,6 +22,8 @@ export default function LatestNews() {
 
   return (
     <div id="news" className="relative z-10 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 w-full">
+      {/* The cards are h3s; give them a section heading in the outline. */}
+      <h2 className="sr-only">Latest news</h2>
       <CardSlider label="Latest news" breakpoint="md" gridClassName="md:grid-cols-3 md:gap-6">
         {articles.map((article) => (
           <Link
