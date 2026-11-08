@@ -25,7 +25,7 @@ export default function VoteHackXPage() {
         }}
       />
       <NewsTopBar backHref="/" backLabel="Home" />
-      <div className="relative z-10 px-4 sm:px-6 pt-28 md:pt-40 pb-6 max-w-3xl mx-auto">
+      <div className="relative z-10 px-4 sm:px-6 pt-24 md:pt-40 pb-6 max-w-3xl mx-auto">
         <VoteSteps />
         <FooterSimple />
       </div>
